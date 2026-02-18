@@ -1,0 +1,39 @@
+---
+const links = [
+  { href: "/comece-aqui", label: "Comece aqui" },
+  { href: "/planejamento", label: "Planejamento" },
+  { href: "/trabalho-remoto", label: "Trabalho remoto" },
+  { href: "/vida-real", label: "Vida real" },
+  { href: "/autossuficiencia", label: "Autossuficiência" },
+  { href: "/cidades", label: "Cidades" },
+  { href: "/blog", label: "Blog" },
+];
+---
+
+<header class="sticky top-0 z-50 border-b"
+  style="border-color: var(--border); background: color-mix(in oklab, var(--bg) 92%, white 8%); backdrop-filter: blur(10px);">
+  <div class="mx-auto max-w-6xl px-4 md:px-6 py-3 flex items-center justify-between gap-4">
+    <a href="/" class="flex items-center gap-2">
+      <span class="text-xl" style="font-family: 'Playfair Display', serif;">Nova Raiz</span>
+      <span class="hidden sm:inline text-xs px-2 py-1 rounded-full border" style="border-color: var(--border); color: var(--muted);">
+        viver melhor com plano
+      </span>
+    </a>
+
+    <nav class="hidden lg:flex items-center gap-5 text-sm" style="color: var(--muted);">
+      {links.map(l => <a class="hover:opacity-80" href={l.href}>{l.label}</a>)}
+      <a
+        class="ml-2 inline-flex items-center rounded-xl px-4 py-2 text-sm font-semibold"
+        style="background: var(--accent); color: var(--text);"
+        href="/comece-aqui"
+      >
+        Checklist
+      </a>
+    </nav>
+
+    <a class="lg:hidden inline-flex items-center rounded-xl px-4 py-2 text-sm font-semibold border"
+      style="border-color: var(--border);" href="/comece-aqui">
+      Comece
+    </a>
+  </div>
+</header>
