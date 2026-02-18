@@ -1,0 +1,41 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Comece aqui — Nova Raiz" description="A trilha prática para sair da cidade e planejar a vida no interior com consciência.">
+  <section class="py-10 md:py-14">
+    <h1 class="text-4xl md:text-5xl" style="font-family:'Playfair Display', serif;">
+      Comece aqui
+    </h1>
+    <p class="mt-4 text-lg" style="color: var(--muted);">
+      Você está em qual fase? Escolha um caminho e siga um passo por vez.
+    </p>
+
+    <div class="mt-8 grid gap-4 md:grid-cols-3">
+      {[
+        { t: "Estou pensando", d: "clareza + verdade sem romantizar", links: [
+          { label: "Vale a pena sair da capital?", href: "/blog/vale-a-pena-sair-da-capital" },
+          { label: "Vida no interior é mais barata mesmo?", href: "/blog" },
+        ]},
+        { t: "Estou planejando", d: "custos, reserva e cidade", links: [
+          { label: "Planejamento financeiro (hub)", href: "/planejamento" },
+          { label: "Checklist financeiro da transição", href: "/blog" },
+        ]},
+        { t: "Estou executando", d: "internet, rotina, adaptação", links: [
+          { label: "Trabalho remoto (hub)", href: "/trabalho-remoto" },
+          { label: "Adaptação: solidão, segurança, saúde", href: "/vida-real" },
+        ]},
+      ].map(card => (
+        <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+          <div class="text-xl" style="font-family:'Playfair Display', serif;">{card.t}</div>
+          <div class="mt-2 text-sm" style="color: var(--muted);">{card.d}</div>
+          <ul class="mt-4 space-y-2 text-sm">
+            {card.links.map(l => (
+              <li><a class="underline" href={l.href}>{l.label}</a></li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
