@@ -1,0 +1,56 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const { title, description, pubDate, category, slug } = Astro.props;
+
+// Related posts (same category, newest first)
+const related = (await getCollection("blog"))
+  .filter(p => !p.data.draft && p.data.category === category && p.slug !== slug)
+  .sort((a,b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+---
+
+<BaseLayout title={`${title} — Nova Raiz`} description={description}>
+  <article class="py-10 md:py-14">
+    <div class="mx-auto" style="max-width: var(--contentw);">
+      <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">{category}</div>
+      <h1 class="mt-2 text-4xl md:text-5xl leading-tight" style="font-family:'Playfair Display', serif;">
+        {title}
+      </h1>
+      <p class="mt-4 text-lg leading-relaxed" style="color: var(--muted);">{description}</p>
+      <div class="mt-6 text-xs" style="color: var(--muted);">
+        {pubDate.toLocaleDateString("pt-BR")}
+      </div>
+
+      <div class="prose prose-lg mt-10 max-w-none"
+        style="--tw-prose-body: var(--text); --tw-prose-headings: var(--text); --tw-prose-links: var(--primary);">
+        <slot />
+      </div>
+
+      {related.length > 0 && (
+        <section class="mt-14">
+          <div class="text-sm font-semibold">Leituras relacionadas</div>
+          <ul class="mt-4 space-y-3">
+            {related.map(p => (
+              <li class="rounded-2xl border p-4 hover:opacity-90"
+                style="border-color: var(--border); background: var(--card);">
+                <a class="no-underline" href={`/blog/${p.slug}`}>
+                  <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">
+                    {p.data.category}
+                  </div>
+                  <div class="mt-1 text-lg" style="font-family:'Playfair Display', serif;">
+                    {p.data.title}
+                  </div>
+                  <div class="mt-1 text-sm" style="color: var(--muted);">
+                    {p.data.description}
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+    </div>
+  </article>
+</BaseLayout>
