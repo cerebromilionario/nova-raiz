@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+:root{
+  --bg: #F7F5F0;
+  --surface: #FFFFFF;
+  --card: #FBFAF7;
+  --border: #E7E2D8;
+
+  --text: #1C1C1C;
+  --muted: #4B4B4B;
+
+  --primary: #1F3A2E;
+  --accent: #C6A15B;
+  --danger: #B65B4A;
+
+  --radius: 18px;
+  --maxw: 1120px;
+  --contentw: 720px;
+}
+
+html, body { background: var(--bg); color: var(--text); }
+a { color: inherit; }
