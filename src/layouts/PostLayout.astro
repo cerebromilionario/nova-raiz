@@ -1,0 +1,29 @@
+---
+import { getCollection } from 'astro:content';
+
+const { post } = Astro.props;
+
+const allPosts = (await getCollection('blog')).filter(p => !p.data.draft);
+const related = allPosts
+  .filter(p => p.data.category === post.data.category && p.slug !== post.slug)
+  .slice(0, 3);
+---
+
+<article>
+  <slot />
+
+  {related.length > 0 && (
+    <section class="mt-16 border-t pt-8">
+      <h3 class="text-xl font-semibold mb-4">Continue lendo</h3>
+      <ul class="space-y-3">
+        {related.map(r => (
+          <li>
+            <a class="underline" href={`/blog/${r.slug}`}>
+              {r.data.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+</article>
