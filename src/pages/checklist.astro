@@ -1,0 +1,83 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Checklist — Nova Raiz" description="Checklist completo para planejar a mudança para o interior: decidir, planejar e executar.">
+  <section class="py-10 md:py-14">
+    <h1 class="text-4xl md:text-5xl" style="font-family:'Playfair Display', serif;">Checklist</h1>
+    <p class="mt-4 text-lg" style="color: var(--muted);">
+      Um roteiro simples (e humano) para sair do achismo. Marque um item por vez.
+    </p>
+
+    <div class="mt-8 grid gap-6 md:grid-cols-3">
+      <!-- Fase 1 -->
+      <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+        <div class="text-sm font-semibold" style="color: var(--muted);">Fase 1 — Decidir com clareza</div>
+        <h2 class="mt-2 text-xl font-semibold">Antes de escolher a cidade</h2>
+        <ul class="mt-4 space-y-3 text-sm" style="color: var(--muted);">
+          <li>☐ Definir o objetivo (paz, custo, saúde, família, tempo)</li>
+          <li>☐ Definir 3–5 “não abro mão” (internet, saúde, escola, segurança)</li>
+          <li>☐ Fazer 1 simulação do seu cenário (solteiro/casal/família)</li>
+          <li>☐ Mapear o “plano B” (se der errado, o que eu faço?)</li>
+          <li>☐ Escolher 3 cidades candidatas (e 2 bairros por cidade)</li>
+        </ul>
+        <div class="mt-5 text-xs" style="color: var(--muted);">
+          Leituras: <a class="underline" href="/blog/quanto-custa-mudar-para-o-interior">simulação completa</a> •
+          <a class="underline" href="/cidades">hub de cidades</a>
+        </div>
+      </div>
+
+      <!-- Fase 2 -->
+      <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+        <div class="text-sm font-semibold" style="color: var(--muted);">Fase 2 — Planejar sem susto</div>
+        <h2 class="mt-2 text-xl font-semibold">30 dias antes</h2>
+        <ul class="mt-4 space-y-3 text-sm" style="color: var(--muted);">
+          <li>☐ Estimar custo único (mudança + ajustes + mobília)</li>
+          <li>☐ Definir reserva: 6 meses (ou 9–12 se renda instável)</li>
+          <li>☐ Testar internet no bairro (em horário de pico)</li>
+          <li>☐ Mapear saúde (PA 24h, hospital, exames, pediatra)</li>
+          <li>☐ Definir transporte (carro? custo real mensal?)</li>
+          <li>☐ Fazer “visita-teste” de 5–10 dias na rotina real</li>
+        </ul>
+        <div class="mt-5 text-xs" style="color: var(--muted);">
+          Leituras: <a class="underline" href="/blog/checklist-escolher-cidade-interior">checklist da cidade</a> •
+          <a class="underline" href="/planejamento">hub de planejamento</a>
+        </div>
+      </div>
+
+      <!-- Fase 3 -->
+      <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+        <div class="text-sm font-semibold" style="color: var(--muted);">Fase 3 — Executar com paz</div>
+        <h2 class="mt-2 text-xl font-semibold">Primeiros 90 dias</h2>
+        <ul class="mt-4 space-y-3 text-sm" style="color: var(--muted);">
+          <li>☐ Ajustar rotina (sono, trabalho, mercado, deslocamentos)</li>
+          <li>☐ Criar rede social (vizinhos, grupos, atividades)</li>
+          <li>☐ Revisar orçamento: onde estourou e por quê</li>
+          <li>☐ Criar “plano internet” (backup 4G / redundância)</li>
+          <li>☐ Planejar manutenção do imóvel (mensal e semestral)</li>
+          <li>☐ Documentar aprendizados (o que você faria diferente)</li>
+        </ul>
+        <div class="mt-5 text-xs" style="color: var(--muted);">
+          Leituras: <a class="underline" href="/blog/carro-no-interior-quanto-custa">carro no interior</a> •
+          <a class="underline" href="/blog/custo-de-vida-interior-vs-capital">tabela interior vs capital</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-10 rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+      <h3 class="text-xl font-semibold">Quer seguir uma trilha pronta?</h3>
+      <p class="mt-2 text-sm" style="color: var(--muted);">
+        Se você está começando do zero, o melhor caminho é:
+        <span class="font-semibold">Comece aqui → Planejamento → Cidades</span>.
+      </p>
+      <div class="mt-4 flex flex-wrap gap-3">
+        <a class="inline-flex items-center rounded-xl px-4 py-2 text-sm font-semibold"
+          style="background: var(--accent); color: var(--text);"
+          href="/comece-aqui">Abrir Comece aqui</a>
+        <a class="inline-flex items-center rounded-xl px-4 py-2 text-sm font-semibold border"
+          style="border-color: var(--border);"
+          href="/blog/quanto-custa-mudar-para-o-interior">Ver simulação completa</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
