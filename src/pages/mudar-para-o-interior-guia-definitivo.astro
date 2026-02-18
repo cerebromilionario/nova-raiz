@@ -1,0 +1,195 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout 
+  title="Mudar para o Interior: O Guia Definitivo (2026) — Nova Raiz" 
+  description="O guia mais completo do Brasil para quem quer sair da capital e morar no interior. Custos, cidades, trabalho remoto, riscos, planejamento e checklist completo."
+>
+  <section class="py-10 md:py-16">
+    <nav aria-label="Breadcrumb" class="text-sm" style="color: var(--muted);">
+      <ol class="flex flex-wrap items-center gap-2">
+        <li><a class="underline" href="/">Início</a></li>
+        <li aria-hidden="true">›</li>
+        <li><span>Mudar para o interior</span></li>
+        <li aria-hidden="true">›</li>
+        <li><span class="font-semibold" style="color: var(--text);">Guia definitivo</span></li>
+      </ol>
+    </nav>
+
+    <header class="mt-6">
+      <h1 class="text-4xl md:text-6xl leading-tight" style="font-family:'Playfair Display', serif;">
+        Mudar para o Interior: o Guia Definitivo
+      </h1>
+
+      <p class="mt-5 text-lg max-w-3xl leading-relaxed" style="color: var(--muted);">
+        Este é o mapa completo para quem quer sair da capital e construir uma nova vida no interior
+        com planejamento, segurança e visão de longo prazo — sem romantizar, sem impulso.
+      </p>
+
+      <div class="mt-7 flex flex-wrap gap-3">
+        <a class="inline-flex items-center rounded-xl px-5 py-3 text-sm font-semibold"
+           style="background: var(--accent); color: var(--text);"
+           href="/checklist">
+          Começar pelo Checklist
+        </a>
+        <a class="inline-flex items-center rounded-xl px-5 py-3 text-sm font-semibold border"
+           style="border-color: var(--border);"
+           href="/blog/quanto-custa-mudar-para-o-interior">
+          Ver simulação completa (3 cenários)
+        </a>
+      </div>
+    </header>
+
+    <div class="mt-10 rounded-3xl border p-6 md:p-8"
+         style="border-color: var(--border); background: var(--surface);">
+      <div class="text-sm font-semibold" style="color: var(--muted);">Índice rápido</div>
+      <div class="mt-4 grid gap-3 md:grid-cols-2">
+        {[
+          { t: "1) Vale a pena morar no interior?", href: "#vale-a-pena" },
+          { t: "2) Quanto custa? (e como simular)", href: "#quanto-custa" },
+          { t: "3) Como escolher a cidade certa", href: "#cidades" },
+          { t: "4) Trabalho remoto e internet", href: "#remoto" },
+          { t: "5) Planejamento e execução", href: "#planejamento" },
+          { t: "6) FAQ (perguntas do Google)", href: "#faq" },
+        ].map(i => (
+          <a href={i.href} class="rounded-2xl border p-4 hover:opacity-90"
+             style="border-color: var(--border); background: var(--card);">
+            <div class="font-semibold">{i.t}</div>
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <div class="mt-12 grid gap-6 md:grid-cols-2">
+      <section id="vale-a-pena" class="rounded-3xl border p-6 md:p-8"
+               style="border-color: var(--border); background: var(--card);">
+        <h2 class="text-2xl font-semibold" style="font-family:'Playfair Display', serif;">1) Vale a pena morar no interior?</h2>
+        <p class="mt-3 text-sm leading-relaxed" style="color: var(--muted);">
+          Vale quando você troca pressão constante por rotina sustentável — sem destruir sua renda.
+          O maior erro é decidir por emoção e descobrir depois que você só mudou o tipo de problema.
+        </p>
+        <ul class="mt-4 space-y-2 text-sm" style="color: var(--muted);">
+          <li>• Quais custos caem (e quais sobem)</li>
+          <li>• O que muda na vida social, serviços e deslocamento</li>
+          <li>• Como saber se você está pronto (sem romantizar)</li>
+        </ul>
+        <div class="mt-5 text-sm">
+          <a class="underline" href="/blog/custo-de-vida-interior-vs-capital">Interior vs capital (tabela comparativa)</a>
+        </div>
+      </section>
+
+      <section id="quanto-custa" class="rounded-3xl border p-6 md:p-8"
+               style="border-color: var(--border); background: var(--surface);">
+        <h2 class="text-2xl font-semibold" style="font-family:'Playfair Display', serif;">2) Quanto custa? (e como simular)</h2>
+        <p class="mt-3 text-sm leading-relaxed" style="color: var(--muted);">
+          O custo real tem 3 camadas: mudança (único), adaptação (3–6 meses) e mensal (fixo).
+          A simulação certa evita arrependimento.
+        </p>
+        <ul class="mt-4 space-y-2 text-sm" style="color: var(--muted);">
+          <li>• Solteiro / Casal / Família (3 cenários)</li>
+          <li>• Custos ocultos: carro, manutenção, saúde, energia</li>
+          <li>• Quanto guardar antes de mudar (modelo seguro)</li>
+        </ul>
+        <div class="mt-5 text-sm">
+          <a class="underline" href="/blog/quanto-custa-mudar-para-o-interior">Simulação completa (3 cenários)</a>
+        </div>
+      </section>
+
+      <section id="cidades" class="rounded-3xl border p-6 md:p-8"
+               style="border-color: var(--border); background: var(--surface);">
+        <h2 class="text-2xl font-semibold" style="font-family:'Playfair Display', serif;">3) Como escolher a cidade certa</h2>
+        <p class="mt-3 text-sm leading-relaxed" style="color: var(--muted);">
+          A cidade certa não é a mais bonita: é a que aguenta sua vida real (internet, saúde, escola e custo).
+          Um bom checklist resolve 80% da decisão.
+        </p>
+        <ul class="mt-4 space-y-2 text-sm" style="color: var(--muted);">
+          <li>• Internet no bairro (não só na cidade)</li>
+          <li>• Saúde de verdade (PA 24h, hospital, exames)</li>
+          <li>• Rotina e deslocamento (o interior cobra distância)</li>
+        </ul>
+        <div class="mt-5 text-sm">
+          <a class="underline" href="/blog/checklist-escolher-cidade-interior">Checklist completo da cidade</a>
+          <span style="color: var(--muted);"> • </span>
+          <a class="underline" href="/cidades">Hub de cidades</a>
+        </div>
+      </section>
+
+      <section id="remoto" class="rounded-3xl border p-6 md:p-8"
+               style="border-color: var(--border); background: var(--card);">
+        <h2 class="text-2xl font-semibold" style="font-family:'Playfair Display', serif;">4) Trabalho remoto e internet</h2>
+        <p class="mt-3 text-sm leading-relaxed" style="color: var(--muted);">
+          Para quem trabalha remoto, internet e energia viram “infraestrutura de sobrevivência”.
+          O segredo é ter redundância e testar antes.
+        </p>
+        <ul class="mt-4 space-y-2 text-sm" style="color: var(--muted);">
+          <li>• Teste real em horário de pico</li>
+          <li>• Plano B: 4G/5G, rádio ou satélite</li>
+          <li>• Rotina de produtividade no interior</li>
+        </ul>
+        <div class="mt-5 text-sm">
+          <a class="underline" href="/trabalho-remoto">Trabalho remoto (hub)</a>
+        </div>
+      </section>
+    </div>
+
+    <section id="planejamento" class="mt-8 rounded-3xl border p-6 md:p-8"
+             style="border-color: var(--border); background: var(--surface);">
+      <h2 class="text-2xl font-semibold" style="font-family:'Playfair Display', serif;">5) Planejamento e execução (sem susto)</h2>
+      <p class="mt-3 text-sm leading-relaxed max-w-3xl" style="color: var(--muted);">
+        A transição fica leve quando vira projeto: motivo claro, custo simulado, reserva, plano B e execução por etapas.
+      </p>
+
+      <div class="mt-6 grid gap-4 md:grid-cols-3">
+        {[
+          { t: "Checklist completo", d: "decidir → planejar → executar", href: "/checklist" },
+          { t: "Planejamento (hub)", d: "custos, reserva, simulações", href: "/planejamento" },
+          { t: "Carro no interior", d: "o custo que pega muita gente", href: "/blog/carro-no-interior-quanto-custa" },
+        ].map(i => (
+          <a href={i.href} class="rounded-2xl border p-4 hover:opacity-90"
+             style="border-color: var(--border); background: var(--card);">
+            <div class="font-semibold">{i.t}</div>
+            <div class="text-sm mt-1" style="color: var(--muted);">{i.d}</div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section id="faq" class="mt-10 rounded-3xl border p-6 md:p-8"
+             style="border-color: var(--border); background: var(--card);">
+      <h2 class="text-2xl font-semibold" style="font-family:'Playfair Display', serif;">6) FAQ — perguntas que o Google ama</h2>
+
+      <div class="mt-6 grid gap-4">
+        <details class="rounded-2xl border p-4" style="border-color: var(--border); background: var(--surface);">
+          <summary class="font-semibold cursor-pointer">Interior é sempre mais barato?</summary>
+          <p class="mt-2 text-sm" style="color: var(--muted);">
+            Nem sempre. Moradia tende a cair, mas transporte, carro, manutenção e deslocamento podem subir.
+            Por isso, a decisão correta vem de simulação, não de impressão.
+          </p>
+        </details>
+
+        <details class="rounded-2xl border p-4" style="border-color: var(--border); background: var(--surface);">
+          <summary class="font-semibold cursor-pointer">Preciso ter carro para morar no interior?</summary>
+          <p class="mt-2 text-sm" style="color: var(--muted);">
+            Em muitos lugares, sim. Ou você precisa de um plano de locomoção bem definido.
+            Veja o custo real do carro e como reduzir:
+            <a class="underline" href="/blog/carro-no-interior-quanto-custa">aqui</a>.
+          </p>
+        </details>
+
+        <details class="rounded-2xl border p-4" style="border-color: var(--border); background: var(--surface);">
+          <summary class="font-semibold cursor-pointer">Quanto eu devo guardar antes de mudar?</summary>
+          <p class="mt-2 text-sm" style="color: var(--muted);">
+            Depende do seu risco e renda, mas uma regra segura é: reserva (6 meses) + caixa de transição.
+            Veja o modelo completo com 3 cenários:
+            <a class="underline" href="/blog/quanto-custa-mudar-para-o-interior">aqui</a>.
+          </p>
+        </details>
+      </div>
+    </section>
+
+    <script type="application/ld+json">
+      {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Início", "item": "https://novaraiz.netlify.app/"}, {"@type": "ListItem", "position": 2, "name": "Guia definitivo", "item": "https://novaraiz.netlify.app/mudar-para-o-interior-guia-definitivo"}]}
+    </script>
+  </section>
+</BaseLayout>
