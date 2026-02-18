@@ -1,0 +1,35 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Planejamento — Nova Raiz" description="Custos, simulações, reserva e decisões financeiras para mudar com segurança.">
+  <section class="py-10 md:py-14">
+    <h1 class="text-4xl md:text-5xl" style="font-family:'Playfair Display', serif;">Planejamento</h1>
+    <p class="mt-4 text-lg" style="color: var(--muted);">Custos, simulações, reserva e decisões financeiras para mudar com segurança.</p>
+
+    <div class="mt-8 grid gap-6 md:grid-cols-2">
+      <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+        <div class="text-sm font-semibold" style="color: var(--muted);">O que você vai encontrar aqui</div>
+        <ul class="mt-4 list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
+          <li>Simulações de custo de vida (capital vs interior)</li>
+          <li>Quanto guardar antes de mudar</li>
+          <li>Comprar casa pronta vs terreno + obra</li>
+          <li>Checklist financeiro da transição</li>
+        </ul>
+      </div>
+
+      <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+        <div class="text-sm font-semibold">Leituras recomendadas</div>
+        <ul class="mt-4 space-y-2 text-sm" style="color: var(--muted);">
+          <li><a class="underline" href="/blog/vale-a-pena-sair-da-capital">Vale a pena sair da capital? (guia)</a></li>
+          <li><a class="underline" href="/blog/quanto-custa-mudar-para-o-interior">Quanto custa mudar para o interior? (simulação 3 cenários)</a></li>
+          <li><a class="underline" href="/blog/custo-de-vida-interior-vs-capital">Custo de vida: interior vs capital (tabela comparativa)</a></li>
+          <li><a class="underline" href="/blog/carro-no-interior-quanto-custa">Carro no interior: quanto custa de verdade</a></li>
+        </ul>
+        <div class="mt-5 text-xs" style="color: var(--muted);">
+          Dica: este hub vai crescer com artigos e checklists — volte aqui sempre.
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

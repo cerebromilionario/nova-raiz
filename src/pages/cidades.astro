@@ -1,0 +1,35 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Cidades — Nova Raiz" description="Como escolher cidade do interior com infraestrutura, custo de vida e internet.">
+  <section class="py-10 md:py-14">
+    <h1 class="text-4xl md:text-5xl" style="font-family:'Playfair Display', serif;">Cidades</h1>
+    <p class="mt-4 text-lg" style="color: var(--muted);">Como escolher cidade do interior com infraestrutura, custo de vida e internet.</p>
+
+    <div class="mt-8 grid gap-6 md:grid-cols-2">
+      <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+        <div class="text-sm font-semibold" style="color: var(--muted);">O que você vai encontrar aqui</div>
+        <ul class="mt-4 list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
+          <li>Critérios: saúde, educação, segurança, internet</li>
+          <li>Custo de vida por perfil (solteiro, casal, família)</li>
+          <li>Visita-teste: como fazer do jeito certo</li>
+          <li>Checklist de decisão de cidade</li>
+        </ul>
+      </div>
+
+      <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+        <div class="text-sm font-semibold">Leituras recomendadas</div>
+        <ul class="mt-4 space-y-2 text-sm" style="color: var(--muted);">
+          <li><a class="underline" href="/trabalho-remoto">Trabalho remoto (hub)</a></li>
+          <li><a class="underline" href="/blog/quanto-custa-mudar-para-o-interior">Quanto custa mudar para o interior? (simulação 3 cenários)</a></li>
+          <li><a class="underline" href="/blog/checklist-escolher-cidade-interior">Como escolher a cidade do interior certa (checklist)</a></li>
+          <li><a class="underline" href="/blog/custo-de-vida-interior-vs-capital">Custo de vida: interior vs capital (tabela comparativa)</a></li>
+        </ul>
+        <div class="mt-5 text-xs" style="color: var(--muted);">
+          Dica: este hub vai crescer com artigos e checklists — volte aqui sempre.
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
