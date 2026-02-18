@@ -1,0 +1,48 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Contato — Nova Raiz" description="Fale com o Nova Raiz: dúvidas, sugestões e parcerias.">
+  <section class="py-10 md:py-14">
+    <div class="mx-auto" style="max-width: var(--contentw);">
+      <h1 class="text-4xl md:text-5xl" style="font-family:'Playfair Display', serif;">Contato</h1>
+      <p class="mt-4 text-lg" style="color: var(--muted);">
+        Dúvidas, sugestões de pauta, correções ou parcerias. Respondo o quanto antes.
+      </p>
+
+      <form class="mt-10 rounded-3xl border p-6"
+        style="border-color: var(--border); background: var(--surface);"
+        name="contato"
+        method="POST"
+        data-netlify="true"
+      >
+        <input type="hidden" name="form-name" value="contato" />
+
+        <label class="block text-sm font-semibold">Nome</label>
+        <input class="mt-2 w-full rounded-xl border px-4 py-3"
+          style="border-color: var(--border); background: var(--card);"
+          type="text" name="nome" required />
+
+        <label class="mt-5 block text-sm font-semibold">E-mail</label>
+        <input class="mt-2 w-full rounded-xl border px-4 py-3"
+          style="border-color: var(--border); background: var(--card);"
+          type="email" name="email" required />
+
+        <label class="mt-5 block text-sm font-semibold">Mensagem</label>
+        <textarea class="mt-2 w-full rounded-xl border px-4 py-3 min-h-[140px]"
+          style="border-color: var(--border); background: var(--card);"
+          name="mensagem" required></textarea>
+
+        <button class="mt-6 inline-flex items-center rounded-xl px-5 py-3 text-sm font-semibold"
+          style="background: var(--accent); color: var(--text);"
+          type="submit">
+          Enviar mensagem
+        </button>
+
+        <p class="mt-4 text-xs" style="color: var(--muted);">
+          Este formulário é processado pelo Netlify Forms.
+        </p>
+      </form>
+    </div>
+  </section>
+</BaseLayout>
