@@ -1,0 +1,19 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import ArticleCard from "../../components/ArticleCard.astro";
+
+const posts = (await getCollection("blog")).filter(p => !p.data.draft)
+  .sort((a,b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout title="Blog — Nova Raiz" description="Artigos sobre transição para o interior: planejamento, trabalho remoto e vida real.">
+  <section class="py-10 md:py-14">
+    <h1 class="text-4xl md:text-5xl" style="font-family:'Playfair Display', serif;">Blog</h1>
+    <p class="mt-4 text-lg" style="color: var(--muted);">Conteúdo profundo, humano e prático. Um passo por vez.</p>
+
+    <div class="mt-8 grid gap-4 md:grid-cols-3">
+      {posts.map(p => <ArticleCard post={p} />)}
+    </div>
+  </section>
+</BaseLayout>
