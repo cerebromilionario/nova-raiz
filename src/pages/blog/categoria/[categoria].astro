@@ -1,0 +1,55 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = (await getCollection("blog")).filter(p => !p.data.draft);
+  const cats = Array.from(new Set(posts.map(p => p.data.category).filter(Boolean)));
+  return cats.map((c) => ({
+    params: { categoria: String(c).toLowerCase().replace(/\s+/g, "-") },
+    props: { categoriaOriginal: c },
+  }));
+}
+
+const { categoria, categoriaOriginal } = Astro.props;
+const posts = (await getCollection("blog"))
+  .filter(p => !p.data.draft && String(p.data.category).toLowerCase().replace(/\s+/g, "-") === categoria)
+  .sort((a,b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout title={`Categoria: ${categoriaOriginal} — Nova Raiz`} description={`Artigos da categoria ${categoriaOriginal} no Nova Raiz.`}>
+  <section class="py-10 md:py-14">
+    <nav aria-label="Breadcrumb" class="text-sm" style="color: var(--muted);">
+      <ol class="flex flex-wrap items-center gap-2">
+        <li><a class="underline" href="/">Início</a></li>
+        <li aria-hidden="true">›</li>
+        <li><a class="underline" href="/blog">Blog</a></li>
+        <li aria-hidden="true">›</li>
+        <li><a class="underline" href="/blog/categoria">Categorias</a></li>
+        <li aria-hidden="true">›</li>
+        <li><span class="font-semibold" style="color: var(--text);">{categoriaOriginal}</span></li>
+      </ol>
+    </nav>
+
+    <h1 class="mt-6 text-4xl md:text-5xl" style="font-family:'Playfair Display', serif;">{categoriaOriginal}</h1>
+    <p class="mt-4 text-lg" style="color: var(--muted);">
+      Artigos mais recentes desta categoria.
+    </p>
+
+    <div class="mt-8 grid gap-4 md:grid-cols-2">
+      {posts.map((p) => (
+        <a class="rounded-3xl border p-6 hover:opacity-90"
+           style="border-color: var(--border); background: var(--card);"
+           href={`/blog/${p.slug}/`}>
+          <div class="text-sm font-semibold" style="color: var(--muted);">{p.data.pubDate.toLocaleDateString("pt-BR")}</div>
+          <div class="mt-1 text-xl font-semibold">{p.data.title}</div>
+          <div class="mt-2 text-sm" style="color: var(--muted);">{p.data.description}</div>
+        </a>
+      ))}
+    </div>
+
+    <div class="mt-10 text-sm" style="color: var(--muted);">
+      <a class="underline" href="/blog/categoria">← Voltar para categorias</a>
+    </div>
+  </section>
+</BaseLayout>
