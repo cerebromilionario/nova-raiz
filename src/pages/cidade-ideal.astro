@@ -1,0 +1,357 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const title = "Descubra sua cidade ideal — Nova Raiz";
+const description = "Ferramenta interativa para encontrar cidades do interior do Brasil que combinam com seu perfil, orçamento e estilo de vida.";
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="py-10 md:py-14">
+    <nav class="text-xs" style="color: var(--muted);">
+      <a class="underline" href="/">Início</a>
+      <span class="mx-2">›</span>
+      <span>Ferramenta</span>
+      <span class="mx-2">›</span>
+      <span style="color: var(--text);">Cidade ideal</span>
+    </nav>
+
+    <h1 class="mt-3 text-4xl md:text-5xl" style="font-family:'Playfair Display', serif;">Descubra sua cidade ideal</h1>
+    <p class="mt-4 text-lg" style="color: var(--muted);">
+      Responda em 2 minutos e receba uma lista de cidades do interior que combinam com seu perfil —
+      com explicação do porquê. Depois, valide com visita-teste e checklist.
+    </p>
+
+    <div class="mt-8 grid gap-6 lg:grid-cols-3">
+      <div class="lg:col-span-2 rounded-3xl border p-6 md:p-8" style="border-color: var(--border); background: var(--card);">
+        <h2 class="text-xl font-semibold">Seu perfil</h2>
+
+        <form id="cityForm" class="mt-6 space-y-6">
+          <fieldset class="space-y-3">
+            <legend class="text-sm font-semibold">1) Por que você quer ir para o interior?</legend>
+            <div class="grid gap-2 sm:grid-cols-2">
+              <label class="flex items-center gap-2 text-sm"><input type="radio" name="perfil" value="remoto" checked /> Trabalho remoto / híbrido</label>
+              <label class="flex items-center gap-2 text-sm"><input type="radio" name="perfil" value="familia" /> Família (estrutura, escola, rotina)</label>
+              <label class="flex items-center gap-2 text-sm"><input type="radio" name="perfil" value="aposentadoria" /> Vida mais calma / aposentadoria</label>
+              <label class="flex items-center gap-2 text-sm"><input type="radio" name="perfil" value="empreender" /> Empreender / recomeçar</label>
+            </div>
+          </fieldset>
+
+          <fieldset class="space-y-3">
+            <legend class="text-sm font-semibold">2) Orçamento mensal (vida confortável)</legend>
+            <div class="grid gap-2 sm:grid-cols-2">
+              <label class="flex items-center gap-2 text-sm"><input type="radio" name="orcamento" value="baixo" checked /> R$ 6k–8k</label>
+              <label class="flex items-center gap-2 text-sm"><input type="radio" name="orcamento" value="medio" /> R$ 8k–12k</label>
+              <label class="flex items-center gap-2 text-sm"><input type="radio" name="orcamento" value="alto" /> R$ 12k–18k</label>
+              <label class="flex items-center gap-2 text-sm"><input type="radio" name="orcamento" value="premium" /> R$ 18k+</label>
+            </div>
+            <p class="text-xs" style="color: var(--muted);">
+              Dica: interior “forte” pode ser mais caro do que parece por causa de condomínio + carro + energia.
+            </p>
+          </fieldset>
+
+          <fieldset class="space-y-3">
+            <legend class="text-sm font-semibold">3) Clima</legend>
+            <div class="grid gap-2 sm:grid-cols-3">
+              <label class="flex items-center gap-2 text-sm"><input type="radio" name="clima" value="ameno" checked /> Prefiro ameno/frio</label>
+              <label class="flex items-center gap-2 text-sm"><input type="radio" name="clima" value="quente" /> Prefiro quente</label>
+              <label class="flex items-center gap-2 text-sm"><input type="radio" name="clima" value="indiferente" /> Indiferente</label>
+            </div>
+          </fieldset>
+
+          <fieldset class="space-y-3">
+            <legend class="text-sm font-semibold">4) Proximidade de capital</legend>
+            <div class="grid gap-2 sm:grid-cols-3">
+              <label class="flex items-center gap-2 text-sm"><input type="radio" name="capital" value="precisa" checked /> Preciso ficar perto</label>
+              <label class="flex items-center gap-2 text-sm"><input type="radio" name="capital" value="bom" /> Bom se for perto</label>
+              <label class="flex items-center gap-2 text-sm"><input type="radio" name="capital" value="nao" /> Não é prioridade</label>
+            </div>
+          </fieldset>
+
+          <fieldset class="space-y-3">
+            <legend class="text-sm font-semibold">5) Carro</legend>
+            <div class="grid gap-2 sm:grid-cols-3">
+              <label class="flex items-center gap-2 text-sm"><input type="radio" name="carro" value="evitar" checked /> Quero evitar ao máximo</label>
+              <label class="flex items-center gap-2 text-sm"><input type="radio" name="carro" value="ok" /> Ok ter carro</label>
+              <label class="flex items-center gap-2 text-sm"><input type="radio" name="carro" value="depende" /> Carro não me incomoda</label>
+            </div>
+          </fieldset>
+
+          <fieldset class="space-y-3">
+            <legend class="text-sm font-semibold">6) Sua prioridade #1</legend>
+            <div class="grid gap-2 sm:grid-cols-2">
+              <label class="flex items-center gap-2 text-sm"><input type="radio" name="prioridade" value="seguranca" checked /> Segurança e previsibilidade</label>
+              <label class="flex items-center gap-2 text-sm"><input type="radio" name="prioridade" value="custo" /> Custo-benefício</label>
+              <label class="flex items-center gap-2 text-sm"><input type="radio" name="prioridade" value="infra" /> Infraestrutura (saúde, serviços)</label>
+              <label class="flex items-center gap-2 text-sm"><input type="radio" name="prioridade" value="urbano" /> Vida urbana (restaurantes, cultura)</label>
+              <label class="flex items-center gap-2 text-sm"><input type="radio" name="prioridade" value="natureza" /> Natureza e tranquilidade</label>
+            </div>
+          </fieldset>
+
+          <div class="flex flex-col sm:flex-row gap-3">
+            <button type="submit" class="rounded-2xl px-5 py-3 text-sm font-semibold"
+              style="background: var(--primary); color: white;">
+              Ver minhas melhores cidades
+            </button>
+            <a class="rounded-2xl px-5 py-3 text-sm font-semibold border text-center"
+              style="border-color: var(--border); color: var(--text); background: transparent;"
+              href="/checklist">
+              Abrir checklist da decisão
+            </a>
+          </div>
+
+          <p class="text-xs" style="color: var(--muted);">
+            Observação: esta ferramenta gera um ranking <strong>orientativo</strong>. A decisão final é feita com visita-teste e orçamento real.
+          </p>
+        </form>
+      </div>
+
+      <aside class="rounded-3xl border p-6 md:p-8" style="border-color: var(--border); background: var(--surface);">
+        <div class="text-sm font-semibold">Como usar do jeito certo</div>
+        <ul class="mt-4 list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
+          <li>Faça o teste 2 vezes: “vida atual” e “vida ideal”.</li>
+          <li>Abra o orçamento completo e some carro + condomínio + energia.</li>
+          <li>Depois, valide com visita-teste de 5–7 dias.</li>
+          <li>Use o checklist para não esquecer o que importa.</li>
+        </ul>
+
+        <div class="mt-6 rounded-2xl border p-4" style="border-color: var(--border); background: var(--card);">
+          <div class="text-xs font-semibold" style="color: var(--muted);">Leituras essenciais</div>
+          <div class="mt-3 space-y-2 text-sm">
+            <a class="underline" href="/mudar-para-o-interior-guia-definitivo/">Guia definitivo da mudança</a><br />
+            <a class="underline" href="/blog/quanto-custa-mudar-para-o-interior/">Quanto custa mudar (simulação)</a><br />
+            <a class="underline" href="/blog/melhores-cidades-interior-brasil-2026/">Guia mestre nacional</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <div id="resultsWrap" class="mt-10 hidden">
+      <div class="flex items-end justify-between gap-4 flex-wrap">
+        <h2 class="text-2xl md:text-3xl font-semibold" style="font-family:'Playfair Display', serif;">Seu ranking</h2>
+        <button id="copyBtn" class="rounded-2xl px-4 py-2 text-sm border"
+          style="border-color: var(--border); color: var(--text); background: transparent;">
+          Copiar resultado
+        </button>
+      </div>
+      <p class="mt-3 text-sm" style="color: var(--muted);">Top 6 recomendações com base nas suas respostas.</p>
+
+      <div id="results" class="mt-6 grid gap-6 md:grid-cols-2"></div>
+
+      <div class="mt-8 rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+        <div class="text-sm font-semibold">Próximo passo (obrigatório)</div>
+        <p class="mt-2 text-sm" style="color: var(--muted);">
+          Escolha 2 cidades do seu ranking e faça uma <strong>visita-teste</strong> de 5–7 dias.
+          Depois, aplique o checklist para decidir com calma.
+        </p>
+        <div class="mt-4 flex flex-col sm:flex-row gap-3">
+          <a class="rounded-2xl px-5 py-3 text-sm font-semibold" style="background: var(--primary); color: white;"
+            href="/checklist">Abrir checklist</a>
+          <a class="rounded-2xl px-5 py-3 text-sm font-semibold border text-center"
+            style="border-color: var(--border); color: var(--text); background: transparent;"
+            href="/mudar-para-o-interior-guia-definitivo/">Guia definitivo</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script type="module">
+    const cities = [
+      { id:"jundiai", name:"Jundiaí (SP)", region:"Sudeste", nearCapital:true, climate:"ameno", cost:4, remote:5, family:5, urban:4, nature:3, carNeed:3, safety:4, health:4,
+        links:[{ label:"Custo de vida (guia)", href:"/blog/custo-de-vida-em-jundiai-2026/" }],
+        note:"Interior premium, colado em SP. Forte para híbrido, família e quem quer resolver tudo sem sofrimento." },
+      { id:"indaiatuba", name:"Indaiatuba (SP)", region:"Sudeste", nearCapital:true, climate:"ameno", cost:3, remote:4, family:5, urban:3, nature:3, carNeed:4, safety:5, health:4,
+        links:[{ label:"Segurança (guia)", href:"/blog/indaiatuba-e-segura-guia-2026/" }],
+        note:"Rotina previsível e perfil família. Condomínios e organização urbana fazem diferença." },
+      { id:"itu", name:"Itu (SP)", region:"Sudeste", nearCapital:true, climate:"ameno", cost:3, remote:4, family:4, urban:3, nature:4, carNeed:4, safety:4, health:3,
+        links:[{ label:"Internet em Itu (guia)", href:"/blog/internet-fibra-itu-funciona-bem/" }],
+        note:"Boa para quem quer interior com natureza e ainda manter acesso à capital, desde que aceite carro." },
+      { id:"rio-preto", name:"São José do Rio Preto (SP)", region:"Sudeste", nearCapital:false, climate:"quente", cost:2, remote:4, family:4, urban:4, nature:2, carNeed:4, safety:4, health:5,
+        links:[{ label:"Remoto (guia)", href:"/blog/rio-preto-vale-a-pena-trabalho-remoto/" }],
+        note:"Polo regional com saúde forte e custo-benefício. Excelente para remoto 100%." },
+      { id:"ribeirao", name:"Ribeirão Preto (SP)", region:"Sudeste", nearCapital:false, climate:"quente", cost:3, remote:4, family:4, urban:5, nature:2, carNeed:4, safety:3, health:5,
+        links:[{ label:"Home office (guia)", href:"/blog/ribeirao-preto-home-office-vale-a-pena/" }],
+        note:"Interior com cara de cidade grande: serviços, gastronomia, saúde. Calor pesa no custo." },
+      { id:"uberlandia", name:"Uberlândia (MG)", region:"Sudeste", nearCapital:false, climate:"quente", cost:2, remote:4, family:4, urban:4, nature:3, carNeed:4, safety:4, health:4,
+        links:[],
+        note:"Polo econômico e logístico. Bom custo-benefício para quem quer estrutura e mercado local." },
+      { id:"jf", name:"Juiz de Fora (MG)", region:"Sudeste", nearCapital:true, climate:"ameno", cost:2, remote:3, family:3, urban:3, nature:3, carNeed:3, safety:3, health:4,
+        links:[],
+        note:"Cidade universitária, clima agradável e boa ligação com RJ. Ritmo mais calmo." },
+
+      { id:"maringa", name:"Maringá (PR)", region:"Sul", nearCapital:false, climate:"ameno", cost:3, remote:4, family:5, urban:3, nature:4, carNeed:3, safety:4, health:4,
+        links:[],
+        note:"Planejamento urbano forte e perfil família. Equilíbrio entre cidade e tranquilidade." },
+      { id:"londrina", name:"Londrina (PR)", region:"Sul", nearCapital:false, climate:"ameno", cost:2, remote:4, family:4, urban:4, nature:3, carNeed:3, safety:3, health:4,
+        links:[],
+        note:"Polo regional consolidado, com estrutura urbana e custo ainda competitivo em muitos bairros." },
+      { id:"blumenau", name:"Blumenau (SC)", region:"Sul", nearCapital:false, climate:"ameno", cost:4, remote:4, family:4, urban:3, nature:4, carNeed:3, safety:4, health:4,
+        links:[],
+        note:"Cultura forte, organização e clima melhor. Custo subindo, mas entrega qualidade." },
+      { id:"joinville", name:"Joinville (SC)", region:"Sul", nearCapital:false, climate:"ameno", cost:4, remote:4, family:4, urban:4, nature:3, carNeed:3, safety:3, health:4,
+        links:[],
+        note:"Economia industrial forte e infraestrutura. Bom para quem gosta de cidade funcional." },
+      { id:"caxias", name:"Caxias do Sul (RS)", region:"Sul", nearCapital:false, climate:"frio", cost:3, remote:3, family:4, urban:3, nature:4, carNeed:3, safety:4, health:4,
+        links:[],
+        note:"Economia sólida e clima mais frio. Rotina de interior com estrutura de cidade grande." },
+      { id:"chapeco", name:"Chapecó (SC)", region:"Sul", nearCapital:false, climate:"ameno", cost:2, remote:3, family:4, urban:3, nature:4, carNeed:3, safety:4, health:3,
+        links:[],
+        note:"Crescimento forte e custo mais controlado. Boa emergente para quem quer espaço e previsibilidade." },
+      { id:"cascavel", name:"Cascavel (PR)", region:"Sul", nearCapital:false, climate:"ameno", cost:2, remote:3, family:4, urban:3, nature:4, carNeed:3, safety:3, health:3,
+        links:[],
+        note:"Polo regional em expansão com custo-benefício. Ideal para quem quer interior forte sem preço premium." },
+    ];
+
+    const form = document.getElementById("cityForm");
+    const resultsWrap = document.getElementById("resultsWrap");
+    const results = document.getElementById("results");
+    const copyBtn = document.getElementById("copyBtn");
+
+    function getFormValue(name) {
+      const el = document.querySelector(`input[name="${name}"]:checked`);
+      return el ? el.value : "";
+    }
+
+    function budgetMax(orcamento) {
+      if (orcamento === "baixo") return 2.5;
+      if (orcamento === "medio") return 3.5;
+      if (orcamento === "alto") return 4.5;
+      return 5;
+    }
+
+    function scoreCity(city, a) {
+      let s = 0;
+
+      // orçamento
+      const max = budgetMax(a.orcamento);
+      const over = Math.max(0, city.cost - max);
+      s -= over * 18;
+      s += (max - city.cost) * 6;
+
+      // clima
+      if (a.clima !== "indiferente") {
+        const match = (a.clima === "ameno" && (city.climate === "ameno" || city.climate === "frio")) ||
+                      (a.clima === "quente" && city.climate === "quente");
+        s += match ? 14 : -10;
+      }
+
+      // capital
+      if (a.capital === "precisa") s += city.nearCapital ? 18 : -18;
+      if (a.capital === "bom") s += city.nearCapital ? 10 : -4;
+
+      // carro
+      if (a.carro === "evitar") s += (5 - city.carNeed) * 7;
+      if (a.carro === "ok") s += (4 - Math.abs(city.carNeed - 3)) * 3;
+      if (a.carro === "depende") s += city.carNeed * 1.5;
+
+      // perfil
+      if (a.perfil === "remoto") s += city.remote * 9 + city.health * 2;
+      if (a.perfil === "familia") s += city.family * 9 + city.safety * 4;
+      if (a.perfil === "aposentadoria") s += city.safety * 7 + city.health * 7 + (5 - city.urban) * 2;
+      if (a.perfil === "empreender") s += city.urban * 6 + city.health * 2 + city.remote * 4;
+
+      // prioridade
+      if (a.prioridade === "seguranca") s += city.safety * 10;
+      if (a.prioridade === "custo") s += (6 - city.cost) * 10;
+      if (a.prioridade === "infra") s += city.health * 10 + city.urban * 4;
+      if (a.prioridade === "urbano") s += city.urban * 10;
+      if (a.prioridade === "natureza") s += city.nature * 10;
+
+      // bônus leve por infraestrutura
+      s += city.health * 2 + city.remote * 2;
+
+      return s;
+    }
+
+    function reasons(city, a) {
+      const b = [];
+      if (a.perfil === "remoto") b.push(city.remote >= 4 ? "Boa infraestrutura para trabalho remoto." : "Remoto possível, mas valide bairro/provedor.");
+      if (a.perfil === "familia") b.push(city.family >= 4 ? "Perfil família forte (rotina, estrutura, previsibilidade)." : "Pode servir para família: valide escolas e bairro.");
+      if (a.prioridade === "seguranca") b.push(city.safety >= 4 ? "Tende a entregar mais previsibilidade de segurança (modelo)." : "Segurança varia por bairro: visite e valide.");
+      if (a.prioridade === "custo") b.push(city.cost <= 2 ? "Bom custo-benefício para o nível de estrutura." : "Custo pode subir (condomínio/carro).");
+      if (a.prioridade === "infra") b.push(city.health >= 4 ? "Infraestrutura médica/serviços acima da média." : "Infraestrutura ok, pode exigir deslocamento.");
+      if (a.prioridade === "urbano") b.push(city.urban >= 4 ? "Vida urbana mais ativa (serviços, restaurantes, comércio)." : "Vida urbana mais calma e previsível.");
+      if (a.prioridade === "natureza") b.push(city.nature >= 4 ? "Natureza e tranquilidade aparecem mais no dia a dia." : "Natureza existe, mas não é o foco da cidade.");
+      if (a.capital !== "nao") b.push(city.nearCapital ? "Boa para manter ponte com capital." : "Mais indicada para remoto 100% (distância maior).");
+      if (a.clima !== "indiferente") b.push(
+        ((a.clima === "quente" && city.climate === "quente") || (a.clima === "ameno" && (city.climate === "ameno" || city.climate === "frio")))
+          ? "Clima tende a combinar com sua preferência."
+          : "Clima pode ser um ponto de atrito na rotina."
+      );
+      return b.slice(0, 4);
+    }
+
+    function linksHTML(city) {
+      if (!city.links || city.links.length === 0) return "";
+      const html = city.links.map(l => `<a class="underline" href="${l.href}">${l.label}</a>`).join(" · ");
+      return `<div class="mt-3 text-xs" style="color: var(--muted);">Leituras: ${html}</div>`;
+    }
+
+    function render(a) {
+      const scored = cities
+        .map(c => ({ ...c, score: scoreCity(c, a) }))
+        .sort((x, y) => y.score - x.score)
+        .slice(0, 6);
+
+      results.innerHTML = scored.map((c, idx) => {
+        const rs = reasons(c, a).map(r => {
+          const t = (typeof r === 'string') ? r : (r?.text || r?.label || r?.reason || JSON.stringify(r));
+          return `<li>${t}</li>`;
+        }).join("");
+        const near = c.nearCapital ? "Perto de capital" : "Polo regional / distante";
+        const clima = c.climate === "quente" ? "Quente" : (c.climate === "frio" ? "Frio" : "Ameno");
+        const badges = `
+          <span class="text-[11px] px-2 py-1 rounded-full border" style="border-color: var(--border); color: var(--muted);">${c.region}</span>
+          <span class="text-[11px] px-2 py-1 rounded-full border" style="border-color: var(--border); color: var(--muted);">${near}</span>
+          <span class="text-[11px] px-2 py-1 rounded-full border" style="border-color: var(--border); color: var(--muted);">Clima: ${clima}</span>
+        `;
+
+        return `
+          <article class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <div class="text-xs font-semibold" style="color: var(--muted);">#${idx + 1}</div>
+                <h3 class="mt-1 text-xl font-semibold">${c.name}</h3>
+              </div>
+              <div class="text-xs px-3 py-1 rounded-full" style="background: color-mix(in oklab, var(--primary) 12%, white); color: var(--text); border: 1px solid var(--border);">
+                score ${Math.round(c.score)}
+              </div>
+            </div>
+
+            <div class="mt-3 flex flex-wrap gap-2">${badges}</div>
+
+            <p class="mt-4 text-sm" style="color: var(--muted);">${c.note}</p>
+
+            <div class="mt-4 text-sm font-semibold">Por que apareceu para você</div>
+            <ul class="mt-2 list-disc pl-5 space-y-1 text-sm" style="color: var(--muted);">${rs}</ul>
+
+            ${linksHTML(c)}
+          </article>
+        `;
+      }).join("");
+
+      resultsWrap.classList.remove("hidden");
+      resultsWrap.scrollIntoView({ behavior: "smooth", block: "start" });
+
+      copyBtn.onclick = () => {
+        const lines = scored.map((c, i) => `${i + 1}) ${c.name} — ${c.note}`).join("\n");
+        navigator.clipboard.writeText(lines).then(() => {
+          copyBtn.textContent = "Copiado!";
+          setTimeout(() => (copyBtn.textContent = "Copiar resultado"), 1200);
+        });
+      };
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const a = {
+        perfil: getFormValue("perfil"),
+        orcamento: getFormValue("orcamento"),
+        clima: getFormValue("clima"),
+        capital: getFormValue("capital"),
+        carro: getFormValue("carro"),
+        prioridade: getFormValue("prioridade"),
+      };
+      render(a);
+    });
+  </script>
+</BaseLayout>
