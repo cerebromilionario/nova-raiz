@@ -67,6 +67,6 @@ Campinas → mercado e dinamismo.
 
 ## Leia também
 
-👉 [Guia definitivo](/blog/mudar-para-o-interior-guia-definitivo/)  
+👉 [Guia definitivo](/mudar-para-o-interior-guia-definitivo/)  
 👉 [Checklist](/checklist/)  
 👉 [Melhores cidades 2026](/blog/melhores-cidades-interior-brasil-2026/)  
