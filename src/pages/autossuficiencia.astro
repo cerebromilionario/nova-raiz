@@ -1,0 +1,34 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Autossuficiência — Nova Raiz" description="Reduzir custos e aumentar autonomia: energia solar, água e alimento — do jeito moderno.">
+  <section class="py-10 md:py-14">
+    <h1 class="text-4xl md:text-5xl" style="font-family:'Playfair Display', serif;">Autossuficiência</h1>
+    <p class="mt-4 text-lg" style="color: var(--muted);">Reduzir custos e aumentar autonomia: energia solar, água e alimento — do jeito moderno.</p>
+
+    <div class="mt-8 grid gap-6 md:grid-cols-2">
+      <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+        <div class="text-sm font-semibold" style="color: var(--muted);">O que você vai encontrar aqui</div>
+        <ul class="mt-4 list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
+          <li>Energia solar residencial: quando vale</li>
+          <li>Captação e economia de água</li>
+          <li>Produzir parte da própria comida (sem romantizar)</li>
+          <li>Manutenção e custos ocultos</li>
+        </ul>
+      </div>
+
+      <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+        <div class="text-sm font-semibold">Leituras recomendadas</div>
+        <ul class="mt-4 space-y-2 text-sm" style="color: var(--muted);">
+        <li><a class="underline" href="/planejamento">Planejamento (hub)</a></li>
+        <li><a class="underline" href="/blog/energia-solar-guia-inicial/">Energia solar: guia inicial</a></li>
+        <li><a class="underline" href="/blog/horta-pratica-para-iniciantes/">Horta prática para iniciantes</a></li>
+        </ul>
+        <div class="mt-5 text-xs" style="color: var(--muted);">
+          Dica: este hub vai crescer com artigos e checklists — volte aqui sempre.
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
