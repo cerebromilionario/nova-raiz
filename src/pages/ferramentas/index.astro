@@ -1,0 +1,35 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const title = "Ferramentas — Nova Raiz";
+const description = "Ferramentas interativas para planejar sua mudança para o interior: cidade ideal, comparador e checklists.";
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="py-10 md:py-14">
+    <div class="mx-auto max-w-5xl">
+      <nav class="text-xs" style="color: var(--muted);">
+        <a class="underline" href="/">Home</a>
+        <span class="mx-2">/</span>
+        <span>Ferramentas</span>
+      </nav>
+
+      <h1 class="mt-4 text-4xl md:text-5xl" style="font-family:'Playfair Display', serif;">Ferramentas</h1>
+      <p class="mt-4 text-lg" style="color: var(--muted);">
+        Ferramentas interativas para decidir com clareza — sem achismo.
+      </p>
+
+      <div class="mt-8 grid gap-6 md:grid-cols-2">
+        <a class="rounded-3xl border p-6 hover:opacity-90 transition" style="border-color: var(--border); background: var(--card);" href="/cidade-ideal/">
+          <div class="text-sm font-semibold">Cidade ideal (perfil)</div>
+          <div class="mt-2 text-sm" style="color: var(--muted);">Encontra opções por região e perfil (remoto, família, custo-benefício).</div>
+        </a>
+
+        <a class="rounded-3xl border p-6 hover:opacity-90 transition" style="border-color: var(--border); background: var(--card);" href="/comparador/">
+          <div class="text-sm font-semibold">Comparador (A vs B)</div>
+          <div class="mt-2 text-sm" style="color: var(--muted);">Escolha 2 cidades e abra a comparativa definitiva automaticamente.</div>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
