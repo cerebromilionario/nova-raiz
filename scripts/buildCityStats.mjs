@@ -146,7 +146,7 @@ async function main() {
   const comparativasTs = await fs.readFile(comparativasPath, "utf-8");
 
   // Extract pairs: name/uf within a: {...} and b: {...}
-  const cityMatches = [...comparativasTs.matchAll(/name:\s*"([^"]+)"\s*,\s*uf:\s*"([A-Z]{2})"/g)];
+  const cityMatches = [...comparativasTs.matchAll(/name:\s*["\']([^"\']+)["\']\s*,\s*uf:\s*["\']([A-Z]{2})["\']/g)];
   const cities = new Map(); // key => {name, uf}
   for (const m of cityMatches) {
     const name = m[1];
