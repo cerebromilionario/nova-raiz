@@ -79,22 +79,76 @@ async function getPibPerCapitaLast(ibgeCode) {
   }
 }
 
-async function getIDHM2010FromAtlas(ibgeCode) {
-  // Atlas Brasil is based on Censos 1991/2000/2010. We'll parse the 2010 IDHM from the municipality profile page.
-  // If it fails, return null.
+async function stripTags(html) {
+  return html
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function decodeHtmlEntities(str) {
+  // Minimal entity decoding for the UNDP page
+  return str
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">");
+}
+
+function parseNumberPt(s) {
+  if (s == null) return null;
+  const t = String(s).trim().replace(",", ".");
+  const n = Number(t);
+  return Number.isFinite(n) ? n : null;
+}
+
+async function fetchIDHM2010FromUNDPTable() {
+  // UNDP page contains the full ranking table with IDHM + components (Renda, Longevidade, Educação).
+  // Source: https://www.undp.org/pt/brazil/idhm-municipios-2010
+  const url = "https://www.undp.org/pt/brazil/idhm-municipios-2010";
   try {
-    const url = `https://www.atlasbrasil.org.br/perfil/municipio/${ibgeCode}`;
     const res = await fetch(url, { headers: { "user-agent": "nova-raiz-build/1.0" } });
-    if (!res.ok) return null;
+    if (!res.ok) return new Map();
     const html = await res.text();
-    // Try common patterns: "IDHM" followed by 0.xxx
-    // We pick the first plausible 0.xxx in proximity to "IDHM"
-    const idx = html.toUpperCase().indexOf("IDHM");
-    const window = idx >= 0 ? html.slice(idx, idx + 2000) : html;
-    const m = window.match(/0\.\d{3}/);
-    return m ? m[0] : null;
+
+    const map = new Map();
+
+    // Extract <tr> rows then <td> cells
+    const trs = html.match(/<tr[\s\S]*?<\/tr>/gi) || [];
+    for (const tr of trs) {
+      const tds = tr.match(/<t[dh][\s\S]*?<\/t[dh]>/gi);
+      if (!tds || tds.length < 5) continue;
+
+      const cells = tds.map((td) => {
+        const inner = td.replace(/<\/?t[dh][^>]*>/gi, "");
+        return decodeHtmlEntities(stripTags(inner));
+      });
+
+      // Expected: [rank, "Município (UF)", idhm, renda, longevidade, educacao]
+      const muni = cells[1] || "";
+      const mm = muni.match(/^(.*)\((..)\)\s*$/);
+      if (!mm) continue;
+      const name = mm[1].trim();
+      const uf = mm[2].trim();
+
+      const idhm = parseNumberPt(cells[2]);
+      const renda = parseNumberPt(cells[3]);
+      const longevidade = parseNumberPt(cells[4]);
+      const educacao = parseNumberPt(cells[5]);
+
+      if (!idhm || !name || !uf) continue;
+
+      const key = `${normalize(name)}__${uf}`;
+      map.set(key, { idhm, renda, longevidade, educacao });
+    }
+
+    return map;
   } catch {
-    return null;
+    return new Map();
   }
 }
 
@@ -118,23 +172,28 @@ async function main() {
     municipiosByUF.set(uf, map);
   }
 
-  const stats = {};
+    process.stdout.write("• IDHM (UNDP/Atlas) tabela completa...\n");
+  const idhmByCity = await fetchIDHM2010FromUNDPTable();
+
+const stats = {};
   for (const c of cities) {
     const map = municipiosByUF.get(c.uf);
     const code = map?.get(normalize(c.name)) ?? null;
 
     if (!code) {
-      stats[c.key] = { name: c.name, uf: c.uf, ibge: null, pop_2022: null, pib_pc: null, idhm_2010: null };
+      stats[c.key] = { name: c.name, uf: c.uf, ibge: null, pop_2022: null, pib_pc: null, idhm_2010: null, idhm_renda_2010: null, idhm_longevidade_2010: null, idhm_educacao_2010: null };
       continue;
     }
 
     process.stdout.write(`• Dados oficiais: ${c.name}/${c.uf} (${code})...\n`);
 
-    const [pop, pibpc, idh] = await Promise.all([
+        const [pop, pibpc] = await Promise.all([
       getPopulation2022(code),
       getPibPerCapitaLast(code),
-      getIDHM2010FromAtlas(code),
     ]);
+
+    const idhmEntry = idhmByCity.get(`${normalize(c.name)}__${c.uf}`) ?? null;
+
 
     stats[c.key] = {
       name: c.name,
@@ -142,11 +201,15 @@ async function main() {
       ibge: code,
       pop_2022: pop ? Number(pop) : null,
       pib_pc: pibpc ? Number(pibpc) : null,
-      idhm_2010: idh ? Number(idh) : null,
+      idhm_2010: idhmEntry?.idhm ?? null,
+      idhm_renda_2010: idhmEntry?.renda ?? null,
+      idhm_longevidade_2010: idhmEntry?.longevidade ?? null,
+      idhm_educacao_2010: idhmEntry?.educacao ?? null,
       sources: {
         pop: pop ? "IBGE/SIDRA t9514 v93 p2022" : null,
         pib_pc: pibpc ? "IBGE/SIDRA t5938 v37 plast1" : null,
-        idhm_2010: idh ? "AtlasBrasil (Censos 2010)" : null,
+        idhm_2010: idhmEntry ? "UNDP/Atlas Brasil (Censos 2010)" : null,
+        idhm_componentes_2010: idhmEntry ? "UNDP/Atlas Brasil (Censos 2010)" : null,
       },
     };
   }
