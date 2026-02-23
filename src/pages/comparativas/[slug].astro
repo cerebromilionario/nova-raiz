@@ -100,9 +100,7 @@ if (!String(B.idh || "").trim().length && B_off?.idhm_2010 != null) B.idh = Stri
 
 // Se renda média mensal não estiver disponível, mostramos um proxy oficial: componente de renda do IDHM (0–1).
 if (!String(A.renda_media || "").trim().length && A_off?.idhm_renda_2010 != null) A.renda_media = `${A_off.idhm_renda_2010.toFixed(3)} (IDHM renda)`;
-if (!String(A.renda_media || "").trim().length && A_off?.salario_medio_mensal_sm != null) A.renda_media = `${A_off.salario_medio_mensal_sm.toFixed(2)} salários mínimos (salário médio formal)`;
 if (!String(B.renda_media || "").trim().length && B_off?.idhm_renda_2010 != null) B.renda_media = `${B_off.idhm_renda_2010.toFixed(3)} (IDHM renda)`;
-if (!String(B.renda_media || "").trim().length && B_off?.salario_medio_mensal_sm != null) B.renda_media = `${B_off.salario_medio_mensal_sm.toFixed(2)} salários mínimos (salário médio formal)`;
 
 
 if (!String(A.pop || "").trim().length && A_off?.pop_2022 != null) A.pop = Intl.NumberFormat("pt-BR").format(A_off.pop_2022);
@@ -215,6 +213,81 @@ if (!String(B.pib_per_capita || "").trim().length && B_off?.pib_pc != null)
             </table>
           </div>
         </div>
+
+
+
+<div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+  <h2 class="text-2xl font-semibold">Indicadores oficiais (IBGE Cidades)</h2>
+  <p class="mt-2 text-sm" style="color: var(--muted);">
+    Estes indicadores vêm do painel “Cidades e Estados” do IBGE (quando disponível para o município). São ótimos para decisão prática e para enriquecer o comparador.
+  </p>
+  <div class="mt-4 overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead>
+        <tr style="color: var(--muted);">
+          <th class="py-2 text-left">Indicador</th>
+          <th class="py-2 text-left">{A.name}</th>
+          <th class="py-2 text-left">{B.name}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="border-t" style="border-color: var(--border);">
+          <td class="py-2">Salário médio formal (salários mínimos)</td>
+          <td class="py-2" style="color: var(--muted);">{fmt(cityA?.salario_medio_sm)}</td>
+          <td class="py-2" style="color: var(--muted);">{fmt(cityB?.salario_medio_sm)}</td>
+        </tr>
+        <tr class="border-t" style="border-color: var(--border);">
+          <td class="py-2">Domicílios com Internet (%)</td>
+          <td class="py-2" style="color: var(--muted);">{fmt(cityA?.domicilios_internet_pct)}</td>
+          <td class="py-2" style="color: var(--muted);">{fmt(cityB?.domicilios_internet_pct)}</td>
+        </tr>
+        <tr class="border-t" style="border-color: var(--border);">
+          <td class="py-2">Taxa de escolarização 6–14 anos (%)</td>
+          <td class="py-2" style="color: var(--muted);">{fmt(cityA?.escolarizacao_6a14_pct)}</td>
+          <td class="py-2" style="color: var(--muted);">{fmt(cityB?.escolarizacao_6a14_pct)}</td>
+        </tr>
+        <tr class="border-t" style="border-color: var(--border);">
+          <td class="py-2">Área territorial (km²)</td>
+          <td class="py-2" style="color: var(--muted);">{fmt(cityA?.area_km2)}</td>
+          <td class="py-2" style="color: var(--muted);">{fmt(cityB?.area_km2)}</td>
+        </tr>
+        <tr class="border-t" style="border-color: var(--border);">
+          <td class="py-2">Densidade demográfica (hab/km²)</td>
+          <td class="py-2" style="color: var(--muted);">{fmt(cityA?.densidade_demo)}</td>
+          <td class="py-2" style="color: var(--muted);">{fmt(cityB?.densidade_demo)}</td>
+        </tr>
+        <tr class="border-t" style="border-color: var(--border);">
+          <td class="py-2">Esgotamento sanitário adequado (%)</td>
+          <td class="py-2" style="color: var(--muted);">{fmt(cityA?.esgoto_adequado_pct)}</td>
+          <td class="py-2" style="color: var(--muted);">{fmt(cityB?.esgoto_adequado_pct)}</td>
+        </tr>
+        <tr class="border-t" style="border-color: var(--border);">
+          <td class="py-2">Arborização de vias públicas (%)</td>
+          <td class="py-2" style="color: var(--muted);">{fmt(cityA?.arborizacao_pct)}</td>
+          <td class="py-2" style="color: var(--muted);">{fmt(cityB?.arborizacao_pct)}</td>
+        </tr>
+        <tr class="border-t" style="border-color: var(--border);">
+          <td class="py-2">Mortalidade infantil (por mil)</td>
+          <td class="py-2" style="color: var(--muted);">{fmt(cityA?.mortalidade_infantil_por_mil)}</td>
+          <td class="py-2" style="color: var(--muted);">{fmt(cityB?.mortalidade_infantil_por_mil)}</td>
+        </tr>
+        <tr class="border-t" style="border-color: var(--border);">
+          <td class="py-2">Estab. saúde SUS (proxy por 100k)</td>
+          <td class="py-2" style="color: var(--muted);">{fmt(cityA?.estab_saude_sus_100k)}</td>
+          <td class="py-2" style="color: var(--muted);">{fmt(cityB?.estab_saude_sus_100k)}</td>
+        </tr>
+        <tr class="border-t" style="border-color: var(--border);">
+          <td class="py-2">IDEB (anos iniciais / finais)</td>
+          <td class="py-2" style="color: var(--muted);">{fmt(cityA?.ideb_anos_iniciais)} / {fmt(cityA?.ideb_anos_finais)}</td>
+          <td class="py-2" style="color: var(--muted);">{fmt(cityB?.ideb_anos_iniciais)} / {fmt(cityB?.ideb_anos_finais)}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="mt-3 text-xs" style="color: var(--muted);">
+    Fonte: IBGE Cidades (quando disponível) — os campos podem variar por município.
+  </div>
+</div>
 
         <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
           <h2 class="text-2xl font-semibold">Bairros por perfil (onde a vida acontece)</h2>
