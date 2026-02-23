@@ -98,6 +98,11 @@ const B_off = getOfficial(B.name, B.uf);
 if (!String(A.idh || "").trim().length && A_off?.idhm_2010 != null) A.idh = String(A_off.idhm_2010.toFixed(3));
 if (!String(B.idh || "").trim().length && B_off?.idhm_2010 != null) B.idh = String(B_off.idhm_2010.toFixed(3));
 
+// Se renda média mensal não estiver disponível, mostramos um proxy oficial: componente de renda do IDHM (0–1).
+if (!String(A.renda_media || "").trim().length && A_off?.idhm_renda_2010 != null) A.renda_media = `${A_off.idhm_renda_2010.toFixed(3)} (IDHM renda)`;
+if (!String(B.renda_media || "").trim().length && B_off?.idhm_renda_2010 != null) B.renda_media = `${B_off.idhm_renda_2010.toFixed(3)} (IDHM renda)`;
+
+
 if (!String(A.pop || "").trim().length && A_off?.pop_2022 != null) A.pop = Intl.NumberFormat("pt-BR").format(A_off.pop_2022);
 if (!String(B.pop || "").trim().length && B_off?.pop_2022 != null) B.pop = Intl.NumberFormat("pt-BR").format(B_off.pop_2022);
 
@@ -188,7 +193,7 @@ if (!String(B.pib_per_capita || "").trim().length && B_off?.pib_pc != null)
                   ["IDH", fmt(A.idh), fmt(B.idh)],
                   ["População", fmt(A.pop), fmt(B.pop)],
                   ["PIB per capita", fmt(A.pib_per_capita), fmt(B.pib_per_capita)],
-                  ["Renda média mensal", fmt(A.renda_media), fmt(B.renda_media)],
+                  ["Renda (proxy oficial: IDHM renda)", fmt(A.renda_media), fmt(B.renda_media)],
                   ["Homicídios (por 100k)", fmt(A.criminalidade?.homicidios_100k), fmt(B.criminalidade?.homicidios_100k)],
                   ["Roubos (por 100k)", fmt(A.criminalidade?.roubo_100k), fmt(B.criminalidade?.roubo_100k)],
                   ["Furtos (por 100k)", fmt(A.criminalidade?.furto_100k), fmt(B.criminalidade?.furto_100k)],
