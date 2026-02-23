@@ -1,0 +1,5 @@
+{
+  "generated_at": null,
+  "note": "Este arquivo é um cache offline. Rode `npm run citystats:refresh` localmente para preencher dados oficiais e commite este arquivo.",
+  "stats": {}
+}
