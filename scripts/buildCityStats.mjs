@@ -1,228 +1,228 @@
-import fs from "node:fs";
+/**
+ * Nova Raiz — buildCityStats.mjs
+ * Gera src/generated/city-stats.json com dados oficiais (IBGE/SIDRA + best-effort IBGE Cidades)
+ * - População (Censo 2022) via SIDRA t9514 v93 p2022
+ * - PIB per capita (último ano) via SIDRA t5938 v37 p(last)
+ * - Indicadores complementares via página IBGE Cidades e Estados (best-effort scraping)
+ *
+ * IMPORTANT: este script NÃO quebra o build se algum dado falhar — ele preenche null e segue.
+ */
+import fs from "node:fs/promises";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const ROOT = path.resolve(__dirname, "..");
+const ROOT = process.cwd();
+const OUT_DIR = path.join(ROOT, "src", "generated");
+const OUT_FILE = path.join(OUT_DIR, "city-stats.json");
 
-const normalize = (s) =>
-  s
-    .toLowerCase()
+// ---------- utils ----------
+function normalize(s) {
+  return String(s || "")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9\s-]/g, "")
+    .toLowerCase();
+}
+function stripTags(html) {
+  return String(html || "")
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
     .replace(/\s+/g, " ")
     .trim();
+}
+function parseNumberPt(s) {
+  if (s == null) return null;
+  const t = String(s).trim();
+  if (!t) return null;
+  const cleaned = t.replace(/\./g, "").replace(",", ".");
+  const n = Number(cleaned);
+  return Number.isFinite(n) ? n : null;
+}
+function parseNumberGeneric(s) {
+  if (s == null) return null;
+  const t = String(s).trim();
+  if (!t) return null;
+  const cleaned = t.replace(/\s/g, "").replace(/\./g, "").replace(",", ".");
+  const n = Number(cleaned);
+  return Number.isFinite(n) ? n : null;
+}
+function toSlugIbge(name) {
+  return normalize(name).replace(/\s+/g, "-");
+}
+async function safeJson(url) {
+  const res = await fetch(url, { headers: { "user-agent": "nova-raiz-build/1.0" } });
+  if (!res.ok) throw new Error(`HTTP ${res.status} ${url}`);
+  return res.json();
+}
+async function safeText(url) {
+  const res = await fetch(url, { headers: { "user-agent": "nova-raiz-build/1.0" } });
+  if (!res.ok) throw new Error(`HTTP ${res.status} ${url}`);
+  return res.text();
+}
 
-const slugify = (s) =>
-  normalize(s)
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-");
+// ---------- sources ----------
+async function fetchMunicipiosByUF(uf) {
+  // IBGE Localidades
+  const url = `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`;
+  return safeJson(url);
+}
 
-const uniqByKey = (arr) => {
-  const m = new Map();
-  for (const x of arr) m.set(x.key, x);
-  return Array.from(m.values());
-};
+async function fetchPop2022(munCode) {
+  // SIDRA: tabela 9514 / variável 93 / período 2022
+  const url = `https://apisidra.ibge.gov.br/values/t/9514/v/93/p/2022/n6/${munCode}`;
+  const j = await safeJson(url);
+  // j[1].V should be numeric string
+  const v = j?.[1]?.V;
+  const n = Number(String(v).replace(/\./g, "").replace(",", "."));
+  return Number.isFinite(n) ? n : null;
+}
 
-function extractCitiesFromComparativasTS(tsText) {
-  const out = [];
-  const reCity = /"name"\s*:\s*"([^"]+)"\s*,\s*"uf"\s*:\s*"([A-Z]{2})"/g;
-  let m;
-  while ((m = reCity.exec(tsText)) !== null) {
+async function fetchPibPerCapitaLast(munCode) {
+  // SIDRA: tabela 5938 / variável 37 / período "last"
+  const url = `https://apisidra.ibge.gov.br/values/t/5938/v/37/p/last/n6/${munCode}`;
+  const j = await safeJson(url);
+  const v = j?.[1]?.V;
+  const n = Number(String(v).replace(/\./g, "").replace(",", "."));
+  return Number.isFinite(n) ? n : null;
+}
+
+async function fetchIbgeCidadesIndicators({ uf, name }) {
+  const slug = toSlugIbge(name);
+  const url = `https://www.ibge.gov.br/cidades-e-estados/${uf.toLowerCase()}/${slug}.html`;
+  try {
+    const html = await safeText(url);
+    const text = stripTags(html);
+
+    const pick = (re) => {
+      const m = text.match(re);
+      return m ? m[1] : null;
+    };
+
+    // Common metrics visible on IBGE Cidades page (best effort)
+    const idhm = parseNumberPt(pick(/IDHM\s*\(2010\)[^0-9]*([0-9],[0-9]{3})/i));
+    const salario_sm = parseNumberPt(
+      pick(/Sal[aá]rio m[eé]dio mensal dos trabalhadores formais[^0-9]*([0-9],[0-9]{1,3})/i)
+    );
+    const escolarizacao_6a14 = parseNumberPt(
+      pick(/Taxa de escolariza[cç][aã]o de 6 a 14 anos[^0-9]*([0-9],[0-9]{1,2})/i)
+    );
+    const internet_pct = parseNumberPt(
+      pick(/Domic[ií]lios com acesso [aà] Internet[^0-9]*([0-9],[0-9]{1,2})/i)
+    );
+    const esgoto_pct = parseNumberPt(
+      pick(/Esgotamento sanit[aá]rio adequado[^0-9]*([0-9],[0-9]{1,2})/i)
+    );
+    const arborizacao_pct = parseNumberPt(
+      pick(/Arboriza[cç][aã]o de vias p[uú]blicas[^0-9]*([0-9],[0-9]{1,2})/i)
+    );
+
+    const area_km2 = parseNumberGeneric(pick(/\b[AÁ]rea territorial[^0-9]*([0-9\.,\s]+)/i));
+    const densidade = parseNumberGeneric(pick(/Densidade demogr[aá]fica[^0-9]*([0-9\.,\s]+)/i));
+    const mortalidade_infantil = parseNumberGeneric(pick(/Mortalidade infantil[^0-9]*([0-9\.,\s]+)/i));
+    const estab_sus = parseNumberGeneric(pick(/Estabelecimentos de sa[uú]de SUS[^0-9]*([0-9\.,\s]+)/i));
+
+    return {
+      ok: true,
+      url,
+      idhm_ibge_2010: idhm ?? null,
+      salario_medio_sm: salario_sm ?? null,
+      escolarizacao_6a14_pct: escolarizacao_6a14 ?? null,
+      domicilios_internet_pct: internet_pct ?? null,
+      esgoto_adequado_pct: esgoto_pct ?? null,
+      arborizacao_pct: arborizacao_pct ?? null,
+      area_km2: area_km2 ?? null,
+      densidade_demo: densidade ?? null,
+      mortalidade_infantil_por_mil: mortalidade_infantil ?? null,
+      estab_saude_sus_total: estab_sus ?? null,
+    };
+  } catch {
+    return { ok: false, url };
+  }
+}
+
+// ---------- main ----------
+async function main() {
+  // City list is read from src/data/comparativas.ts (simple regex, no TS import in build)
+  const comparativasPath = path.join(ROOT, "src", "data", "comparativas.ts");
+  const comparativasTs = await fs.readFile(comparativasPath, "utf-8");
+
+  // Extract pairs: name/uf within a: {...} and b: {...}
+  const cityMatches = [...comparativasTs.matchAll(/name:\s*"([^"]+)"\s*,\s*uf:\s*"([A-Z]{2})"/g)];
+  const cities = new Map(); // key => {name, uf}
+  for (const m of cityMatches) {
     const name = m[1];
     const uf = m[2];
-    out.push({ name, uf, key: `${normalize(name)}-${uf}` });
+    const key = `${normalize(name)}|${uf}`;
+    if (!cities.has(key)) cities.set(key, { name, uf });
   }
-  return uniqByKey(out);
-}
 
-async function fetchJSON(url) {
-  const res = await fetch(url, { headers: { "user-agent": "nova-raiz-build/2.0" } });
-  if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
-  return await res.json();
-}
-
-async function fetchText(url) {
-  const res = await fetch(url, { headers: { "user-agent": "nova-raiz-build/2.0" } });
-  if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
-  return await res.text();
-}
-
-// IBGE localities: list municipios for UF (includes id)
-async function getMunicipiosByUF(uf) {
-  const url = `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`;
-  return await fetchJSON(url);
-}
-
-// SIDRA values helper (returns numeric string or null)
-async function getSidraValue({ table, geoN, geoCode, variable, period }) {
-  const url = `https://apisidra.ibge.gov.br/values/t/${table}/${geoN}/${geoCode}/v/${variable}/p/${encodeURIComponent(period)}`;
-  const json = await fetchJSON(url);
-  if (!Array.isArray(json) || json.length < 2) return null;
-  const row = json[1];
-  const v = row?.V ?? row?.Valor ?? row?.valor ?? null;
-  if (v == null) return null;
-  const cleaned = String(v).replace(/\./g, "").replace(",", ".");
-  return cleaned;
-}
-
-async function getPopulation2022(ibgeCode) {
-  // Table 9514, variable 93 (População residente) - Census 2022
-  try {
-    return await getSidraValue({ table: 9514, geoN: "n6", geoCode: ibgeCode, variable: 93, period: "2022" });
-  } catch {
-    return null;
-  }
-}
-
-async function getPibPerCapitaLast(ibgeCode) {
-  // Table 5938, variable 37 - PIB per capita (preços correntes)
-  try {
-    return await getSidraValue({ table: 5938, geoN: "n6", geoCode: ibgeCode, variable: 37, period: "last 1" });
-  } catch {
-    return null;
-  }
-}
-
-function pickPtNumber(text) {
-  // matches 0,805 or 123,45 etc
-  const m = text.match(/(\d{1,3}(?:\.\d{3})*,\d{2,3})/);
-  return m ? m[1] : null;
-}
-
-function parsePtFloat(s) {
-  if (!s) return null;
-  const cleaned = String(s).replace(/\./g, "").replace(",", ".");
-  const n = Number(cleaned);
-  return Number.isFinite(n) ? n : null;
-}
-
-function parsePtInt(s) {
-  if (!s) return null;
-  const cleaned = String(s).replace(/\./g, "").replace(/[^0-9]/g, "");
-  const n = Number(cleaned);
-  return Number.isFinite(n) ? n : null;
-}
-
-async function scrapeIBGECidades({ uf, name }) {
-  // Scrape stable IBGE "Cidades e Estados" page which contains IDHM and some indicators.
-  // Example: https://www.ibge.gov.br/cidades-e-estados/sp/jundiai.html
-  const slug = slugify(name);
-  const url = `https://www.ibge.gov.br/cidades-e-estados/${uf.toLowerCase()}/${slug}.html`;
-
-  try {
-    const html = await fetchText(url);
-
-    // IDHM: usually appears near "IDHM Índice de desenvolvimento humano municipal"
-    let idhm = null;
-    const idhmBlock = html.match(/IDHM[^<]{0,120}municipal[\s\S]{0,500}?\[2010\]/i);
-    if (idhmBlock) {
-      const n = pickPtNumber(idhmBlock[0]);
-      idhm = parsePtFloat(n);
-    } else {
-      // fallback: first occurrence like "IDHM ... 0,805"
-      const m = html.match(/IDHM[\s\S]{0,300}?(\d,\d{3})[\s\S]{0,80}?\[2010\]/i);
-      if (m) idhm = parsePtFloat(m[1]);
-    }
-
-    // Salário médio mensal dos trabalhadores formais (in salários mínimos)
-    let salario_sm = null;
-    const salBlock = html.match(/Sal[aá]rio m[eé]dio mensal[\s\S]{0,300}?sal[aá]rios m[ií]nimos/i);
-    if (salBlock) {
-      const n = pickPtNumber(salBlock[0]);
-      salario_sm = parsePtFloat(n);
-    }
-
-    // Densidade demográfica (hab/km²) [2022]
-    let densidade = null;
-    const densBlock = html.match(/hab\/km²[\s\S]{0,120}?\[2022\]/i);
-    if (densBlock) {
-      const n = pickPtNumber(densBlock[0]);
-      densidade = parsePtFloat(n);
-    }
-
-    // Escolarização 6 a 14 anos [%] [2022] (sometimes)
-    let escolarizacao_6_14 = null;
-    const escBlock = html.match(/Escolariza[cç][aã]o[\s\S]{0,250}?6 a 14 anos[\s\S]{0,200}?\[2022\]/i);
-    if (escBlock) {
-      const n = pickPtNumber(escBlock[0]);
-      escolarizacao_6_14 = parsePtFloat(n);
-    }
-
-    return { url, idhm, salario_sm, densidade_2022: densidade, escolarizacao_6_14_2022: escolarizacao_6_14 };
-  } catch {
-    return { url: null, idhm: null, salario_sm: null, densidade_2022: null, escolarizacao_6_14_2022: null };
-  }
-}
-
-
-// Backward-compatible alias (some templates call the old name)
-const fetchIbgeCidadesIndicators = scrapeIBGECidades;
-
-async function main() {
-  const compPath = path.join(ROOT, "src", "data", "comparativas.ts");
-  if (!fs.existsSync(compPath)) {
-    console.error("comparativas.ts not found:", compPath);
-    process.exit(1);
-  }
-  const tsText = fs.readFileSync(compPath, "utf8");
-  const cities = extractCitiesFromComparativasTS(tsText);
-
-  const ufs = Array.from(new Set(cities.map((c) => c.uf))).sort();
-  const municipiosByUF = new Map();
-
+  // Build municipios index for all UFs present
+  const ufs = [...new Set([...cities.values()].map((c) => c.uf))].sort();
+  const munIndex = new Map(); // normalize(name)|uf -> code
   for (const uf of ufs) {
-    process.stdout.write(`• IBGE municipios ${uf}...\n`);
-    const list = await getMunicipiosByUF(uf);
-    const map = new Map(list.map((m) => [normalize(m.nome), String(m.id)]));
-    municipiosByUF.set(uf, map);
+    console.log(`• IBGE municipios ${uf}...`);
+    try {
+      const list = await fetchMunicipiosByUF(uf);
+      for (const m of list) {
+        const key = `${normalize(m.nome)}|${uf}`;
+        munIndex.set(key, m.id);
+      }
+    } catch (e) {
+      console.log(`  ! falha UF ${uf}: ${e.message}`);
+    }
   }
 
-  const stats = {};
-  for (const c of cities) {
-    const map = municipiosByUF.get(c.uf);
-    const code = map?.get(normalize(c.name)) ?? null;
+  // Generate stats
+  const stats = {}; // key: normalize(name)|uf
+  for (const c of cities.values()) {
+    const key = `${normalize(c.name)}|${c.uf}`;
+    const code = munIndex.get(key) ?? null;
 
-    process.stdout.write(`• Dados oficiais: ${c.name}/${c.uf}...\n`);
+    // SIDRA (stable)
+    let pop = null;
+    let pib_pc = null;
+    if (code) {
+      try { pop = await fetchPop2022(code); } catch {}
+      try { pib_pc = await fetchPibPerCapitaLast(code); } catch {}
+    }
 
-    const [pop, pibpc, ibgeExtra] = await Promise.all([
-      code ? getPopulation2022(code) : Promise.resolve(null),
-      code ? getPibPerCapitaLast(code) : Promise.resolve(null),
-      scrapeIBGECidades({ uf: c.uf, name: c.name }),
-    ]);
+    // IBGE Cidades (best effort)
+    const ibgeCidades = await fetchIbgeCidadesIndicators({ uf: c.uf, name: c.name });
 
-    stats[c.key] = {
+    stats[key] = {
       name: c.name,
       uf: c.uf,
       ibge: code,
-      pop_2022: pop ? Number(pop) : null,
-      pib_pc: pibpc ? Number(pibpc) : null,
-      idhm_2010: ibgeExtra?.idhm ?? null,
-      salario_medio_mensal_sm: ibgeExtra?.salario_sm ?? null,
-      densidade_2022: ibgeExtra?.densidade_2022 ?? null,
-      escolarizacao_6_14_2022: ibgeExtra?.escolarizacao_6_14_2022 ?? null,
+      pop_2022: pop,
+      pib_pc,
+      idhm_2010: ibgeCidades.ok ? ibgeCidades.idhm_ibge_2010 : null,
+      salario_medio_sm: ibgeCidades.ok ? ibgeCidades.salario_medio_sm : null,
+      escolarizacao_6a14_pct: ibgeCidades.ok ? ibgeCidades.escolarizacao_6a14_pct : null,
+      domicilios_internet_pct: ibgeCidades.ok ? ibgeCidades.domicilios_internet_pct : null,
+      esgoto_adequado_pct: ibgeCidades.ok ? ibgeCidades.esgoto_adequado_pct : null,
+      arborizacao_pct: ibgeCidades.ok ? ibgeCidades.arborizacao_pct : null,
+      area_km2: ibgeCidades.ok ? ibgeCidades.area_km2 : null,
+      densidade_demo: ibgeCidades.ok ? ibgeCidades.densidade_demo : null,
+      mortalidade_infantil_por_mil: ibgeCidades.ok ? ibgeCidades.mortalidade_infantil_por_mil : null,
+      estab_saude_sus_100k: (() => {
+        const total = ibgeCidades.ok ? ibgeCidades.estab_saude_sus_total : null;
+        if (!total || !pop) return null;
+        return Number(((Number(total) / pop) * 100000).toFixed(2));
+      })(),
       sources: {
-        pop: pop ? "IBGE/SIDRA t9514 v93 p2022" : null,
-        pib_pc: pibpc ? "IBGE/SIDRA t5938 v37 plast1" : null,
-        idhm_2010: ibgeExtra?.idhm != null ? "IBGE Cidades (fonte PNUD) [2010]" : null,
-        salario_medio_mensal_sm: ibgeExtra?.salario_sm != null ? "IBGE Cidades (trabalhadores formais)" : null,
-        densidade_2022: ibgeExtra?.densidade_2022 != null ? "IBGE Cidades (Censo 2022)" : null,
-        escolarizacao_6_14_2022: ibgeExtra?.escolarizacao_6_14_2022 != null ? "IBGE Cidades" : null,
-        ibge_cidades_url: ibgeExtra?.url ?? null,
+        ibge_cidades: ibgeCidades.url,
       },
     };
+
+    // progress occasionally
+    if (Math.random() < 0.05) console.log(`• Dados oficiais: ${c.name}/${c.uf} (${code ?? "sem código"})...`);
   }
 
-  const outDir = path.join(ROOT, "src", "generated");
-  fs.mkdirSync(outDir, { recursive: true });
-  const outPath = path.join(outDir, "city-stats.json");
-  fs.writeFileSync(outPath, JSON.stringify({ generatedAt: new Date().toISOString(), stats }, null, 2), "utf8");
-  process.stdout.write(`✓ Gerado: ${path.relative(ROOT, outPath)}\n`);
+  await fs.mkdir(OUT_DIR, { recursive: true });
+  await fs.writeFile(OUT_FILE, JSON.stringify({ generated_at: new Date().toISOString(), stats }, null, 2), "utf-8");
+  console.log(`✓ Gerado: ${path.relative(ROOT, OUT_FILE)} (${Object.keys(stats).length} cidades)`);
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
+main().catch((e) => {
+  console.error(e);
+  process.exit(2);
 });
