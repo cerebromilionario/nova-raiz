@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { COMPARATIVAS } from "../../data/comparativas";
+import cityStats from "../../generated/city-stats.json";
 
 export async function getStaticPaths() {
   return COMPARATIVAS.map((c) => ({ params: { slug: c.slug } }));
@@ -8,68 +9,102 @@ export async function getStaticPaths() {
 
 const { slug } = Astro.params;
 const c = COMPARATIVAS.find((x) => x.slug === slug);
-if (!c) throw new Error(`Comparativa nao encontrada: ${slug}`);
+if (!c) throw new Error(`Comparativa não encontrada: ${slug}`);
 
 const title = c.title;
 const description = c.description;
 
 const url = `https://novaraiz.netlify.app/comparativas/${c.slug}/`;
 
-const A = c.a;
-const B = c.b;
-
-const fmt = (v) => (v && String(v).trim().length ? String(v) : "—");
-
+// JSON-LD: Breadcrumb + FAQ + HowTo + Article (autoridade)
 const breadcrumbJsonLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://novaraiz.netlify.app/" },
-    { "@type": "ListItem", position: 2, name: "Comparativas", item: "https://novaraiz.netlify.app/comparativas/" },
-    { "@type": "ListItem", position: 3, name: `${A.name} vs ${B.name}`, item: url },
-  ],
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://novaraiz.netlify.app/" },
+    { "@type": "ListItem", "position": 2, "name": "Comparativas", "item": "https://novaraiz.netlify.app/comparativas/" },
+    { "@type": "ListItem", "position": 3, "name": `${c.a.name} vs ${c.b.name}`, "item": url },
+  ]
 };
 
 const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  mainEntity: [
+  "mainEntity": [
     {
       "@type": "Question",
-      name: `Como decidir entre ${A.name} e ${B.name} sem romantizar a mudanca?`,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Use custo total + bairro + internet + saude/educacao como pilares. Em 7 dias voce valida rotas, estabilidade de internet e rotina real com visita-teste.",
-      },
+      "name": `Como decidir entre ${c.a.name} e ${c.b.name} sem romantizar a mudança?`,
+      "acceptedAnswer": { "@type": "Answer", "text": "Use custo total + bairro + internet + saúde/educação como pilares. Em 7 dias você consegue validar rotas, estabilidade de internet e rotina real com visita-teste." }
     },
     {
       "@type": "Question",
-      name: "O que pesa mais: cidade, bairro ou estilo de vida?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "O bairro normalmente define a experiencia (deslocamento, seguranca percebida, servicos e internet). A cidade define escala e variedade. O estilo de vida define sua tolerancia a transito e dependencia de carro.",
-      },
+      "name": "O que pesa mais: cidade, bairro ou estilo de vida?",
+      "acceptedAnswer": { "@type": "Answer", "text": "O bairro costuma definir 70% da experiência (deslocamento, segurança, oferta de serviços e internet). A cidade define escala (oportunidades e variedade) e o estilo de vida define o quanto você tolera trânsito e dependência de carro." }
     },
     {
       "@type": "Question",
-      name: "Como validar internet antes de fechar contrato?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Teste no imovel em horarios diferentes, confirme fibra na rua/condominio, cheque operadoras e tenha plano B (coworking + 5G).",
-      },
-    },
-  ],
+      "name": "Como validar internet antes de fechar contrato?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Teste no imóvel em horários diferentes, confirme fibra no prédio/rua, cheque operadoras e tenha plano B (coworking + 5G). Internet é mais ‘bairro’ do que ‘cidade’." }
+    }
+  ]
+};
+
+const howToJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": `Como escolher entre ${c.a.name} e ${c.b.name} em 7 dias (método Nova Raiz)`,
+  "step": [
+    { "@type": "HowToStep", "name": "Defina não-negociáveis", "text": "Ex.: 300 Mbps estáveis, hospital de referência em até 20 min, parque a 10–15 min." },
+    { "@type": "HowToStep", "name": "Escolha 2 bairros por cidade", "text": "Um para ‘vida a pé’ e outro para ‘condomínio/expansão’." },
+    { "@type": "HowToStep", "name": "Simule custo total", "text": "Aluguel + condomínio + deslocamento + saúde + educação + carro." },
+    { "@type": "HowToStep", "name": "Faça visita-teste", "text": "Teste rotas no pico, barulho à noite e internet no imóvel." },
+    { "@type": "HowToStep", "name": "Converse com moradores", "text": "Síndico/porteiro + comerciante local (são ‘sensores’ do bairro)." },
+    { "@type": "HowToStep", "name": "Valide plano B", "text": "Coworking + 5G + rede de apoio." },
+    { "@type": "HowToStep", "name": "Decida", "text": "Escolha a cidade que sustenta sua rotina com menos fricção." }
+  ]
 };
 
 const articleJsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
-  headline: title,
-  description,
-  dateModified: c.updated,
-  mainEntityOfPage: url,
-  publisher: { "@type": "Organization", name: "Nova Raiz" },
+  "headline": title,
+  "description": description,
+  "dateModified": c.updated,
+  "mainEntityOfPage": url,
+  "publisher": { "@type": "Organization", "name": "Nova Raiz" }
 };
+
+const A = c.a;
+const B = c.b;
+
+// Helpers
+const fmt = (v) => (v && String(v).trim().length ? v : "—");
+
+const normKey = (name, uf) =>
+  `${name}`
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, " ")
+    .trim() + "-" + uf;
+
+const getOfficial = (name, uf) => cityStats?.stats?.[normKey(name, uf)] ?? null;
+
+const A_off = getOfficial(A.name, A.uf);
+const B_off = getOfficial(B.name, B.uf);
+
+// Preenche automaticamente o que estiver vazio usando dados oficiais (quando disponíveis).
+if (!String(A.idh || "").trim().length && A_off?.idhm_2010 != null) A.idh = String(A_off.idhm_2010.toFixed(3));
+if (!String(B.idh || "").trim().length && B_off?.idhm_2010 != null) B.idh = String(B_off.idhm_2010.toFixed(3));
+
+if (!String(A.pop || "").trim().length && A_off?.pop_2022 != null) A.pop = Intl.NumberFormat("pt-BR").format(A_off.pop_2022);
+if (!String(B.pop || "").trim().length && B_off?.pop_2022 != null) B.pop = Intl.NumberFormat("pt-BR").format(B_off.pop_2022);
+
+if (!String(A.pib_per_capita || "").trim().length && A_off?.pib_pc != null)
+  A.pib_per_capita = Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 }).format(A_off.pib_pc);
+if (!String(B.pib_per_capita || "").trim().length && B_off?.pib_pc != null)
+  B.pib_per_capita = Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 }).format(B_off.pib_pc);
 ---
 
 <BaseLayout title={title} description={description}>
@@ -83,39 +118,61 @@ const articleJsonLd = {
         <span>{A.name} vs {B.name}</span>
       </nav>
 
-      <h1 class="mt-4 text-4xl md:text-5xl" style="font-family:'Playfair Display', serif;">
-        {A.name} vs {B.name} (2026)
-      </h1>
+      <h1 class="mt-4 text-4xl md:text-5xl" style="font-family:'Playfair Display', serif;">{A.name} vs {B.name} (2026)</h1>
       <p class="mt-3 text-lg" style="color: var(--muted);">{description}</p>
 
       <div class="mt-2">
         <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)}></script>
         <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)}></script>
+        <script type="application/ld+json" set:html={JSON.stringify(howToJsonLd)}></script>
         <script type="application/ld+json" set:html={JSON.stringify(articleJsonLd)}></script>
       </div>
 
       <div class="mt-6 grid gap-4 md:grid-cols-3">
         <div class="rounded-3xl border p-5 md:col-span-2" style="border-color: var(--border); background: var(--card);">
-          <div class="text-sm font-semibold">Resumo executivo</div>
+          <div class="text-sm font-semibold">Resumo executivo (a verdade sem marketing)</div>
           <p class="mt-2 text-sm" style="color: var(--muted);">
-            Para trabalho remoto, a decisao costuma ser: <b>internet confiavel</b> + <b>bairro certo</b> + <b>rotina simples</b>.
-            Para trabalho local, <b>escala</b> e <b>setores fortes</b> pesam mais — e normalmente encarecem o custo total.
+            Se você é remoto, o “vencedor” costuma ser quem entrega <b>internet confiável</b> + <b>bairro certo</b> + <b>rotina simples</b>.
+            Se você depende de trabalho local, <b>escala</b> e <b>setores fortes</b> pesam mais — e normalmente encarecem o custo.
           </p>
+          <div class="mt-4 grid gap-3 md:grid-cols-2">
+            <div class="rounded-2xl border p-4" style="border-color: var(--border); background: var(--surface);">
+              <div class="text-sm font-semibold">{A.name} — quando faz sentido</div>
+              <ul class="mt-2 list-disc pl-5 text-sm space-y-1" style="color: var(--muted);">
+                <li>Você quer reduzir deslocamento e “viver bairro”.</li>
+                <li>Busca custo total mais previsível.</li>
+                <li>Quer uma cidade que funcione no dia a dia.</li>
+              </ul>
+            </div>
+            <div class="rounded-2xl border p-4" style="border-color: var(--border); background: var(--surface);">
+              <div class="text-sm font-semibold">{B.name} — quando faz sentido</div>
+              <ul class="mt-2 list-disc pl-5 text-sm space-y-1" style="color: var(--muted);">
+                <li>Você quer mais opções e mais “escala”.</li>
+                <li>Oportunidades locais são prioridade.</li>
+                <li>Você aceita pagar pelo ecossistema.</li>
+              </ul>
+            </div>
+          </div>
         </div>
 
         <div class="rounded-3xl border p-5" style="border-color: var(--border); background: var(--surface);">
           <div class="text-xs" style="color: var(--muted);">Atualizado</div>
           <div class="text-sm font-semibold">{c.updated}</div>
-          <div class="mt-4 text-sm"><a class="underline" href="/comparador/">Comparar outras cidades</a></div>
-          <div class="mt-2 text-sm"><a class="underline" href="/checklist/">Checklist da mudanca</a></div>
+          <div class="mt-4 text-sm">
+            <a class="underline" href="/comparador/">Comparar outras cidades</a>
+          </div>
+          <div class="mt-2 text-sm">
+            <a class="underline" href="/checklist/">Checklist da mudança</a>
+          </div>
         </div>
       </div>
 
       <div class="mt-10 space-y-10">
         <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
-          <h2 class="text-2xl font-semibold">Tabela comparativa</h2>
+          <h2 class="text-2xl font-semibold">Tabela comparativa (núcleo duro)</h2>
           <p class="mt-2 text-sm" style="color: var(--muted);">
-            Campos prontos para dados oficiais. Onde nao houver dado, aparece "—".
+            Campos abaixo estão prontos para receber dados oficiais (IBGE/Atlas/INEP/DATASUS/SSP/ANATEL).
+            Onde ainda não houver fonte preenchida, aparece “—”.
           </p>
           <div class="mt-4 overflow-x-auto">
             <table class="w-full text-sm">
@@ -127,27 +184,147 @@ const articleJsonLd = {
                 </tr>
               </thead>
               <tbody>
-                <tr class="border-t" style="border-color: var(--border);">
-                  <td class="py-2">IDH</td><td class="py-2" style="color: var(--muted);">{fmt(A.idh)}</td><td class="py-2" style="color: var(--muted);">{fmt(B.idh)}</td>
-                </tr>
-                <tr class="border-t" style="border-color: var(--border);">
-                  <td class="py-2">Populacao</td><td class="py-2" style="color: var(--muted);">{fmt(A.pop)}</td><td class="py-2" style="color: var(--muted);">{fmt(B.pop)}</td>
-                </tr>
-                <tr class="border-t" style="border-color: var(--border);">
-                  <td class="py-2">PIB per capita</td><td class="py-2" style="color: var(--muted);">{fmt(A.pib_per_capita)}</td><td class="py-2" style="color: var(--muted);">{fmt(B.pib_per_capita)}</td>
-                </tr>
-                <tr class="border-t" style="border-color: var(--border);">
-                  <td class="py-2">Renda media mensal</td><td class="py-2" style="color: var(--muted);">{fmt(A.renda_media)}</td><td class="py-2" style="color: var(--muted);">{fmt(B.renda_media)}</td>
-                </tr>
+                {[
+                  ["IDH", fmt(A.idh), fmt(B.idh)],
+                  ["População", fmt(A.pop), fmt(B.pop)],
+                  ["PIB per capita", fmt(A.pib_per_capita), fmt(B.pib_per_capita)],
+                  ["Renda média mensal", fmt(A.renda_media), fmt(B.renda_media)],
+                  ["Homicídios (por 100k)", fmt(A.criminalidade?.homicidios_100k), fmt(B.criminalidade?.homicidios_100k)],
+                  ["Roubos (por 100k)", fmt(A.criminalidade?.roubo_100k), fmt(B.criminalidade?.roubo_100k)],
+                  ["Furtos (por 100k)", fmt(A.criminalidade?.furto_100k), fmt(B.criminalidade?.furto_100k)],
+                  ["Leitos (por 1.000)", fmt(A.saude?.leitos_1000), fmt(B.saude?.leitos_1000)],
+                  ["UBS (por 100k)", fmt(A.saude?.ubs_100k), fmt(B.saude?.ubs_100k)],
+                  ["IDEB (referência)", fmt(A.educacao?.ideb), fmt(B.educacao?.ideb)],
+                  ["Fibra (cobertura)", fmt(A.internet?.fibra_cobertura), fmt(B.internet?.fibra_cobertura)],
+                  ["Velocidade média", fmt(A.internet?.vel_media), fmt(B.internet?.vel_media)],
+                ].map((row) => (
+                  <tr class="border-t" style="border-color: var(--border);">
+                    <td class="py-2">{row[0]}</td>
+                    <td class="py-2" style="color: var(--muted);">{row[1]}</td>
+                    <td class="py-2" style="color: var(--muted);">{row[2]}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
         </div>
 
         <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
-          <h2 class="text-2xl font-semibold">Leia tambem</h2>
+          <h2 class="text-2xl font-semibold">Bairros por perfil (onde a vida acontece)</h2>
+          <p class="mt-2 text-sm" style="color: var(--muted);">
+            Mesmo na cidade “certa”, o bairro errado destrói a decisão. Esta seção é pensada para você preencher aos poucos
+            com os bairros que mais aparecem nas buscas e na vida real.
+          </p>
+
+          <div class="mt-5 grid gap-4 md:grid-cols-2">
+            <div class="rounded-2xl border p-5" style="border-color: var(--border); background: var(--card);">
+              <div class="text-lg font-semibold">{A.name}</div>
+              <div class="mt-3 text-sm font-semibold">Premium</div>
+              <div class="text-sm" style="color: var(--muted);">{(A.bairros?.premium?.length ? A.bairros.premium.join(", ") : "—")}</div>
+
+              <div class="mt-3 text-sm font-semibold">Custo-benefício</div>
+              <div class="text-sm" style="color: var(--muted);">{(A.bairros?.custo_beneficio?.length ? A.bairros.custo_beneficio.join(", ") : "—")}</div>
+
+              <div class="mt-3 text-sm font-semibold">Família</div>
+              <div class="text-sm" style="color: var(--muted);">{(A.bairros?.familia?.length ? A.bairros.familia.join(", ") : "—")}</div>
+
+              <div class="mt-3 text-sm font-semibold">Condomínios / Expansão</div>
+              <div class="text-sm" style="color: var(--muted);">{(A.bairros?.condominios?.length ? A.bairros.condominios.join(", ") : "—")}</div>
+            </div>
+
+            <div class="rounded-2xl border p-5" style="border-color: var(--border); background: var(--card);">
+              <div class="text-lg font-semibold">{B.name}</div>
+              <div class="mt-3 text-sm font-semibold">Premium</div>
+              <div class="text-sm" style="color: var(--muted);">{(B.bairros?.premium?.length ? B.bairros.premium.join(", ") : "—")}</div>
+
+              <div class="mt-3 text-sm font-semibold">Custo-benefício</div>
+              <div class="text-sm" style="color: var(--muted);">{(B.bairros?.custo_beneficio?.length ? B.bairros.custo_beneficio.join(", ") : "—")}</div>
+
+              <div class="mt-3 text-sm font-semibold">Família</div>
+              <div class="text-sm" style="color: var(--muted);">{(B.bairros?.familia?.length ? B.bairros.familia.join(", ") : "—")}</div>
+
+              <div class="mt-3 text-sm font-semibold">Condomínios / Expansão</div>
+              <div class="text-sm" style="color: var(--muted);">{(B.bairros?.condominios?.length ? B.bairros.condominios.join(", ") : "—")}</div>
+            </div>
+          </div>
+
+          <div class="mt-5 rounded-2xl border p-5" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">Regra de ouro</div>
+            <p class="mt-2 text-sm" style="color: var(--muted);">
+              Escolha <b>2 bairros por cidade</b>, faça visita-teste e só então compare “cidade A vs cidade B”.
+              A maioria das mudanças dá errado porque a pessoa compara cidades e ignora bairros.
+            </p>
+          </div>
+        </div>
+
+        <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+          <h2 class="text-2xl font-semibold">Internet e trabalho remoto (sem achismo)</h2>
+          <div class="mt-3 grid gap-4 md:grid-cols-2">
+            <div class="rounded-2xl border p-5" style="border-color: var(--border); background: var(--surface);">
+              <div class="text-sm font-semibold">{A.name}</div>
+              <ul class="mt-3 list-disc pl-5 text-sm space-y-2" style="color: var(--muted);">
+                <li>Fibra: {fmt(A.internet?.fibra_cobertura)} • Vel. média: {fmt(A.internet?.vel_media)}</li>
+                <li>5G: {fmt(A.internet?.cincoG)} • Coworkings: {fmt(A.internet?.coworkings)}</li>
+                <li>Nota de campo: {fmt(A.internet?.observacao)}</li>
+              </ul>
+            </div>
+            <div class="rounded-2xl border p-5" style="border-color: var(--border); background: var(--surface);">
+              <div class="text-sm font-semibold">{B.name}</div>
+              <ul class="mt-3 list-disc pl-5 text-sm space-y-2" style="color: var(--muted);">
+                <li>Fibra: {fmt(B.internet?.fibra_cobertura)} • Vel. média: {fmt(B.internet?.vel_media)}</li>
+                <li>5G: {fmt(B.internet?.cincoG)} • Coworkings: {fmt(B.internet?.coworkings)}</li>
+                <li>Nota de campo: {fmt(B.internet?.observacao)}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="mt-4 text-sm">
+            <a class="underline" href="/blog/internet-no-interior-guia-definitivo/">Leia o guia: internet no interior</a>
+          </div>
+        </div>
+
+        <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+          <h2 class="text-2xl font-semibold">Custo total (exemplo de orçamento por perfil)</h2>
+          <p class="mt-2 text-sm" style="color: var(--muted);">
+            Este bloco é propositalmente “custo total” (aluguel não manda sozinho). Você pode adaptar para solteiro, casal e família.
+          </p>
+          <div class="mt-4 overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr style="color: var(--muted);">
+                  <th class="py-2 text-left">Categoria</th>
+                  <th class="py-2 text-left">{A.name}</th>
+                  <th class="py-2 text-left">{B.name}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ["Moradia (aluguel/financiamento)", "R$ —", "R$ —"],
+                  ["Condomínio/IPTU (média)", "R$ —", "R$ —"],
+                  ["Mercado (casal)", "R$ —", "R$ —"],
+                  ["Transporte/Carro", "R$ —", "R$ —"],
+                  ["Saúde", "R$ —", "R$ —"],
+                  ["Educação (se houver)", "R$ —", "R$ —"],
+                  ["Lazer", "R$ —", "R$ —"],
+                  ["Total estimado", "R$ —", "R$ —"],
+                ].map((row) => (
+                  <tr class="border-t" style="border-color: var(--border);">
+                    <td class="py-2">{row[0]}</td>
+                    <td class="py-2" style="color: var(--muted);">{row[1]}</td>
+                    <td class="py-2" style="color: var(--muted);">{row[2]}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div class="mt-3 text-xs" style="color: var(--muted);">
+            Nota: este quadro serve como “molde de decisão”. Quando você for preenchendo dados reais, ele vira arma de ranking (e utilidade).
+          </div>
+        </div>
+
+        <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+          <h2 class="text-2xl font-semibold">Leia também (links internos)</h2>
           <ul class="mt-3 list-disc pl-5 text-sm space-y-2" style="color: var(--muted);">
-            <li><a class="underline" href="/mudar-para-o-interior-guia-definitivo/">Guia definitivo da mudanca</a></li>
+            <li><a class="underline" href="/mudar-para-o-interior-guia-definitivo/">Guia definitivo da mudança</a></li>
             <li><a class="underline" href="/checklist/">Checklist completo</a></li>
             <li><a class="underline" href="/blog/melhores-cidades-interior-brasil-2026/">Guia Mestre (Brasil)</a></li>
           </ul>
