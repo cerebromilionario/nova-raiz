@@ -1,7 +1,7 @@
 export type RateBlock = { homicidios_100k?: string; roubo_100k?: string; furto_100k?: string };
 export type SaudeBlock = { leitos_1000?: string; ubs_100k?: string; hospitais_ref?: string };
 export type EducacaoBlock = { ideb?: string; taxa_aprovacao?: string };
-export type InternetBlock = { fibra_cobertura?: string; vel_media?: string; "5g"?: string; coworkings?: string; observacao?: string };
+export type InternetBlock = { fibra_cobertura?: string; vel_media?: string; cincoG?: string; coworkings?: string; observacao?: string };
 export type BairrosBlock = { premium: string[]; custo_beneficio: string[]; familia: string[]; condominios: string[]; evitar: string[] };
 export type PerfilBlock = { pro: string[]; contra: string[] };
 export type FontesBlock = { ibge?: string; atlas?: string; inep?: string; datasus?: string; ssp?: string; anatel?: string };
@@ -57,7 +57,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -105,7 +105,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -166,7 +166,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -214,7 +214,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -275,7 +275,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -323,7 +323,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -384,7 +384,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -432,7 +432,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -493,7 +493,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -541,7 +541,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -602,7 +602,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -650,7 +650,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -711,7 +711,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -759,7 +759,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -820,7 +820,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -868,7 +868,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -929,7 +929,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -977,7 +977,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -1038,7 +1038,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -1086,7 +1086,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -1147,7 +1147,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -1195,7 +1195,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -1256,7 +1256,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -1304,7 +1304,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -1365,7 +1365,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -1413,7 +1413,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -1474,7 +1474,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -1522,7 +1522,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -1583,7 +1583,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -1631,7 +1631,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -1692,7 +1692,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -1740,7 +1740,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -1801,7 +1801,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -1849,7 +1849,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -1910,7 +1910,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -1958,7 +1958,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -2019,7 +2019,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -2067,7 +2067,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -2128,7 +2128,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -2176,7 +2176,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -2237,7 +2237,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -2285,7 +2285,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -2346,7 +2346,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -2394,7 +2394,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -2455,7 +2455,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -2503,7 +2503,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -2564,7 +2564,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -2612,7 +2612,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -2673,7 +2673,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -2721,7 +2721,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -2782,7 +2782,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -2830,7 +2830,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -2891,7 +2891,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -2939,7 +2939,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -3000,7 +3000,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -3048,7 +3048,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -3109,7 +3109,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -3157,7 +3157,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -3218,7 +3218,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -3266,7 +3266,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -3327,7 +3327,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -3375,7 +3375,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -3436,7 +3436,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -3484,7 +3484,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -3545,7 +3545,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -3593,7 +3593,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -3654,7 +3654,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -3702,7 +3702,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -3763,7 +3763,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -3811,7 +3811,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -3872,7 +3872,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -3920,7 +3920,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -3981,7 +3981,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -4029,7 +4029,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -4090,7 +4090,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -4138,7 +4138,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -4199,7 +4199,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -4247,7 +4247,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -4308,7 +4308,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -4356,7 +4356,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -4417,7 +4417,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -4465,7 +4465,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -4526,7 +4526,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -4574,7 +4574,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -4635,7 +4635,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -4683,7 +4683,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -4744,7 +4744,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -4792,7 +4792,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -4853,7 +4853,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -4901,7 +4901,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -4962,7 +4962,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -5010,7 +5010,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -5071,7 +5071,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -5119,7 +5119,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -5180,7 +5180,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -5228,7 +5228,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -5289,7 +5289,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -5337,7 +5337,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -5398,7 +5398,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
@@ -5446,7 +5446,7 @@ export const COMPARATIVAS: Comparativa[] = [
       "internet": {
         "fibra_cobertura": "",
         "vel_media": "",
-        "5g": "",
+        "cincoG": "",
         "coworkings": "",
         "observacao": ""
       },
