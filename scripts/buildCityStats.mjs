@@ -1,11 +1,9 @@
 /**
  * Nova Raiz — buildCityStats.mjs
- * Gera src/generated/city-stats.json com dados oficiais (IBGE/SIDRA + best-effort IBGE Cidades)
- * - População (Censo 2022) via SIDRA t9514 v93 p2022
- * - PIB per capita (último ano) via SIDRA t5938 v37 p(last)
- * - Indicadores complementares via página IBGE Cidades e Estados (best-effort scraping)
+ * Gera src/generated/city-stats.json com dados oficiais (IBGE/SIDRA + best-effort IBGE Cidades).
  *
- * IMPORTANT: este script NÃO quebra o build se algum dado falhar — ele preenche null e segue.
+ * Objetivo: alimentar as comparativas automaticamente com indicadores padronizados.
+ * Importante: este script NÃO deve quebrar o build se algum dado falhar — ele preenche null e segue.
  */
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -21,6 +19,21 @@ function normalize(s) {
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase();
 }
+
+function normKey(name, uf) {
+  return (
+    `${name}`
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, " ")
+      .trim() +
+    "-" +
+    uf
+  );
+}
+
 function stripTags(html) {
   return String(html || "")
     .replace(/<script[\s\S]*?<\/script>/gi, " ")
@@ -29,6 +42,7 @@ function stripTags(html) {
     .replace(/\s+/g, " ")
     .trim();
 }
+
 function parseNumberPt(s) {
   if (s == null) return null;
   const t = String(s).trim();
@@ -37,6 +51,7 @@ function parseNumberPt(s) {
   const n = Number(cleaned);
   return Number.isFinite(n) ? n : null;
 }
+
 function parseNumberGeneric(s) {
   if (s == null) return null;
   const t = String(s).trim();
@@ -45,14 +60,21 @@ function parseNumberGeneric(s) {
   const n = Number(cleaned);
   return Number.isFinite(n) ? n : null;
 }
+
 function toSlugIbge(name) {
-  return normalize(name).replace(/\s+/g, "-");
+  return normalize(name)
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .trim();
 }
+
 async function safeJson(url) {
   const res = await fetch(url, { headers: { "user-agent": "nova-raiz-build/1.0" } });
   if (!res.ok) throw new Error(`HTTP ${res.status} ${url}`);
   return res.json();
 }
+
 async function safeText(url) {
   const res = await fetch(url, { headers: { "user-agent": "nova-raiz-build/1.0" } });
   if (!res.ok) throw new Error(`HTTP ${res.status} ${url}`);
@@ -61,23 +83,19 @@ async function safeText(url) {
 
 // ---------- sources ----------
 async function fetchMunicipiosByUF(uf) {
-  // IBGE Localidades
   const url = `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`;
   return safeJson(url);
 }
 
 async function fetchPop2022(munCode) {
-  // SIDRA: tabela 9514 / variável 93 / período 2022
   const url = `https://apisidra.ibge.gov.br/values/t/9514/v/93/p/2022/n6/${munCode}`;
   const j = await safeJson(url);
-  // j[1].V should be numeric string
   const v = j?.[1]?.V;
   const n = Number(String(v).replace(/\./g, "").replace(",", "."));
   return Number.isFinite(n) ? n : null;
 }
 
 async function fetchPibPerCapitaLast(munCode) {
-  // SIDRA: tabela 5938 / variável 37 / período "last"
   const url = `https://apisidra.ibge.gov.br/values/t/5938/v/37/p/last/n6/${munCode}`;
   const j = await safeJson(url);
   const v = j?.[1]?.V;
@@ -91,13 +109,12 @@ async function fetchIbgeCidadesIndicators({ uf, name }) {
   try {
     const html = await safeText(url);
     const text = stripTags(html);
-
     const pick = (re) => {
       const m = text.match(re);
       return m ? m[1] : null;
     };
 
-    // Common metrics visible on IBGE Cidades page (best effort)
+    // Best-effort patterns from IBGE Cidades page.
     const idhm = parseNumberPt(pick(/IDHM\s*\(2010\)[^0-9]*([0-9],[0-9]{3})/i));
     const salario_sm = parseNumberPt(
       pick(/Sal[aá]rio m[eé]dio mensal dos trabalhadores formais[^0-9]*([0-9],[0-9]{1,3})/i)
@@ -141,43 +158,54 @@ async function fetchIbgeCidadesIndicators({ uf, name }) {
 
 // ---------- main ----------
 async function main() {
-  // City list is read from src/data/comparativas.ts (simple regex, no TS import in build)
+  // Read src/data/comparativas.ts as TEXT and extract `"name": "...", "uf": "XX"`
   const comparativasPath = path.join(ROOT, "src", "data", "comparativas.ts");
-  const comparativasTs = await fs.readFile(comparativasPath, "utf-8");
+  const ts = await fs.readFile(comparativasPath, "utf-8");
 
-  // Extract pairs: name/uf within a: {...} and b: {...}
-  const cityMatches = [...comparativasTs.matchAll(/name:\s*["\']([^"\']+)["\']\s*,\s*uf:\s*["\']([A-Z]{2})["\']/g)];
+  const cityMatches = [...ts.matchAll(/"name"\s*:\s*"([^"]+)"[\s\S]*?"uf"\s*:\s*"([A-Z]{2})"/g)];
   const cities = new Map(); // key => {name, uf}
   for (const m of cityMatches) {
     const name = m[1];
     const uf = m[2];
-    const key = `${normalize(name)}|${uf}`;
+    const key = normKey(name, uf);
     if (!cities.has(key)) cities.set(key, { name, uf });
   }
 
-  // Build municipios index for all UFs present
+  const totalCities = cities.size;
+  if (!totalCities) {
+    console.log("! Atenção: nenhuma cidade encontrada em src/data/comparativas.ts. Gerando arquivo vazio.");
+    await fs.mkdir(OUT_DIR, { recursive: true });
+    await fs.writeFile(
+      OUT_FILE,
+      JSON.stringify({ generated_at: new Date().toISOString(), stats: {} }, null, 2),
+      "utf-8"
+    );
+    console.log(`✓ Gerado: src/generated/city-stats.json (0 cidades)`);
+    return;
+  }
+
+  // Index municipios by UF (IBGE localidades)
   const ufs = [...new Set([...cities.values()].map((c) => c.uf))].sort();
-  const munIndex = new Map(); // normalize(name)|uf -> code
+  const munIndex = new Map(); // normKey(name, uf) -> code
   for (const uf of ufs) {
     console.log(`• IBGE municipios ${uf}...`);
     try {
       const list = await fetchMunicipiosByUF(uf);
       for (const m of list) {
-        const key = `${normalize(m.nome)}|${uf}`;
-        munIndex.set(key, m.id);
+        const key = normKey(m.nome, uf);
+        if (!munIndex.has(key)) munIndex.set(key, m.id);
       }
     } catch (e) {
-      console.log(`  ! falha UF ${uf}: ${e.message}`);
+      console.log(`  ! falha UF ${uf}: ${e?.message || e}`);
     }
   }
 
-  // Generate stats
-  const stats = {}; // key: normalize(name)|uf
-  for (const c of cities.values()) {
-    const key = `${normalize(c.name)}|${c.uf}`;
+  const stats = {};
+  let i = 0;
+  for (const [key, c] of cities.entries()) {
+    i += 1;
     const code = munIndex.get(key) ?? null;
 
-    // SIDRA (stable)
     let pop = null;
     let pib_pc = null;
     if (code) {
@@ -185,7 +213,6 @@ async function main() {
       try { pib_pc = await fetchPibPerCapitaLast(code); } catch {}
     }
 
-    // IBGE Cidades (best effort)
     const ibgeCidades = await fetchIbgeCidadesIndicators({ uf: c.uf, name: c.name });
 
     stats[key] = {
@@ -210,16 +237,23 @@ async function main() {
       })(),
       sources: {
         ibge_cidades: ibgeCidades.url,
+        sidra_pop: code ? "IBGE/SIDRA t9514 v93 p2022" : null,
+        sidra_pib_pc: code ? "IBGE/SIDRA t5938 v37 plast1" : null,
       },
     };
 
-    // progress occasionally
-    if (Math.random() < 0.05) console.log(`• Dados oficiais: ${c.name}/${c.uf} (${code ?? "sem código"})...`);
+    if (i % 15 == 0) {
+      console.log(`• Dados oficiais (${i}/${totalCities}): ${c.name}/${c.uf} (${code ?? "sem código"})...`);
+    }
   }
 
   await fs.mkdir(OUT_DIR, { recursive: true });
-  await fs.writeFile(OUT_FILE, JSON.stringify({ generated_at: new Date().toISOString(), stats }, null, 2), "utf-8");
-  console.log(`✓ Gerado: ${path.relative(ROOT, OUT_FILE)} (${Object.keys(stats).length} cidades)`);
+  await fs.writeFile(
+    OUT_FILE,
+    JSON.stringify({ generated_at: new Date().toISOString(), stats }, null, 2),
+    "utf-8"
+  );
+  console.log(`✓ Gerado: src/generated/city-stats.json (${Object.keys(stats).length} cidades)`);
 }
 
 main().catch((e) => {
