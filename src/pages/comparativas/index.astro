@@ -3,7 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { COMPARATIVAS } from "../../data/comparativas";
 
 const title = "Comparativas definitivas de cidades — Nova Raiz";
-const description = "Hub de comparativas em formato de artigos completos (Sudeste, Sul, Centro-Oeste, Nordeste e Norte) com foco em bairros, internet, custo de vida e vida real.";
+const description = "Cluster SEO Brasil: 50 comparativas estruturadas (Sudeste, Sul, Centro-Oeste, Nordeste e Norte) com foco em bairros, internet, custo total e vida real.";
 
 const byRegion = (uf) => {
   const map = {
@@ -76,7 +76,7 @@ const orderedKeys = Object.keys(groups).sort((a,b)=> order.indexOf(a)-order.inde
             <div class="mt-4 grid gap-3 md:grid-cols-2">
               {groups[key].map((c) => (
                 <a class="rounded-2xl border p-4 hover:opacity-90 transition" style="border-color: var(--border); background: var(--card);"
-                   href={`/comparativas/${c.slug}/`}>
+                   href={`/blog/${c.slug}/`}>
                   <div class="text-sm font-semibold">{c.a.name} vs {c.b.name}</div>
                   <div class="mt-1 text-xs" style="color: var(--muted);">{c.description}</div>
                 </a>
