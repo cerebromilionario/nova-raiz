@@ -5,6 +5,8 @@ import ArticleCard from "../../components/ArticleCard.astro";
 
 const posts = (await getCollection("blog")).filter(p => !p.data.draft)
   .sort((a,b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const categories = Array.from(new Set(posts.map(p => p.data.category))).sort();
 ---
 
 <BaseLayout title="Blog — Nova Raiz" description="Artigos sobre transição para o interior: planejamento, trabalho remoto e vida real.">
@@ -12,8 +14,53 @@ const posts = (await getCollection("blog")).filter(p => !p.data.draft)
     <h1 class="text-4xl md:text-5xl" style="font-family:'Playfair Display', serif;">Blog</h1>
     <p class="mt-4 text-lg" style="color: var(--muted);">Conteúdo profundo, humano e prático. Um passo por vez.</p>
 
-    <div class="mt-8 grid gap-4 md:grid-cols-3">
-      {posts.map(p => <ArticleCard post={p} />)}
+    <div class="mt-8 grid gap-3 md:grid-cols-3">
+      <input id="nrSearch" type="search" placeholder="Buscar por cidade, tema ou palavra-chave..." class="md:col-span-2 rounded-2xl border px-4 py-3 text-sm" style="border-color: var(--border); background: var(--surface); color: var(--text);" />
+      <select id="nrCategory" class="rounded-2xl border px-4 py-3 text-sm" style="border-color: var(--border); background: var(--surface); color: var(--text);">
+        <option value="">Todas as categorias</option>
+        {categories.map(c => <option value={c}>{c}</option>)}
+      </select>
+    </div>
+
+    <div class="mt-6 grid gap-4 md:grid-cols-3" id="nrPostGrid">
+
+      {posts.map(p => (
+        <div class="nr-post" data-title={p.data.title.toLowerCase()} data-description={p.data.description.toLowerCase()} data-category={p.data.category} data-slug={p.slug}>
+          <ArticleCard post={p} />
+        </div>
+      ))}
+    </div>
+    <script>
+      const search = document.getElementById("nrSearch");
+      const category = document.getElementById("nrCategory");
+      const posts = Array.from(document.querySelectorAll(".nr-post"));
+
+      function applyFilter() {
+        const q = (search.value || "").trim().toLowerCase();
+        const cat = category.value || "";
+        let visible = 0;
+
+        for (const el of posts) {
+          const title = el.dataset.title || "";
+          const desc = el.dataset.description || "";
+          const matchesText = !q || title.includes(q) || desc.includes(q);
+          const matchesCat = !cat || (el.dataset.category === cat);
+          const show = matchesText && matchesCat;
+          el.style.display = show ? "" : "none";
+          if (show) visible++;
+        }
+
+        const empty = document.getElementById("nrEmpty");
+        if (empty) empty.style.display = visible ? "none" : "";
+      }
+
+      search.addEventListener("input", applyFilter);
+      category.addEventListener("change", applyFilter);
+      applyFilter();
+    </script>
+
+    <div id="nrEmpty" class="mt-8 rounded-3xl border p-6 text-sm" style="border-color: var(--border); background: var(--card); color: var(--muted); display:none;">
+      Nada encontrado. Tente outro termo ou mude a categoria.
     </div>
   </section>
 </BaseLayout>
