@@ -1,63 +1,322 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import Layout from "../layouts/Layout.astro";
+
+const title = "Cidades — Nova Raiz";
+const description = "Diretório de cidades com busca e filtros por região/estado. Encontre guias completos e artigos para planejar sua mudança para o interior.";
 ---
 
-<BaseLayout title="Cidades — Nova Raiz" description="Como escolher cidade do interior com infraestrutura, custo de vida e internet.">
-  <section class="py-10 md:py-14">
-    <h1 class="text-4xl md:text-5xl" style="font-family:'Playfair Display', serif;">Cidades</h1>
-    <p class="mt-4 text-lg" style="color: var(--muted);">Como escolher cidade do interior com infraestrutura, custo de vida e internet.</p>
+<Layout title={title} description={description}>
+  <!-- Breadcrumbs (SEO) -->
+  <script type="application/ld+json" is:inline>
+    {JSON.stringify({
+      "@context":"https://schema.org",
+      "@type":"BreadcrumbList",
+      "itemListElement":[
+        {"@type":"ListItem","position":1,"name":"Início","item":"https://novaraiz.netlify.app/"},
+        {"@type":"ListItem","position":2,"name":"Cidades","item":"https://novaraiz.netlify.app/cidades/"}
+      ]
+    })}
+  </script>
 
-    <div class="mt-8 grid gap-6 md:grid-cols-2">
-      <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
-        <div class="text-sm font-semibold" style="color: var(--muted);">O que você vai encontrar aqui</div>
-        <ul class="mt-4 list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
-          <li>Critérios: saúde, educação, segurança, internet</li>
-          <li>Custo de vida por perfil (solteiro, casal, família)</li>
-          <li>Visita-teste: como fazer do jeito certo</li>
-          <li>Checklist de decisão de cidade</li>
-        </ul>
+  <section class="max-w-6xl mx-auto px-4 py-10 md:py-14 space-y-8">
+    <header class="space-y-3">
+      <h1 class="text-4xl md:text-5xl font-bold" style="font-family:'Playfair Display', serif;">Cidades</h1>
+      <p class="text-lg" style="color: var(--muted);">
+        Use a busca e os filtros para encontrar <strong>guias completos</strong>, <strong>comparativas</strong> e artigos por cidade.
+      </p>
+    </header>
+
+    <div class="grid gap-4 md:grid-cols-12">
+      <!-- Search -->
+      <div class="md:col-span-6 rounded-3xl border p-5" style="border-color: var(--border); background: var(--card);">
+        <label for="citySearch" class="text-sm font-semibold" style="color: var(--muted);">Buscar cidade</label>
+        <input
+          id="citySearch"
+          type="search"
+          placeholder="Ex: Vinhedo, Gramado, Campinas..."
+          class="mt-2 w-full rounded-2xl border px-4 py-3 text-base outline-none"
+          style="border-color: var(--border); background: var(--surface);"
+        />
+        <p class="mt-2 text-xs" style="color: var(--muted);">
+          Dica: você pode buscar por <em>cidade</em>, <em>UF</em> ou <em>região</em>.
+        </p>
       </div>
 
-      <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
-        <div class="text-sm font-semibold">Leituras recomendadas</div>
-        <ul class="mt-4 space-y-2 text-sm" style="color: var(--muted);">
-          <li><a class="underline" href="/trabalho-remoto">Trabalho remoto (hub)</a></li>
-          <li><a class="underline" href="/blog/quanto-custa-mudar-para-o-interior">Quanto custa mudar para o interior? (simulação 3 cenários)</a></li>
-          <li><a class="underline" href="/blog/checklist-escolher-cidade-interior">Como escolher a cidade do interior certa (checklist)</a></li>
-          <li><a class="underline" href="/blog/custo-de-vida-interior-vs-capital">Custo de vida: interior vs capital (tabela comparativa)</a></li>
-        </ul>
-        <div class="mt-5 text-xs" style="color: var(--muted);">
-          Dica: este hub vai crescer com artigos e checklists — volte aqui sempre.
+      <!-- Filters -->
+      <div class="md:col-span-6 rounded-3xl border p-5" style="border-color: var(--border); background: var(--card);">
+        <div class="text-sm font-semibold" style="color: var(--muted);">Filtros</div>
+
+        <div class="mt-3 grid gap-3 sm:grid-cols-2">
+          <div>
+            <label class="text-xs font-semibold" style="color: var(--muted);" for="regionFilter">Região</label>
+            <select id="regionFilter" class="mt-1 w-full rounded-2xl border px-3 py-3 text-sm"
+              style="border-color: var(--border); background: var(--surface);">
+              <option value="all">Todas</option>
+              <option value="Sudeste">Sudeste</option>
+              <option value="Sul">Sul</option>
+              <option value="Centro-Oeste">Centro-Oeste</option>
+              <option value="Nordeste">Nordeste</option>
+              <option value="Norte">Norte</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="text-xs font-semibold" style="color: var(--muted);" for="ufFilter">Estado (UF)</label>
+            <select id="ufFilter" class="mt-1 w-full rounded-2xl border px-3 py-3 text-sm"
+              style="border-color: var(--border); background: var(--surface);">
+              <option value="all">Todos</option>
+              <option value="SP">SP</option><option value="RJ">RJ</option><option value="MG">MG</option><option value="ES">ES</option>
+              <option value="PR">PR</option><option value="SC">SC</option><option value="RS">RS</option>
+              <option value="DF">DF</option><option value="GO">GO</option><option value="MT">MT</option><option value="MS">MS</option>
+              <option value="BA">BA</option><option value="CE">CE</option><option value="PE">PE</option><option value="PB">PB</option>
+              <option value="RN">RN</option><option value="AL">AL</option><option value="SE">SE</option><option value="MA">MA</option><option value="PI">PI</option>
+              <option value="PA">PA</option><option value="AM">AM</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mt-4 flex flex-wrap gap-2">
+          <button id="tagAll" class="rounded-full border px-4 py-2 text-sm font-semibold"
+            style="border-color: var(--border); background: var(--surface);">
+            Todos
+          </button>
+          <button id="tagPillar" class="rounded-full border px-4 py-2 text-sm font-semibold"
+            style="border-color: var(--border); background: var(--surface);">
+            ✅ Guia completo
+          </button>
+          <button id="tagComparativas" class="rounded-full border px-4 py-2 text-sm font-semibold"
+            style="border-color: var(--border); background: var(--surface);">
+            📊 Tem comparativas
+          </button>
+        </div>
+
+        <div class="mt-3 text-xs" style="color: var(--muted);">
+          O diretório vai crescendo com o site — conforme você publicar novos guias, é só adicionar a cidade na lista.
         </div>
       </div>
     </div>
 
-    <section class="mt-8">
-      <h2 class="text-2xl" style="font-family:'Playfair Display', serif;">Guias de cidades</h2>
-      <p class="mt-2" style="color: var(--muted);">Páginas pilar para decidir onde morar — com leitura prática e checklist.</p>
-
-      <div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <a href="/cidades/vinhedo" class="rounded-3xl border p-5 hover:opacity-90" style="border-color: var(--border); background: var(--card);">
-          <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">Guia definitivo • 2026</div>
-          <div class="mt-2 text-lg font-semibold" style="color: var(--text);">Vinhedo (SP)</div>
-          <p class="mt-2 text-sm" style="color: var(--muted);">Interior premium no eixo Anhanguera–Bandeirantes: condomínios, custo real, escolas, mobilidade e estratégia regional.</p>
-          <div class="mt-3 text-sm underline" style="color: var(--primary);">Abrir guia</div>
-        </a>
-
-        <a href="/cidades/gramado" class="rounded-3xl border p-5 hover:opacity-90" style="border-color: var(--border); background: var(--card);">
-          <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">Guia definitivo • 2026</div>
-          <div class="mt-2 text-lg font-semibold" style="color: var(--text);">Gramado (RS)</div>
-          <p class="mt-2 text-sm" style="color: var(--muted);">Morar x visitar: bairros, custo real por temporada, trabalho (turismo e remoto), internet, clima e logística Serra Gaúcha.</p>
-          <div class="mt-3 text-sm underline" style="color: var(--primary);">Abrir guia</div>
-        </a>
-
-        <a href="/cidades/pocos-de-caldas" class="rounded-3xl border p-5 hover:opacity-90" style="border-color: var(--border); background: var(--card);">
-          <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">Guia definitivo • 2026</div>
-          <div class="mt-2 text-lg font-semibold" style="color: var(--text);">Poços de Caldas (MG)</div>
-          <p class="mt-2 text-sm" style="color: var(--muted);">Estância climática de altitude: bairros, custo real, saúde, segurança, trabalho e rotina — com checklist para decidir a mudança.</p>
-          <div class="mt-3 text-sm underline" style="color: var(--primary);">Abrir guia</div>
-        </a>
+    <div class="flex items-center justify-between">
+      <div class="text-sm" style="color: var(--muted);">
+        <span id="resultsCount">0</span> cidades exibidas
       </div>
-    </section>
+      <a class="text-sm underline" href="/ranking-melhores-cidades-2026" style="color: var(--muted);">
+        Ver Ranking 2026 →
+      </a>
+    </div>
+
+    <!-- Cards -->
+    <div id="citiesGrid" class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {[
+        // Pilares (guia completo)
+        { name: "Vinhedo", uf: "SP", region: "Sudeste", pillarUrl: "/cidades/vinhedo", blogUrl: "/blog", comparativas: true, tags: ["pillar","comparativas"] },
+        { name: "Gramado", uf: "RS", region: "Sul", pillarUrl: "/cidades/gramado", blogUrl: "/blog", comparativas: true, tags: ["pillar","comparativas"] },
+        { name: "Poços de Caldas", uf: "MG", region: "Sudeste", pillarUrl: "/cidades/pocos-de-caldas", blogUrl: "/blog", comparativas: true, tags: ["pillar","comparativas"] },
+
+        // Estratégicas (já com artigos/guia no blog ou cluster)
+        { name: "Campinas", uf: "SP", region: "Sudeste", pillarUrl: "", blogUrl: "/blog/morar-em-campinas-sp-2026/", comparativas: true, tags: ["comparativas"] },
+        { name: "Jundiaí", uf: "SP", region: "Sudeste", pillarUrl: "", blogUrl: "/blog/custo-de-vida-em-jundiai-2026/", comparativas: true, tags: ["comparativas"] },
+        { name: "Sorocaba", uf: "SP", region: "Sudeste", pillarUrl: "", blogUrl: "/blog/morar-em-sorocaba-sp-2026/", comparativas: true, tags: ["comparativas"] },
+        { name: "Indaiatuba", uf: "SP", region: "Sudeste", pillarUrl: "", blogUrl: "/blog/indaiatuba-e-segura-guia-2026/", comparativas: true, tags: ["comparativas"] },
+        { name: "São José dos Campos", uf: "SP", region: "Sudeste", pillarUrl: "", blogUrl: "/blog/morar-em-sao-jose-dos-campos-sp-2026/", comparativas: true, tags: ["comparativas"] },
+        { name: "Ribeirão Preto", uf: "SP", region: "Sudeste", pillarUrl: "", blogUrl: "/blog/ribeirao-preto-home-office-vale-a-pena/", comparativas: true, tags: ["comparativas"] },
+        { name: "São Carlos", uf: "SP", region: "Sudeste", pillarUrl: "", blogUrl: "/blog/morar-em-sao-carlos-sp-2026/", comparativas: true, tags: ["comparativas"] },
+        { name: "Atibaia", uf: "SP", region: "Sudeste", pillarUrl: "", blogUrl: "/blog/morar-em-atibaia-sp-2026/", comparativas: false, tags: [] },
+
+        { name: "Petrópolis", uf: "RJ", region: "Sudeste", pillarUrl: "", blogUrl: "/blog/morar-em-petropolis-rj-2026/", comparativas: true, tags: ["comparativas"] },
+        { name: "Teresópolis", uf: "RJ", region: "Sudeste", pillarUrl: "", blogUrl: "/blog/morar-em-teresopolis-rj-2026/", comparativas: true, tags: ["comparativas"] },
+
+        { name: "Uberaba", uf: "MG", region: "Sudeste", pillarUrl: "", blogUrl: "/blog/morar-em-uberaba-mg-2026/", comparativas: false, tags: [] },
+
+        // Sul
+        { name: "Criciúma", uf: "SC", region: "Sul", pillarUrl: "", blogUrl: "/blog/morar-em-criciuma-sc-2026/", comparativas: false, tags: [] },
+        { name: "Jaraguá do Sul", uf: "SC", region: "Sul", pillarUrl: "", blogUrl: "/blog/morar-em-jaragua-do-sul-sc-2026/", comparativas: false, tags: [] },
+        { name: "Ponta Grossa", uf: "PR", region: "Sul", pillarUrl: "", blogUrl: "/blog/morar-em-ponta-grossa-pr-2026/", comparativas: true, tags: ["comparativas"] },
+        { name: "Guarapuava", uf: "PR", region: "Sul", pillarUrl: "", blogUrl: "/blog/morar-em-guarapuava-pr-2026/", comparativas: false, tags: [] },
+        { name: "Foz do Iguaçu", uf: "PR", region: "Sul", pillarUrl: "", blogUrl: "/blog/morar-em-foz-do-iguacu-pr-2026/", comparativas: false, tags: [] },
+        { name: "Bento Gonçalves", uf: "RS", region: "Sul", pillarUrl: "", blogUrl: "/blog/morar-em-bento-goncalves-rs-2026/", comparativas: true, tags: ["comparativas"] },
+        { name: "Santa Maria", uf: "RS", region: "Sul", pillarUrl: "", blogUrl: "/blog/morar-em-santa-maria-rs-2026/", comparativas: false, tags: [] },
+
+        // Nordeste (comparativas no blog / expansão)
+        { name: "Salvador", uf: "BA", region: "Nordeste", pillarUrl: "", blogUrl: "/blog", comparativas: true, tags: ["comparativas"] },
+        { name: "Fortaleza", uf: "CE", region: "Nordeste", pillarUrl: "", blogUrl: "/blog", comparativas: true, tags: ["comparativas"] },
+        { name: "Recife", uf: "PE", region: "Nordeste", pillarUrl: "", blogUrl: "/blog", comparativas: true, tags: ["comparativas"] },
+        { name: "João Pessoa", uf: "PB", region: "Nordeste", pillarUrl: "", blogUrl: "/blog", comparativas: true, tags: ["comparativas"] },
+        { name: "Natal", uf: "RN", region: "Nordeste", pillarUrl: "", blogUrl: "/blog", comparativas: true, tags: ["comparativas"] },
+        { name: "Maceió", uf: "AL", region: "Nordeste", pillarUrl: "", blogUrl: "/blog", comparativas: true, tags: ["comparativas"] },
+        { name: "Aracaju", uf: "SE", region: "Nordeste", pillarUrl: "", blogUrl: "/blog", comparativas: true, tags: ["comparativas"] },
+        { name: "São Luís", uf: "MA", region: "Nordeste", pillarUrl: "", blogUrl: "/blog", comparativas: true, tags: ["comparativas"] },
+        { name: "Teresina", uf: "PI", region: "Nordeste", pillarUrl: "", blogUrl: "/blog", comparativas: true, tags: ["comparativas"] },
+
+        // Centro-Oeste
+        { name: "Brasília", uf: "DF", region: "Centro-Oeste", pillarUrl: "", blogUrl: "/blog", comparativas: true, tags: ["comparativas"] },
+        { name: "Goiânia", uf: "GO", region: "Centro-Oeste", pillarUrl: "", blogUrl: "/blog", comparativas: true, tags: ["comparativas"] },
+
+        // Norte
+        { name: "Belém", uf: "PA", region: "Norte", pillarUrl: "", blogUrl: "/blog", comparativas: true, tags: ["comparativas"] },
+        { name: "Manaus", uf: "AM", region: "Norte", pillarUrl: "", blogUrl: "/blog", comparativas: true, tags: ["comparativas"] },
+      ].map((c) => (
+        <article
+          class="city-card rounded-3xl border p-6 hover:shadow-sm transition"
+          style="border-color: var(--border); background: var(--card);"
+          data-name={c.name}
+          data-uf={c.uf}
+          data-region={c.region}
+          data-tags={c.tags.join(",")}
+        >
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <h2 class="text-xl font-semibold">{c.name} <span class="text-sm font-semibold" style="color: var(--muted);">({c.uf})</span></h2>
+              <div class="mt-1 text-sm" style="color: var(--muted);">{c.region}</div>
+            </div>
+
+            <div class="flex flex-col items-end gap-2">
+              {c.tags.includes("pillar") ? (
+                <span class="rounded-full px-3 py-1 text-xs font-semibold" style="background: rgba(244,196,48,.14); color: var(--text); border: 1px solid var(--border);">
+                  ✅ Guia completo
+                </span>
+              ) : (
+                <span class="rounded-full px-3 py-1 text-xs font-semibold" style="background: rgba(44,44,46,.06); color: var(--muted); border: 1px solid var(--border);">
+                  Artigos & contexto
+                </span>
+              )}
+
+              {c.comparativas ? (
+                <span class="rounded-full px-3 py-1 text-xs font-semibold" style="background: rgba(44,44,46,.06); color: var(--muted); border: 1px solid var(--border);">
+                  📊 Tem comparativas
+                </span>
+              ) : null}
+            </div>
+          </div>
+
+          <div class="mt-5 flex flex-wrap gap-2">
+            {c.pillarUrl ? (
+              <a class="rounded-full px-4 py-2 text-sm font-semibold"
+                 href={c.pillarUrl}
+                 style="background: var(--primary); color: white;">
+                Ver guia
+              </a>
+            ) : (
+              <a class="rounded-full border px-4 py-2 text-sm font-semibold"
+                 href={c.blogUrl}
+                 style="border-color: var(--border); background: var(--surface);">
+                Ver artigos
+              </a>
+            )}
+
+            <a class="rounded-full border px-4 py-2 text-sm font-semibold"
+               href={"/blog"}
+               style="border-color: var(--border); background: var(--surface);">
+              Buscar no blog
+            </a>
+          </div>
+
+          <div class="mt-4 text-xs" style="color: var(--muted);">
+            Dica rápida: para planejamento de mudança, comece pelo <a class="underline" href="/mudar-para-o-interior-guia-definitivo/">Guia Definitivo</a> e pelo <a class="underline" href="/checklist/">Checklist</a>.
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div id="noResults" class="hidden rounded-3xl border p-8 text-center"
+      style="border-color: var(--border); background: var(--card);">
+      <div class="text-lg font-semibold">Nenhuma cidade encontrada</div>
+      <div class="mt-2 text-sm" style="color: var(--muted);">
+        Tente buscar por outro termo (ex: “SP”, “Sul”, “Campinas”) ou limpe os filtros.
+      </div>
+      <div class="mt-5">
+        <button id="clearAll" class="rounded-full px-5 py-2 text-sm font-semibold"
+          style="background: var(--primary); color: white;">
+          Limpar filtros
+        </button>
+      </div>
+    </div>
+
+    <footer class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+      <div class="text-sm font-semibold">Sugestão de navegação</div>
+      <div class="mt-3 grid gap-3 md:grid-cols-3 text-sm" style="color: var(--muted);">
+        <a class="underline" href="/ranking-melhores-cidades-2026">Ranking Nacional 2026</a>
+        <a class="underline" href="/mudar-para-o-interior-guia-definitivo/">Guia Definitivo da Mudança</a>
+        <a class="underline" href="/checklist/">Checklist da Transição</a>
+      </div>
+    </footer>
   </section>
-</BaseLayout>
+
+  <script is:inline>
+    const $ = (id) => document.getElementById(id);
+
+    const search = $("citySearch");
+    const region = $("regionFilter");
+    const uf = $("ufFilter");
+    const noResults = $("noResults");
+    const count = $("resultsCount");
+
+    const tagAll = $("tagAll");
+    const tagPillar = $("tagPillar");
+    const tagComparativas = $("tagComparativas");
+    const clearAll = $("clearAll");
+
+    let activeTag = "all";
+
+    function setActiveTag(tag) {
+      activeTag = tag;
+      [tagAll, tagPillar, tagComparativas].forEach(btn => btn.style.opacity = "0.75");
+      if (tag === "all") tagAll.style.opacity = "1";
+      if (tag === "pillar") tagPillar.style.opacity = "1";
+      if (tag === "comparativas") tagComparativas.style.opacity = "1";
+      applyFilters();
+    }
+
+    function normalize(str) {
+      return (str || "").toString().toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
+    }
+
+    function applyFilters() {
+      const q = normalize(search?.value?.trim() || "");
+      const reg = region?.value || "all";
+      const st = uf?.value || "all";
+
+      const cards = Array.from(document.querySelectorAll(".city-card"));
+      let visible = 0;
+
+      cards.forEach(card => {
+        const name = normalize(card.getAttribute("data-name"));
+        const cardUf = card.getAttribute("data-uf") || "";
+        const cardReg = card.getAttribute("data-region") || "";
+        const tags = (card.getAttribute("data-tags") || "").split(",").filter(Boolean);
+
+        const matchText = !q || name.includes(q) || normalize(cardUf).includes(q) || normalize(cardReg).includes(q);
+        const matchRegion = reg === "all" || cardReg === reg;
+        const matchUf = st === "all" || cardUf === st;
+        const matchTag = activeTag === "all" || tags.includes(activeTag);
+
+        const show = matchText && matchRegion && matchUf && matchTag;
+        card.style.display = show ? "" : "none";
+        if (show) visible += 1;
+      });
+
+      if (count) count.textContent = String(visible);
+      if (noResults) noResults.classList.toggle("hidden", visible !== 0);
+    }
+
+    search?.addEventListener("input", applyFilters);
+    region?.addEventListener("change", applyFilters);
+    uf?.addEventListener("change", applyFilters);
+
+    tagAll?.addEventListener("click", () => setActiveTag("all"));
+    tagPillar?.addEventListener("click", () => setActiveTag("pillar"));
+    tagComparativas?.addEventListener("click", () => setActiveTag("comparativas"));
+
+    clearAll?.addEventListener("click", () => {
+      if (search) search.value = "";
+      if (region) region.value = "all";
+      if (uf) uf.value = "all";
+      setActiveTag("all");
+      applyFilters();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    setActiveTag("all");
+    applyFilters();
+  </script>
+</Layout>
