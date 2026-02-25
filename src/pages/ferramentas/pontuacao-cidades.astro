@@ -1,0 +1,272 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { CITY_METRICS_2026, CITY_METRICS_2027, DEFAULT_WEIGHTS, scoreCity, type Weights } from "../../data/rankingData";
+
+const title = "Sistema de Pontuação de Cidades (2026–2027) — Nova Raiz";
+const description =
+  "Ferramenta interativa: ajuste pesos (segurança, custo, internet, trabalho, saúde, educação) e gere um ranking. Base expandível para 2027.";
+
+const year = 2026 as const;
+
+function compute(year: 2026 | 2027, weights: Weights) {
+  const base = year === 2026 ? CITY_METRICS_2026 : CITY_METRICS_2027;
+  return base
+    .map((m) => {
+      const r = scoreCity(m, weights);
+      return { ...m, score: r.score };
+    })
+    .sort((a, b) => b.score - a.score);
+}
+
+const initial = compute(year, DEFAULT_WEIGHTS);
+const payload = {
+  years: [2026, 2027],
+  defaultWeights: DEFAULT_WEIGHTS,
+  data2026: CITY_METRICS_2026,
+  data2027: CITY_METRICS_2027,
+};
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="container mx-auto px-4 py-10">
+    <div class="max-w-3xl">
+      <h1 class="text-3xl md:text-4xl font-bold tracking-tight">Sistema de pontuação de cidades (2026–2027)</h1>
+      <p class="mt-3 text-lg text-neutral-700">
+        Ajuste os pesos e gere um ranking <strong>na sua lógica</strong>.
+        A base é <strong>expandível</strong>: você pode substituir/atualizar os dados em 2027 sem mexer na ferramenta.
+      </p>
+      <p class="mt-2 text-sm text-neutral-600">
+        Observação: índices 0–100 são normalizados (comparação relativa). População e PIB per capita são campos numéricos informativos.
+      </p>
+    </div>
+
+    <div class="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div class="lg:col-span-4">
+        <div class="rounded-2xl border bg-white p-5 shadow-sm">
+          <div class="flex items-center justify-between gap-3">
+            <h2 class="text-lg font-semibold">Configurar pesos</h2>
+            <div class="flex items-center gap-2">
+              <label class="text-sm text-neutral-600" for="yearSel">Ano</label>
+              <select id="yearSel" class="rounded-lg border px-2 py-1 text-sm">
+                <option value="2026" selected>2026</option>
+                <option value="2027">2027</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mt-4 space-y-4" id="weightsBox">
+            <div class="grid gap-2">
+              <div class="flex items-center justify-between text-sm"><span>Segurança</span><span id="w_safety">18</span></div>
+              <input id="i_safety" type="range" min="0" max="30" value="18" class="w-full" />
+            </div>
+            <div class="grid gap-2">
+              <div class="flex items-center justify-between text-sm"><span>Custo (menor é melhor)</span><span id="w_cost">14</span></div>
+              <input id="i_cost" type="range" min="0" max="30" value="14" class="w-full" />
+            </div>
+            <div class="grid gap-2">
+              <div class="flex items-center justify-between text-sm"><span>Internet</span><span id="w_internet">12</span></div>
+              <input id="i_internet" type="range" min="0" max="30" value="12" class="w-full" />
+            </div>
+            <div class="grid gap-2">
+              <div class="flex items-center justify-between text-sm"><span>Educação</span><span id="w_education">12</span></div>
+              <input id="i_education" type="range" min="0" max="30" value="12" class="w-full" />
+            </div>
+            <div class="grid gap-2">
+              <div class="flex items-center justify-between text-sm"><span>Saúde</span><span id="w_health">12</span></div>
+              <input id="i_health" type="range" min="0" max="30" value="12" class="w-full" />
+            </div>
+            <div class="grid gap-2">
+              <div class="flex items-center justify-between text-sm"><span>Emprego/Trabalho</span><span id="w_jobs">14</span></div>
+              <input id="i_jobs" type="range" min="0" max="30" value="14" class="w-full" />
+            </div>
+            <div class="grid gap-2">
+              <div class="flex items-center justify-between text-sm"><span>Mobilidade</span><span id="w_mobility">10</span></div>
+              <input id="i_mobility" type="range" min="0" max="30" value="10" class="w-full" />
+            </div>
+            <div class="grid gap-2">
+              <div class="flex items-center justify-between text-sm"><span>Clima</span><span id="w_climate">8</span></div>
+              <input id="i_climate" type="range" min="0" max="30" value="8" class="w-full" />
+            </div>
+
+            <div class="pt-3 flex flex-wrap gap-2">
+              <button id="btnReset" class="rounded-xl border px-4 py-2 text-sm font-medium hover:bg-neutral-50">Reset padrão</button>
+              <a href="/ranking/estados/" class="rounded-xl bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:opacity-90">Ver por estado</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6 rounded-2xl border bg-white p-5 shadow-sm">
+          <h3 class="text-base font-semibold">Como expandir para 2027</h3>
+          <ol class="mt-2 list-decimal pl-5 text-sm text-neutral-700 space-y-1">
+            <li>Abra <code class="px-1 rounded bg-neutral-100">src/data/rankingData.ts</code></li>
+            <li>Atualize <code class="px-1 rounded bg-neutral-100">CITY_METRICS_2027</code> (ou substitua a base inteira)</li>
+            <li>Commit no GitHub → Netlify publica automaticamente</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="lg:col-span-8">
+        <div class="rounded-2xl border bg-white p-5 shadow-sm">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div>
+              <h2 class="text-lg font-semibold">Ranking gerado</h2>
+              <p class="text-sm text-neutral-600">Ordenado por score (0–100). Clique numa linha para abrir a página pilar se existir.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <input id="q" class="w-full md:w-64 rounded-xl border px-3 py-2 text-sm" placeholder="Buscar cidade/UF..." />
+            </div>
+          </div>
+
+          <div class="mt-4 overflow-x-auto">
+            <table class="min-w-full text-sm">
+              <thead>
+                <tr class="text-left text-neutral-600 border-b">
+                  <th class="py-2 pr-4">#</th>
+                  <th class="py-2 pr-4">Cidade</th>
+                  <th class="py-2 pr-4">UF</th>
+                  <th class="py-2 pr-4">Região</th>
+                  <th class="py-2 pr-4">Score</th>
+                  <th class="py-2 pr-4">População</th>
+                  <th class="py-2 pr-4">PIB per capita</th>
+                </tr>
+              </thead>
+              <tbody id="tbody">
+                {initial.map((c, idx) => (
+                  <tr class="border-b hover:bg-neutral-50 cursor-pointer" data-city={`${c.city} ${c.state} ${c.region}`.toLowerCase()} data-href={`/blog/morar-em-${c.slug.replace(/-(sp|mg|rj|rs|sc|df|go|pb|ce|am|pa)$/,"")}-${c.state.toLowerCase()}-2026/`}>
+                    <td class="py-2 pr-4">{idx + 1}</td>
+                    <td class="py-2 pr-4 font-medium">{c.city}</td>
+                    <td class="py-2 pr-4">{c.state}</td>
+                    <td class="py-2 pr-4">{c.region}</td>
+                    <td class="py-2 pr-4">{c.score.toFixed(1)}</td>
+                    <td class="py-2 pr-4">{c.population?.toLocaleString("pt-BR") ?? "—"}</td>
+                    <td class="py-2 pr-4">{c.gdpPerCapitaBRL ? `R$ ${c.gdpPerCapitaBRL.toLocaleString("pt-BR")}` : "—"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p class="mt-3 text-xs text-neutral-500">Dica: se a página pilar ainda não existir, crie um post com slug correspondente e o link vai passar a funcionar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script is:inline>
+    const payload = {JSON.stringify(payload)};
+    const $ = (id) => document.getElementById(id);
+
+    const yearSel = $("yearSel");
+    const q = $("q");
+    const tbody = $("tbody");
+
+    const inputs = [
+      "safety","cost","internet","education","health","jobs","mobility","climate"
+    ].reduce((acc,k)=>{ acc[k] = $("i_"+k); return acc; }, {});
+
+    const labels = [
+      "safety","cost","internet","education","health","jobs","mobility","climate"
+    ].reduce((acc,k)=>{ acc[k] = $("w_"+k); return acc; }, {});
+
+    const fmtPop = (n) => (typeof n === "number" ? n.toLocaleString("pt-BR") : "—");
+    const fmtBRL = (n) => (typeof n === "number" ? ("R$ " + n.toLocaleString("pt-BR")) : "—");
+
+    function getWeights(){
+      return {
+        safety: Number(inputs.safety.value),
+        cost: Number(inputs.cost.value),
+        internet: Number(inputs.internet.value),
+        education: Number(inputs.education.value),
+        health: Number(inputs.health.value),
+        jobs: Number(inputs.jobs.value),
+        mobility: Number(inputs.mobility.value),
+        climate: Number(inputs.climate.value),
+      };
+    }
+
+    function renderWeights(){
+      for (const k in inputs) labels[k].textContent = inputs[k].value;
+    }
+
+    function safe(n, fallback=50){
+      return (typeof n === "number" && Number.isFinite(n)) ? n : fallback;
+    }
+
+    function score(metric, w){
+      const costScore = 100 - safe(metric.costOfLivingIndex, 60);
+      const parts = [
+        ["safety", w.safety, safe(metric.safetyIndex)],
+        ["cost", w.cost, costScore],
+        ["internet", w.internet, safe(metric.internetIndex)],
+        ["education", w.education, safe(metric.educationIndex)],
+        ["health", w.health, safe(metric.healthIndex)],
+        ["jobs", w.jobs, safe(metric.jobsIndex)],
+        ["mobility", w.mobility, safe(metric.mobilityIndex)],
+        ["climate", w.climate, safe(metric.climateComfortIndex)],
+      ];
+      const totalW = parts.reduce((a,p)=>a+p[1],0) || 1;
+      const weighted = parts.reduce((a,p)=>a + p[1]*p[2],0);
+      return weighted / totalW;
+    }
+
+    function buildRows(){
+      const year = Number(yearSel.value);
+      const data = year === 2026 ? payload.data2026 : payload.data2027;
+      const w = getWeights();
+
+      const ranked = data.map((m)=>({ ...m, score: score(m,w)})).sort((a,b)=>b.score-a.score);
+
+      tbody.innerHTML = ranked.map((c, idx) => {
+        const dataCity = (c.city + " " + c.state + " " + c.region).toLowerCase();
+        const href = "/blog/morar-em-" + c.slug.replace(/-(sp|mg|rj|rs|sc|df|go|pb|ce|am|pa)$/,"") + "-" + c.state.toLowerCase() + "-2026/";
+        return `
+          <tr class="border-b hover:bg-neutral-50 cursor-pointer" data-city="${dataCity}" data-href="${href}">
+            <td class="py-2 pr-4">${idx+1}</td>
+            <td class="py-2 pr-4 font-medium">${c.city}</td>
+            <td class="py-2 pr-4">${c.state}</td>
+            <td class="py-2 pr-4">${c.region}</td>
+            <td class="py-2 pr-4">${c.score.toFixed(1)}</td>
+            <td class="py-2 pr-4">${fmtPop(c.population)}</td>
+            <td class="py-2 pr-4">${fmtBRL(c.gdpPerCapitaBRL)}</td>
+          </tr>`;
+      }).join("");
+      applyFilter();
+      bindRowClicks();
+    }
+
+    function applyFilter(){
+      const term = (q.value || "").trim().toLowerCase();
+      const rows = tbody.querySelectorAll("tr");
+      rows.forEach((tr)=>{
+        const hay = tr.getAttribute("data-city") || "";
+        tr.style.display = hay.includes(term) ? "" : "none";
+      });
+    }
+
+    function bindRowClicks(){
+      tbody.querySelectorAll("tr").forEach((tr)=>{
+        tr.addEventListener("click", ()=>{
+          const href = tr.getAttribute("data-href");
+          if (href) window.location.href = href;
+        });
+      });
+    }
+
+    function reset(){
+      const w = payload.defaultWeights;
+      for (const k in w){
+        inputs[k].value = String(w[k]);
+      }
+      renderWeights();
+      buildRows();
+    }
+
+    // listeners
+    yearSel.addEventListener("change", buildRows);
+    q.addEventListener("input", applyFilter);
+    Object.values(inputs).forEach((el)=> el.addEventListener("input", ()=>{ renderWeights(); buildRows(); }));
+    $("btnReset").addEventListener("click", (e)=>{ e.preventDefault(); reset(); });
+
+    renderWeights();
+    bindRowClicks();
+  </script>
+</BaseLayout>
