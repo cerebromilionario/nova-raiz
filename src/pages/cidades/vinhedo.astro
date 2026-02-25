@@ -1,182 +1,430 @@
-<section class="space-y-10">
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
 
-<div class="bg-gray-50 p-6 rounded-xl border">
-<h1 class="text-4xl font-bold mb-4">O Guia Definitivo de Vinhedo (SP) 2026</h1>
+const site = "https://novaraiz.netlify.app";
+const canonical = `${site}/cidades/vinhedo`;
 
-<p class="text-lg leading-relaxed">
-<strong>Vinhedo</strong> não é apenas mais uma cidade do interior paulista.
-Ela é um microterritório de alta renda, localização estratégica e forte valorização imobiliária dentro do eixo econômico mais relevante do Brasil.
-</p>
+const title = "O Guia Definitivo de Vinhedo (SP) 2026";
+const description = "Análise completa e prática de Vinhedo: mapa econômico, custo de vida, bairros e condomínios, escolas, saúde, segurança, internet, mobilidade e projeções até 2030.";
 
-<p class="mt-4">
-Este guia é técnico. Aqui você encontrará análise urbana, econômica, imobiliária e projeções estruturais até 2030.
-</p>
-</div>
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Início", "item": `${site}/` },
+    { "@type": "ListItem", "position": 2, "name": "Cidades", "item": `${site}/cidades` },
+    { "@type": "ListItem", "position": 3, "name": title, "item": canonical }
+  ]
+};
 
-<hr class="my-8"/>
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": title,
+  "description": description,
+  "mainEntityOfPage": canonical,
+  "url": canonical,
+  "author": { "@type": "Organization", "name": "Nova Raiz", "url": site },
+  "publisher": { "@type": "Organization", "name": "Nova Raiz", "url": site }
+};
 
-<!-- BLOCO POSICIONAMENTO -->
+const toc = [
+  { href: "#resumo", label: "Resumo executivo" },
+  { href: "#posicionamento", label: "Posicionamento no eixo econômico" },
+  { href: "#perfil", label: "Perfil da cidade e demografia" },
+  { href: "#imoveis", label: "Imóveis: bairros e condomínios" },
+  { href: "#infra", label: "Infraestrutura: escolas, saúde, internet" },
+  { href: "#seguranca", label: "Segurança: como pensar por território" },
+  { href: "#mobilidade", label: "Mobilidade e rotina real" },
+  { href: "#custo", label: "Custo de vida: 3 cenários completos" },
+  { href: "#trabalho", label: "Trabalho e renda: onde está o dinheiro" },
+  { href: "#comparacao", label: "Vinhedo vs Valinhos vs Jundiaí" },
+  { href: "#2030", label: "Projeções até 2030" },
+  { href: "#para-quem", label: "Para quem faz sentido (e para quem não)" },
+  { href: "#checklist", label: "Checklist final" }
+];
+---
 
-<h2 class="text-2xl font-semibold">1. Posicionamento Estratégico no Mapa Econômico Brasileiro</h2>
+<BaseLayout title={`${title} — Nova Raiz`} description={description} canonical={canonical}>
+  <article class="py-10 md:py-14">
+    <div class="mx-auto" style="max-width: var(--contentw);">
+      <nav aria-label="Breadcrumb" class="text-sm" style="color: var(--muted);">
+        <ol class="flex flex-wrap items-center gap-2">
+          <li><a class="underline" href="/">Início</a></li>
+          <li aria-hidden="true">›</li>
+          <li><a class="underline" href="/cidades">Cidades</a></li>
+          <li aria-hidden="true">›</li>
+          <li><span class="font-semibold" style="color: var(--text);">Vinhedo</span></li>
+        </ol>
+      </nav>
 
-<div class="bg-white p-6 rounded-xl shadow-sm border">
-<ul class="list-disc ml-6 space-y-2">
-<li>75 km da capital São Paulo</li>
-<li>20 km de Campinas</li>
-<li>15 km de Jundiaí</li>
-<li>30 km do Aeroporto Internacional de Viracopos</li>
-</ul>
+      <header class="mt-6">
+        <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">Guia definitivo • 2026</div>
+        <h1 class="mt-2 text-4xl md:text-5xl leading-tight" style="font-family:'Playfair Display', serif;">{title}</h1>
+        <p class="mt-4 text-lg leading-relaxed" style="color: var(--muted);">
+          Vinhedo é um dos casos mais interessantes do “interior premium”: pouca área, alta renda, condomínios fortes e uma posição logística
+          rara entre Campinas, Jundiaí e São Paulo. Este guia organiza o que importa de verdade — sem romantização.
+        </p>
 
-<p class="mt-4">
-Inserida no eixo Anhanguera–Bandeirantes, Vinhedo está dentro do corredor mais industrializado do país.
-Isso significa acesso direto a polos de logística, tecnologia, indústria e serviços corporativos.
-</p>
-</div>
+        <div class="mt-7 grid gap-4 md:grid-cols-3">
+          <div class="rounded-3xl border p-5" style="border-color: var(--border); background: var(--surface);">
+            <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">Leitura rápida</div>
+            <div class="mt-2 text-sm" style="color: var(--muted);">
+              <strong style="color: var(--text);">Use este guia</strong> para decidir moradia, orçamento e rotina. Se você já está em mudança, pule para
+              <a class="underline" href="#custo">Custo de vida</a> e <a class="underline" href="#checklist">Checklist</a>.
+            </div>
+          </div>
 
-<hr class="my-8"/>
+          <div class="rounded-3xl border p-5" style="border-color: var(--border); background: var(--card);">
+            <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">Links essenciais</div>
+            <ul class="mt-3 space-y-2 text-sm" style="color: var(--muted);">
+              <li><a class="underline" href="/mudar-para-o-interior-guia-definitivo">Guia definitivo da mudança</a></li>
+              <li><a class="underline" href="/checklist">Checklist financeiro</a></li>
+              <li><a class="underline" href="/blog/checklist-escolher-cidade-interior">Checklist de escolha de cidade</a></li>
+            </ul>
+          </div>
 
-<h2 class="text-2xl font-semibold">2. Perfil Demográfico e Estrutura Social</h2>
+          <div class="rounded-3xl border p-5" style="border-color: var(--border); background: var(--surface);">
+            <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">Como ler</div>
+            <div class="mt-2 text-sm" style="color: var(--muted);">
+              Este guia é prático: você vai encontrar <strong style="color: var(--text);">cenários de orçamento</strong>, <strong style="color: var(--text);">mapa de bairros</strong>
+              e <strong style="color: var(--text);">critérios de decisão</strong>. Onde houver números, tratamos como <strong style="color: var(--text);">faixas</strong> (para não enganar).
+            </div>
+          </div>
+        </div>
+      </header>
 
-<div class="bg-gray-50 p-6 rounded-xl border">
-<ul class="list-disc ml-6 space-y-2">
-<li>População estimada: ~80 mil habitantes</li>
-<li>Alta renda média</li>
-<li>Baixa densidade urbana</li>
-<li>Predominância de condomínios fechados</li>
-<li>Perfil familiar consolidado</li>
-</ul>
+      <section class="mt-10 rounded-3xl border p-6 md:p-8" style="border-color: var(--border); background: var(--surface);" id="resumo">
+        <div class="flex items-center justify-between gap-3">
+          <h2 class="text-2xl md:text-3xl" style="font-family:'Playfair Display', serif;">Resumo executivo</h2>
+          <a class="text-sm underline" href="#checklist">Ir para o checklist</a>
+        </div>
 
-<p class="mt-4">
-Vinhedo não tem perfil industrial pesado.
-É cidade residencial premium.
-</p>
-</div>
+        <div class="mt-5 grid gap-5 md:grid-cols-2">
+          <div class="rounded-2xl border p-5" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">Para quem Vinhedo costuma funcionar</div>
+            <ul class="mt-3 list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
+              <li>Famílias que querem <strong style="color: var(--text);">segurança + estrutura</strong> sem abrir mão da região de Campinas.</li>
+              <li>Profissionais híbridos (1–3 idas/semana) para Campinas, Jundiaí ou São Paulo.</li>
+              <li>Pessoas que valorizam condomínio, áreas verdes e rotina previsível.</li>
+            </ul>
+          </div>
 
-<hr class="my-8"/>
+          <div class="rounded-2xl border p-5" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">Onde mora a pegadinha</div>
+            <ul class="mt-3 list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
+              <li>Vinhedo raramente é “barata”. Ela troca caos urbano por <strong style="color: var(--text);">custo estrutural</strong>.</li>
+              <li>Transporte público é limitado: <strong style="color: var(--text);">carro</strong> costuma ser necessário.</li>
+              <li>O mercado local é bom, mas parte relevante da renda vem do eixo Campinas–SP.</li>
+            </ul>
+          </div>
+        </div>
 
-<h2 class="text-2xl font-semibold">3. Mercado Imobiliário – Estrutura e Preços</h2>
+        <div class="mt-6 rounded-2xl border p-5" style="border-color: var(--border); background: var(--bg);">
+          <div class="text-sm font-semibold">Decisão em 30 segundos</div>
+          <p class="mt-2 text-sm" style="color: var(--muted);">
+            Se você quer o interior com padrão alto, condomínios consolidados, acesso rápido a Campinas/Jundiaí e aceita pagar por isso,
+            Vinhedo é candidata forte. Se seu objetivo é reduzir drasticamente o custo de vida ou depender de transporte público,
+            vale olhar outras cidades.
+          </p>
+        </div>
+      </section>
 
-<div class="bg-white p-6 rounded-xl shadow-sm border">
-<h3 class="font-semibold text-lg mb-2">Faixas de Preço (2026)</h3>
+      <section class="mt-10 rounded-3xl border p-6 md:p-8" style="border-color: var(--border); background: var(--surface);">
+        <h2 class="text-2xl md:text-3xl" style="font-family:'Playfair Display', serif;">Navegação do guia</h2>
+        <div class="mt-4 grid gap-3 sm:grid-cols-2">
+          {toc.map((i) => (
+            <a class="rounded-2xl border px-4 py-3 text-sm hover:opacity-90"
+              style="border-color: var(--border); background: var(--card);" href={i.href}>
+              {i.label}
+            </a>
+          ))}
+        </div>
+      </section>
 
-<ul class="list-disc ml-6 space-y-2">
-<li>Casa em condomínio: R$ 1,2 mi – R$ 4 mi+</li>
-<li>Apartamento 2 quartos: R$ 600 mil – R$ 1,2 mi</li>
-<li>Aluguel casa condomínio: R$ 4.000 – R$ 12.000+</li>
-</ul>
+      <div class="prose prose-lg mt-12 max-w-none"
+        style="--tw-prose-body: var(--text); --tw-prose-headings: var(--text); --tw-prose-links: var(--primary);">
 
-<p class="mt-4">
-Não é mercado popular.
-É mercado de renda consolidada.
-</p>
-</div>
+        <h2 id="posicionamento">1) Onde Vinhedo está no mapa econômico (de verdade)</h2>
+        <p>
+          Vinhedo fica na Região Metropolitana de Campinas, dentro do eixo Anhanguera–Bandeirantes. Em termos de estratégia, isso é quase um “atalho”
+          entre três mercados: Campinas (tecnologia, saúde, universidades), Jundiaí (serviços e indústria) e São Paulo (o motor do país).
+        </p>
+        <p>
+          O que muda sua vida prática: acesso rodoviário rápido, possibilidade de trabalho híbrido, e um ecossistema de serviços maior do que a cidade
+          aparenta pelo tamanho.
+        </p>
 
-<hr class="my-8"/>
+        <h3>Distâncias que importam (rotina real)</h3>
+        <ul>
+          <li>Campinas: ~20–35 min dependendo do ponto de saída e horário</li>
+          <li>Jundiaí: ~15–30 min</li>
+          <li>São Paulo (Zona Oeste): ~1h15 a 2h+ no pico</li>
+          <li>Viracopos: ~25–45 min</li>
+        </ul>
+        <p>
+          Isso faz Vinhedo ser uma escolha típica de quem quer “cidade pequena” sem abrir mão da região mais rica do interior.
+        </p>
 
-<h2 class="text-2xl font-semibold">4. Estrutura Urbana</h2>
+        <h2 id="perfil">2) Perfil da cidade: quem mora, como vive, o que esperar</h2>
+        <p>
+          Vinhedo tem porte médio-pequeno, mas comportamento de cidade de renda alta. O desenho urbano é marcado por condomínios horizontais, baixa
+          densidade e um comércio que atende bem o cotidiano, mas que se apoia em Campinas/Jundiaí para demandas mais sofisticadas.
+        </p>
+        <p>
+          Se você quer entender Vinhedo rápido, pense assim: é uma cidade residencial com “músculo” de metrópole próxima.
+        </p>
 
-<div class="grid md:grid-cols-3 gap-6">
+        <h3>Clima social e estilo de vida</h3>
+        <ul>
+          <li>Perfil familiar forte (rotina de escola, esporte, lazer de condomínio)</li>
+          <li>Vida noturna discreta (programas mais gastronômicos do que “balada”)</li>
+          <li>Rede social mais fechada em alguns círculos (condomínios e escolas)</li>
+        </ul>
 
-<div class="p-6 border rounded-xl">
-<h3 class="font-semibold mb-2">Centro Tradicional</h3>
-<ul class="list-disc ml-6 space-y-1">
-<li>Comércio forte</li>
-<li>Serviços públicos</li>
-<li>Menor valorização que condomínios</li>
-</ul>
-</div>
+        <h2 id="imoveis">3) Imóveis: bairros, condomínios e o mapa que ninguém te entrega</h2>
+        <p>
+          A pergunta “onde morar em Vinhedo?” é 80% da decisão. A cidade é heterogênea: um centro mais tradicional, regiões de condomínios (o cartão
+          de visitas), e áreas em expansão com novos loteamentos/verticalização.
+        </p>
 
-<div class="p-6 border rounded-xl">
-<h3 class="font-semibold mb-2">Condomínios Fechados</h3>
-<ul class="list-disc ml-6 space-y-1">
-<li>Segurança 24h</li>
-<li>Lotes amplos</li>
-<li>Alta valorização</li>
-</ul>
-</div>
+        <h3>3.1 Centro e entorno tradicional</h3>
+        <p>
+          É onde você encontra comércio mais denso, serviços e imóveis mais antigos. Em geral, custo menor do que condomínios premium, com a vantagem
+          da proximidade — e a desvantagem de menor “blindagem” e menor padrão médio.
+        </p>
+        <p><strong>Para quem faz sentido:</strong> quem quer mobilidade local, resolver a vida a pé/rápido e aceita um padrão menos exclusivo.</p>
 
-<div class="p-6 border rounded-xl">
-<h3 class="font-semibold mb-2">Áreas de Expansão</h3>
-<ul class="list-disc ml-6 space-y-1">
-<li>Loteamentos planejados</li>
-<li>Empreendimentos verticais</li>
-<li>Potencial de valorização</li>
-</ul>
-</div>
+        <h3>3.2 Eixo de condomínios horizontais</h3>
+        <p>
+          Aqui está o motivo de Vinhedo ter a fama que tem. Condomínios com lotes amplos, casas maiores, segurança e lazer interno. Exemplos conhecidos
+          (nomes podem variar por fase e setor): Vista Alegre, Marambaia, São Joaquim, Recanto dos Paturis.
+        </p>
+        <p><strong>Para quem faz sentido:</strong> famílias, quem prioriza segurança, quem valoriza lazer interno e rotina previsível.</p>
 
-</div>
+        <h3>3.3 Áreas de expansão e novos empreendimentos</h3>
+        <p>
+          Regiões onde surgem loteamentos e alguns prédios. É onde, normalmente, aparece o melhor “custo-benefício relativo” dentro de Vinhedo, porque
+          você compra mais cedo em áreas de transformação.
+        </p>
 
-<hr class="my-8"/>
+        <h3>Tabela: leitura rápida de moradia</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Zona</th>
+              <th>Melhor para</th>
+              <th>Pontos fortes</th>
+              <th>Atenções</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Centro/entorno</td>
+              <td>Vida prática</td>
+              <td>Serviços perto</td>
+              <td>Menos exclusivo</td>
+            </tr>
+            <tr>
+              <td>Condomínios</td>
+              <td>Família/segurança</td>
+              <td>Lazer, segurança</td>
+              <td>Condomínio + manutenção</td>
+            </tr>
+            <tr>
+              <td>Expansão</td>
+              <td>Custo-benefício</td>
+              <td>Potencial de valorização</td>
+              <td>Infra em consolidação</td>
+            </tr>
+          </tbody>
+        </table>
 
-<h2 class="text-2xl font-semibold">5. Mobilidade e Logística</h2>
+        <h2 id="infra">4) Infraestrutura: escolas, saúde e internet (sem enrolação)</h2>
+        <h3>4.1 Educação</h3>
+        <p>
+          Vinhedo costuma ser escolhida por famílias por causa de uma combinação: rede local organizada + proximidade de colégios fortes da região.
+          O ponto-chave é: você não precisa “apostar” tudo em uma única instituição — você tem raio de opções.
+        </p>
+        <p>
+          <strong>Estratégia prática:</strong> selecione 3 escolas possíveis (uma “dos sonhos”, uma “boa e viável”, e uma “plano B”), e faça visita em horário
+          de entrada/saída. Isso revela trânsito, dinâmica do bairro e rotina.
+        </p>
 
-<div class="bg-gray-50 p-6 rounded-xl border">
-<ul class="list-disc ml-6 space-y-2">
-<li>Campinas: 30–40 min</li>
-<li>Jundiaí: 20–30 min</li>
-<li>São Paulo: 1h15–2h (dependendo do horário)</li>
-</ul>
+        <h3>4.2 Saúde</h3>
+        <p>
+          Para demandas do dia a dia (consultas, exames, clínicas), a cidade atende. Para alta complexidade, a região (Campinas/Jundiaí) vira seu “plano A”.
+          A pergunta correta não é “tem tudo em Vinhedo?”, mas sim “qual é o tempo e a qualidade do acesso à rede regional?”.
+        </p>
 
-<p class="mt-4">
-Cidade dependente de carro.
-Estrutura rodoviária é o principal eixo de mobilidade.
-</p>
-</div>
+        <h3>4.3 Internet</h3>
+        <p>
+          Vinhedo tende a ter boa oferta de fibra em áreas mais consolidadas, mas isso muda por rua/condomínio. A forma certa de validar:
+        </p>
+        <ul>
+          <li>Peça o CEP exato do imóvel e simule instalação com 2–3 operadoras.</li>
+          <li>Se for condomínio, pergunte quais operadoras já atendem a portaria.</li>
+          <li>Para home office crítico: tenha plano B (4G/5G ou Starlink) para contingência.</li>
+        </ul>
 
-<hr class="my-8"/>
+        <h2 id="seguranca">5) Segurança: por que “a cidade é segura” é pouco</h2>
+        <p>
+          Vinhedo é frequentemente percebida como segura, mas o que protege de fato é a combinação de baixa densidade, perfil socioeconômico e a presença
+          de condomínios com controle de acesso. Na prática, existem “microterritórios” com comportamentos diferentes.
+        </p>
+        <p>
+          <strong>Como avaliar segurança do jeito certo:</strong> visite o bairro em 3 horários (manhã, fim da tarde, noite), observe movimento, comércio,
+          iluminação e sensação de circulação. Não confie apenas em impressão de um único dia.
+        </p>
 
-<h2 class="text-2xl font-semibold">6. Custo de Vida Estrutural</h2>
+        <h2 id="mobilidade">6) Mobilidade: o custo invisível (tempo + carro + energia)</h2>
+        <p>
+          Em Vinhedo, o carro deixa de ser “opção” e vira “infra”. O custo invisível tem três camadas: tempo (deslocamentos), combustível/pedágio e energia
+          (casas maiores, ar-condicionado, piscina). Quando você coloca tudo na conta, o “interior” pode ficar parecido com capital.
+        </p>
+        <h3>Rotina híbrida recomendada</h3>
+        <ul>
+          <li>Se você vai a São Paulo: prefira 1–2 dias/semana e fuja de pico. Planeje janela de saída.</li>
+          <li>Se você vai a Campinas/Jundiaí: 2–3 dias/semana é mais confortável.</li>
+          <li>Se você vai todos os dias para SP: considere uma estratégia de “semi-base” (hotel/flat 1 noite) em semanas intensas.</li>
+        </ul>
 
-<div class="bg-white p-6 rounded-xl shadow-sm border">
-<h3 class="font-semibold">Perfil Condomínio</h3>
-<ul class="list-disc ml-6 space-y-1">
-<li>Moradia: R$ 6.000–12.000</li>
-<li>Condomínio: R$ 800–2.000</li>
-<li>Escola privada: R$ 1.500–3.000</li>
-</ul>
+        <h2 id="custo">7) Custo de vida em Vinhedo: 3 cenários completos</h2>
+        <p>
+          A melhor forma de não se frustrar é enxergar Vinhedo como um pacote: moradia + carro + escola + plano de saúde + manutenção.
+          Abaixo, cenários típicos (faixas) para você calibrar.
+        </p>
 
-<h3 class="font-semibold mt-6">Perfil Apartamento</h3>
-<ul class="list-disc ml-6 space-y-1">
-<li>Moradia: R$ 2.500–4.500</li>
-<li>Mercado: R$ 1.500–2.500</li>
-<li>Transporte: R$ 1.000–2.000</li>
-</ul>
-</div>
+        <h3>Cenário A — Solteiro(a) / casal sem filhos (apartamento)</h3>
+        <table>
+          <thead>
+            <tr><th>Item</th><th>Faixa mensal (R$)</th><th>Notas</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Aluguel + condomínio</td><td>2.800 – 5.000</td><td>varia muito por localização/idade do prédio</td></tr>
+            <tr><td>Energia + água + gás</td><td>350 – 800</td><td>picos no verão</td></tr>
+            <tr><td>Internet</td><td>120 – 220</td><td>fibra quando disponível</td></tr>
+            <tr><td>Mercado</td><td>1.500 – 2.800</td><td>depende do padrão</td></tr>
+            <tr><td>Carro (combustível + manutenção)</td><td>900 – 2.000</td><td>sem contar financiamento</td></tr>
+            <tr><td>Saúde (plano/particular)</td><td>600 – 1.500</td><td>por pessoa</td></tr>
+            <tr><td>Lazer</td><td>400 – 1.200</td><td>perfil da família</td></tr>
+          </tbody>
+        </table>
 
-<hr class="my-8"/>
+        <h3>Cenário B — Família com 1 filho (casa em condomínio “bom”) </h3>
+        <table>
+          <thead>
+            <tr><th>Item</th><th>Faixa mensal (R$)</th><th>Notas</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Aluguel</td><td>6.000 – 12.000</td><td>casa varia por metragem e condomínio</td></tr>
+            <tr><td>Condomínio</td><td>800 – 2.000</td><td>pode subir conforme infraestrutura</td></tr>
+            <tr><td>Energia + água + gás</td><td>700 – 1.800</td><td>piscina e ar pesam</td></tr>
+            <tr><td>Internet</td><td>150 – 300</td><td>se precisar redundância, some plano B</td></tr>
+            <tr><td>Mercado</td><td>2.300 – 4.200</td><td>faixa típica família</td></tr>
+            <tr><td>Escola</td><td>1.500 – 3.500</td><td>por filho (varia por proposta)</td></tr>
+            <tr><td>Saúde</td><td>2.000 – 5.000</td><td>família completa (varia por idade/plano)</td></tr>
+            <tr><td>Carro(s)</td><td>1.800 – 4.000</td><td>quando há 2 carros, custo sobe rápido</td></tr>
+          </tbody>
+        </table>
 
-<h2 class="text-2xl font-semibold">7. Projeção até 2030</h2>
+        <h3>Cenário C — Família com 2 filhos (condomínio premium + rotina intensa)</h3>
+        <p>
+          Aqui, o “interior premium” aparece: 2 carros, escola forte, lazer e manutenção. É o cenário onde Vinhedo faz mais sentido
+          para quem já tem renda consolidada.
+        </p>
+        <ul>
+          <li><strong>Orçamento típico</strong>: tende a ficar na faixa de <strong>R$ 18k – R$ 35k/mês</strong> (dependendo de escola, casa e padrão de consumo).</li>
+          <li><strong>Risco comum</strong>: subestimar manutenção (jardinagem, piscina, pequenos reparos, seguro, upgrades).</li>
+        </ul>
 
-<div class="bg-gray-50 p-6 rounded-xl border">
-<ul class="list-disc ml-6 space-y-2">
-<li>Valorização estável</li>
-<li>Crescimento moderado</li>
-<li>Maior integração com Campinas</li>
-<li>Expansão de condomínios médios</li>
-</ul>
+        <h2 id="trabalho">8) Trabalho e renda: onde está o dinheiro (e o que isso muda)</h2>
+        <p>
+          A dinâmica de renda em Vinhedo costuma se apoiar em quatro fontes: (1) profissionais executivos e híbridos, (2) profissionais liberais (saúde,
+          advocacia, consultoria), (3) negócios regionais e (4) ecossistema de serviços e educação.
+        </p>
+        <p>
+          A cidade ganha quando Campinas e São Paulo estão fortes — por isso, em períodos bons, o mercado imobiliário aquece.
+        </p>
 
-<p class="mt-4">
-Vinhedo é cidade de estabilidade.
-Não é cidade de explosão especulativa.
-</p>
-</div>
+        <h2 id="comparacao">9) Vinhedo vs Valinhos vs Jundiaí: qual é a “cidade certa”</h2>
+        <p>
+          Essa comparação é o trio clássico. Em vez de “melhor/pior”, pense por objetivo.
+        </p>
+        <table>
+          <thead>
+            <tr><th>Objetivo</th><th>Melhor candidata</th><th>Por quê</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Condomínios e padrão residencial</td><td>Vinhedo</td><td>marca forte de condomínios e perfil premium</td></tr>
+            <tr><td>Integração com Campinas</td><td>Valinhos</td><td>“ponte” natural com Campinas</td></tr>
+            <tr><td>Trabalho e serviços urbanos</td><td>Jundiaí</td><td>cidade maior, mercado mais amplo</td></tr>
+            <tr><td>Vida prática sem carro (relativa)</td><td>Jundiaí/Valinhos</td><td>maior densidade e rede urbana</td></tr>
+          </tbody>
+        </table>
 
-<hr class="my-8"/>
+        <h2 id="2030">10) Projeções até 2030: o que tende a acontecer</h2>
+        <p>
+          Vinhedo tende a seguir uma linha de <strong>crescimento moderado</strong> e <strong>valorização estável</strong> (com picos em ciclos imobiliários).
+          Os vetores mais prováveis:
+        </p>
+        <ul>
+          <li>Trabalho híbrido sustentando demanda por cidades “base residencial”</li>
+          <li>Expansão de serviços premium e educação</li>
+          <li>Maior pressão por mobilidade/rodovias e solução de gargalos</li>
+          <li>Verticalização pontual em áreas de expansão</li>
+        </ul>
+        <p>
+          O risco macro principal é o mercado de alto padrão esfriar: Vinhedo sente antes do interior “popular”.
+        </p>
 
-<div class="bg-black text-white p-8 rounded-xl">
-<h2 class="text-2xl font-semibold mb-4">Conclusão Final</h2>
+        <h2 id="para-quem">11) Para quem Vinhedo faz sentido (e para quem não)</h2>
+        <h3>Faz sentido para</h3>
+        <ul>
+          <li>Quem prioriza segurança e rotina familiar</li>
+          <li>Quem quer morar bem e aceitar custo estrutural</li>
+          <li>Quem precisa estar perto de Campinas/Jundiaí e às vezes SP</li>
+        </ul>
+        <h3>Provavelmente não é para</h3>
+        <ul>
+          <li>Quem quer reduzir custo de vida a qualquer custo</li>
+          <li>Quem depende 100% de transporte público</li>
+          <li>Quem busca vida noturna intensa e diversidade urbana de metrópole</li>
+        </ul>
 
-<p>
-Vinhedo entrega segurança, padrão elevado e proximidade metropolitana.
-</p>
+        <h2 id="checklist">12) Checklist final: decisão em 7 passos</h2>
+        <ol>
+          <li><strong>Defina seu objetivo</strong> (segurança? escola? acesso a Campinas/SP? custo?).</li>
+          <li><strong>Escolha o território</strong> (centro x condomínio x expansão) antes de escolher o imóvel.</li>
+          <li><strong>Simule 3 orçamentos</strong> (A/B/C) e inclua manutenção + carro.</li>
+          <li><strong>Teste a rotina</strong> (2 dias úteis + 1 noite) com deslocamentos reais.</li>
+          <li><strong>Valide internet</strong> por CEP e confirme com o condomínio/rua.</li>
+          <li><strong>Defina escola e saúde</strong> com plano A/B (Vinhedo + Campinas/Jundiaí).</li>
+          <li><strong>Feche com contingência</strong>: reserva de 3–6 meses para ajustes da mudança.</li>
+        </ol>
 
-<p class="mt-2">
-Mas exige renda consolidada e dependência de carro.
-</p>
+        <p>
+          Próximo passo: se você está em fase de execução, use o
+          <a href="/checklist">Checklist financeiro</a> e, antes de assinar qualquer contrato, leia o
+          <a href="/mudar-para-o-interior-guia-definitivo">Guia definitivo da mudança</a>.
+        </p>
+      </div>
 
-<p class="mt-4 font-semibold">
-É cidade de estabilidade e conforto.
-</p>
-</div>
+      <section class="mt-14 rounded-3xl border p-6 md:p-8" style="border-color: var(--border); background: var(--surface);">
+        <div class="text-sm font-semibold" style="color: var(--muted);">Continue a trilha</div>
+        <ul class="mt-4 space-y-3 text-sm">
+          <li><a class="underline" href="/blog/quanto-custa-mudar-para-o-interior">Quanto custa mudar para o interior? (3 cenários)</a></li>
+          <li><a class="underline" href="/blog/custo-de-vida-interior-vs-capital">Custo de vida: interior vs capital (tabela)</a></li>
+          <li><a class="underline" href="/blog/checklist-escolher-cidade-interior">Checklist: como escolher a cidade do interior</a></li>
+        </ul>
+      </section>
+    </div>
 
-</section>
+    <script type="application/ld+json">
+      {JSON.stringify(articleJsonLd)}
+    </script>
+    <script type="application/ld+json">
+      {JSON.stringify(breadcrumbJsonLd)}
+    </script>
+  </article>
+</BaseLayout>
