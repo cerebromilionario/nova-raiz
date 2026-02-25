@@ -1,0 +1,541 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const site = "https://novaraiz.netlify.app";
+const canonical = `${site}/cidades/pocos-de-caldas`;
+
+const title = "O Guia Definitivo de Poços de Caldas (MG) 2026";
+const description = "Guia pilar completo de Poços de Caldas: bairros e mapa real, custo de vida por cenários, trabalho e renda (turismo, serviços e remoto), saúde e educação, segurança, internet, clima de altitude, mobilidade e checklist para decidir a mudança.";
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Início", "item": `${site}/` },
+    { "@type": "ListItem", "position": 2, "name": "Cidades", "item": `${site}/cidades` },
+    { "@type": "ListItem", "position": 3, "name": title, "item": canonical }
+  ]
+};
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": title,
+  "description": description,
+  "mainEntityOfPage": canonical,
+  "url": canonical,
+  "author": { "@type": "Organization", "name": "Nova Raiz", "url": site },
+  "publisher": { "@type": "Organization", "name": "Nova Raiz", "url": site }
+};
+
+const toc = [
+  { href: "#resumo", label: "Resumo executivo" },
+  { href: "#mapa", label: "Mapa real: Serra, acessos e logística" },
+  { href: "#perfil", label: "Como Poços funciona (morar x visitar)" },
+  { href: "#bairros", label: "Bairros: onde faz sentido morar" },
+  { href: "#imoveis", label: "Imóveis: preços, tipos e pegadinhas" },
+  { href: "#custo", label: "Custo de vida: 3 cenários + tabela" },
+  { href: "#trabalho", label: "Trabalho e renda: turismo, serviços e remoto" },
+  { href: "#infra", label: "Infra: saúde, educação, compras" },
+  { href: "#internet", label: "Internet, energia e rotina de home office" },
+  { href: "#clima", label: "Clima de altitude: frio, umidade e saúde" },
+  { href: "#seguranca", label: "Segurança: leitura por territórios" },
+  { href: "#mobilidade", label: "Mobilidade: carro, a pé, bike, intermunicipal" },
+  { href: "#2030", label: "Projeções até 2030" },
+  { href: "#para-quem", label: "Para quem faz sentido (e para quem não)" },
+  { href: "#checklist", label: "Checklist final" }
+];
+---
+
+<BaseLayout title={`${title} — Nova Raiz`} description={description} canonical={canonical}>
+  <article class="py-10 md:py-14">
+    <div class="mx-auto" style="max-width: var(--contentw);">
+      <nav aria-label="Breadcrumb" class="text-sm" style="color: var(--muted);">
+        <ol class="flex flex-wrap items-center gap-2">
+          <li><a class="underline" href="/">Início</a></li>
+          <li aria-hidden="true">›</li>
+          <li><a class="underline" href="/cidades">Cidades</a></li>
+          <li aria-hidden="true">›</li>
+          <li><span class="font-semibold" style="color: var(--text);">Poços de Caldas</span></li>
+        </ol>
+      </nav>
+
+      <header class="mt-6">
+        <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">Guia definitivo • 2026</div>
+        <h1 class="mt-2 text-4xl md:text-5xl leading-tight" style="font-family:'Playfair Display', serif;">{title}</h1>
+        <p class="mt-4 text-lg leading-relaxed" style="color: var(--muted);">
+          Poços de Caldas é uma estância climática de altitude com uma dinâmica própria: turismo forte, bairros residenciais tranquilos,
+          rotina “a pé” no centro e custo de vida que muda bastante conforme você mora perto da área turística ou em zonas mais residenciais.
+          Este guia organiza o que importa na prática — com números em faixas realistas e critérios de decisão.
+        </p>
+
+        <div class="mt-7 grid gap-4 md:grid-cols-3">
+          <div class="rounded-3xl border p-5" style="border-color: var(--border); background: var(--surface);">
+            <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">Leitura rápida</div>
+            <div class="mt-2 text-sm" style="color: var(--muted);">
+              Se você está decidindo agora, leia <a class="underline" href="#bairros">Bairros</a> + <a class="underline" href="#custo">Custo de vida</a>.
+              Se você trabalha remoto, vá direto em <a class="underline" href="#internet">Internet</a> e <a class="underline" href="#mobilidade">Mobilidade</a>.
+            </div>
+          </div>
+
+          <div class="rounded-3xl border p-5" style="border-color: var(--border); background: var(--card);">
+            <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">Links essenciais</div>
+            <ul class="mt-3 space-y-2 text-sm" style="color: var(--muted);">
+              <li>👉 <a class="underline" href="/mudar-para-o-interior-guia-definitivo">Guia definitivo da mudança</a></li>
+              <li>👉 <a class="underline" href="/checklist">Checklist financeiro</a></li>
+              <li>👉 <a class="underline" href="/blog/checklist-escolher-cidade-interior">Checklist para escolher a cidade</a></li>
+              <li>👉 <a class="underline" href="/blog/internet-no-interior-guia-definitivo">Internet no interior (guia)</a></li>
+            </ul>
+          </div>
+
+          <div class="rounded-3xl border p-5" style="border-color: var(--border); background: var(--surface);">
+            <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">Regra de ouro</div>
+            <div class="mt-2 text-sm" style="color: var(--muted);">
+              Em Poços, <strong style="color: var(--text);">localização define rotina</strong>: ficar perto do centro turístico pode ser prático,
+              mas muda barulho, trânsito de temporada e preço. Morar em bairros residenciais traz paz e custo melhor — em troca de carro.
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section id="resumo" class="mt-10 rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+        <h2 class="text-2xl" style="font-family:'Playfair Display', serif;">Resumo executivo</h2>
+        <div class="mt-4 grid gap-4 md:grid-cols-3">
+          <div class="rounded-3xl border p-5" style="border-color: var(--border); background: var(--surface);">
+            <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">Para quem é</div>
+            <p class="mt-2 text-sm" style="color: var(--muted);">
+              Família buscando tranquilidade e serviços, aposentadoria ativa, casal remoto que quer clima mais ameno e cidade caminhável.
+            </p>
+          </div>
+          <div class="rounded-3xl border p-5" style="border-color: var(--border); background: var(--surface);">
+            <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">Principais vantagens</div>
+            <p class="mt-2 text-sm" style="color: var(--muted);">Clima de altitude, rotina agradável no centro, turismo que sustenta serviços, boa oferta de lazer e natureza perto.</p>
+          </div>
+          <div class="rounded-3xl border p-5" style="border-color: var(--border); background: var(--surface);">
+            <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">Principais alertas</div>
+            <p class="mt-2 text-sm" style="color: var(--muted);">Temporada muda preços e trânsito; umidade/frio impactam saúde e manutenção; empregos locais são mais concentrados em serviços e turismo.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="mapa" class="mt-10">
+        <h2 class="text-3xl" style="font-family:'Playfair Display', serif;">Mapa real: Serra, acessos e logística</h2>
+        <p class="mt-3 text-lg" style="color: var(--muted);">
+          Poços de Caldas é uma cidade de <strong style="color: var(--text);">altitude</strong>, com relevo que influencia clima, deslocamento e até custo de manutenção.
+          A logística é melhor do que parece — mas exige carro para quem mora fora do eixo central.
+        </p>
+
+        <div class="mt-6 grid gap-4 md:grid-cols-2">
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+            <h3 class="text-xl font-semibold">Acessos e deslocamentos típicos</h3>
+            <ul class="mt-3 space-y-2 text-sm" style="color: var(--muted);">
+              <li>• Viagens a cidades médias próximas para serviços específicos e aeroportos.</li>
+              <li>• Rotina local bem resolvida para o essencial, especialmente no eixo centro–zona sul.</li>
+              <li>• Estradas e serra exigem atenção em períodos de chuva/neblina.</li>
+            </ul>
+            <p class="mt-4 text-sm" style="color: var(--muted);">
+              <strong style="color: var(--text);">Boa prática:</strong> ao escolher bairro, simule o trajeto até supermercado, escola, hospital e seu “ponto de vida” (academia/parque).
+            </p>
+          </div>
+
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <h3 class="text-xl font-semibold">Checklist de logística (antes de assinar)</h3>
+            <ol class="mt-3 list-decimal pl-5 space-y-2 text-sm" style="color: var(--muted);">
+              <li>Teste o bairro em dia de chuva e dia frio.</li>
+              <li>Confira sinal e rota de fibra no quarteirão (não só na rua principal).</li>
+              <li>Veja se há comércio caminhável ou você vira 100% carro.</li>
+              <li>Cheque barulho de temporada (centro turístico muda muito).</li>
+              <li>Faça a visita-teste com compras, farmácia e deslocamento real.</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section id="perfil" class="mt-12">
+        <h2 class="text-3xl" style="font-family:'Playfair Display', serif;">Como Poços funciona: morar x visitar</h2>
+        <p class="mt-3 text-lg" style="color: var(--muted);">
+          Quem visita em feriado vê uma cidade; quem mora vive outra. A cidade tem uma <strong style="color: var(--text);">economia de turismo</strong>
+          que sustenta restaurantes, serviços e lazer, mas também cria sazonalidade de preços e movimento.
+        </p>
+
+        <div class="mt-6 grid gap-4 md:grid-cols-3">
+          <div class="rounded-3xl border p-5" style="border-color: var(--border); background: var(--surface);">
+            <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">Alta temporada</div>
+            <p class="mt-2 text-sm" style="color: var(--muted);">Mais trânsito, mais visitantes, preços sobem em lazer/serviços. Bairros centrais sentem mais.</p>
+          </div>
+          <div class="rounded-3xl border p-5" style="border-color: var(--border); background: var(--surface);">
+            <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">Baixa temporada</div>
+            <p class="mt-2 text-sm" style="color: var(--muted);">Cidade tranquila, boa para morar. Melhor momento para negociar aluguel e testar rotina.</p>
+          </div>
+          <div class="rounded-3xl border p-5" style="border-color: var(--border); background: var(--surface);">
+            <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">Perfil local</div>
+            <p class="mt-2 text-sm" style="color: var(--muted);">Mistura de moradores tradicionais, aposentadoria ativa, famílias e remoto que busca clima mais ameno.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="bairros" class="mt-12">
+        <h2 class="text-3xl" style="font-family:'Playfair Display', serif;">Bairros: onde faz sentido morar</h2>
+        <p class="mt-3 text-lg" style="color: var(--muted);">
+          Em Poços, escolha bairro por <strong style="color: var(--text);">perfil de rotina</strong>: caminhável x carro, central x residencial, plano x morro.
+          Abaixo, uma leitura prática (não é lista “turística”).
+        </p>
+
+        <div class="mt-6 grid gap-4 md:grid-cols-2">
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <h3 class="text-xl font-semibold">Eixo central caminhável (rotina a pé)</h3>
+            <ul class="mt-3 space-y-2 text-sm" style="color: var(--muted);">
+              <li>• Centro: praticidade total (comércio, serviços, caminhada), mas sente temporada.</li>
+              <li>• Áreas próximas ao parque/águas: excelente rotina, porém aluguel tende a ser mais alto.</li>
+              <li>• Perfil ideal: quem quer fazer tudo a pé e aceita variação de movimento.</li>
+            </ul>
+            <p class="mt-4 text-sm" style="color: var(--muted);"><strong style="color: var(--text);">Atenção:</strong> barulho, estacionamento e fluxo em feriados.</p>
+          </div>
+
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+            <h3 class="text-xl font-semibold">Bairros residenciais (paz + custo melhor)</h3>
+            <ul class="mt-3 space-y-2 text-sm" style="color: var(--muted);">
+              <li>• Zonas mais residenciais: mais silêncio e previsibilidade de rotina.</li>
+              <li>• Boa para família: casas, ruas mais tranquilas, menos sazonalidade.</li>
+              <li>• Troca: depende de carro para quase tudo.</li>
+            </ul>
+            <p class="mt-4 text-sm" style="color: var(--muted);"><strong style="color: var(--text);">Dica:</strong> priorize proximidade de supermercado e acesso rápido ao centro.</p>
+          </div>
+
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+            <h3 class="text-xl font-semibold">Bairros de altitude/morro (vista + clima)</h3>
+            <ul class="mt-3 space-y-2 text-sm" style="color: var(--muted);">
+              <li>• Vista e sensação “serra” são fortes.</li>
+              <li>• Pode ter mais vento, umidade e frio.</li>
+              <li>• Custo de manutenção tende a subir (mofo, telhado, infiltração).</li>
+            </ul>
+            <p class="mt-4 text-sm" style="color: var(--muted);"><strong style="color: var(--text);">Teste obrigatório:</strong> visite no inverno (manhã cedo) antes de fechar.</p>
+          </div>
+
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <h3 class="text-xl font-semibold">Zonas “custo-benefício” (compra/aluguel)</h3>
+            <ul class="mt-3 space-y-2 text-sm" style="color: var(--muted);">
+              <li>• Normalmente ficam um pouco fora do cartão-postal.</li>
+              <li>• Entregam metragem maior pelo mesmo valor.</li>
+              <li>• Melhor para quem quer espaço (home office, pets, quintal).</li>
+            </ul>
+            <p class="mt-4 text-sm" style="color: var(--muted);"><strong style="color: var(--text);">Critério:</strong> cheque rota e qualidade de internet por quadra.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="imoveis" class="mt-12">
+        <h2 class="text-3xl" style="font-family:'Playfair Display', serif;">Imóveis: preços, tipos e pegadinhas</h2>
+        <p class="mt-3 text-lg" style="color: var(--muted);">
+          O mercado é heterogêneo. A mesma “Poços” pode significar apartamento no centro, casa ampla em bairro residencial ou imóvel em área com mais umidade.
+          Use faixas como referência — e sempre valide na visita.
+        </p>
+
+        <div class="mt-6 grid gap-4 md:grid-cols-2">
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <h3 class="text-xl font-semibold">Faixas típicas de preço (referência)</h3>
+            <ul class="mt-3 space-y-2 text-sm" style="color: var(--muted);">
+              <li>• Apto 2 quartos bem localizado: <strong style="color: var(--text);">R$ 350 mil – R$ 900 mil</strong></li>
+              <li>• Casa em bairro residencial: <strong style="color: var(--text);">R$ 500 mil – R$ 1,6 mi</strong></li>
+              <li>• Aluguel apê (bom padrão): <strong style="color: var(--text);">R$ 1.800 – R$ 4.000</strong></li>
+              <li>• Aluguel casa (família): <strong style="color: var(--text);">R$ 3.000 – R$ 8.000</strong></li>
+            </ul>
+            <p class="mt-4 text-sm" style="color: var(--muted);">
+              <strong style="color: var(--text);">Temporada:</strong> imóveis com apelo turístico tendem a ter maior rotatividade e preços mais voláteis.
+            </p>
+          </div>
+
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+            <h3 class="text-xl font-semibold">Pegadinhas clássicas (serra)</h3>
+            <ul class="mt-3 space-y-2 text-sm" style="color: var(--muted);">
+              <li>• Umidade/mofo: armários, paredes frias, quartos sem sol.</li>
+              <li>• Infiltração e telhado: revisão é custo recorrente.</li>
+              <li>• Aquecimento: chuveiro/gás/energia impactam conta no inverno.</li>
+              <li>• Vento e neblina: afeta conforto e até deslocamento.</li>
+            </ul>
+            <p class="mt-4 text-sm" style="color: var(--muted);"><strong style="color: var(--text);">Regra:</strong> se o imóvel é lindo, mas “cheira fechado”, desconfie e investigue.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="custo" class="mt-12">
+        <h2 class="text-3xl" style="font-family:'Playfair Display', serif;">Custo de vida: 3 cenários (com números)</h2>
+        <p class="mt-3 text-lg" style="color: var(--muted);">
+          Abaixo estão <strong style="color: var(--text);">faixas mensais realistas</strong> para planejamento. Elas variam por bairro, estilo de vida e temporada.
+          Use como base para decidir e depois ajuste com seus hábitos.
+        </p>
+
+        <div class="mt-6 overflow-x-auto rounded-3xl border" style="border-color: var(--border); background: var(--card);">
+          <table class="w-full text-sm">
+            <thead style="color: var(--muted);">
+              <tr class="border-b" style="border-color: var(--border);">
+                <th class="p-4 text-left">Item</th>
+                <th class="p-4 text-left">Solo (econômico)</th>
+                <th class="p-4 text-left">Casal (conforto)</th>
+                <th class="p-4 text-left">Família (1 filho)</th>
+              </tr>
+            </thead>
+            <tbody style="color: var(--muted);">
+              <tr class="border-b" style="border-color: var(--border);">
+                <td class="p-4 font-semibold" style="color: var(--text);">Moradia</td>
+                <td class="p-4">R$ 1.600–2.400</td>
+                <td class="p-4">R$ 2.500–4.000</td>
+                <td class="p-4">R$ 3.800–6.500</td>
+              </tr>
+              <tr class="border-b" style="border-color: var(--border);">
+                <td class="p-4 font-semibold" style="color: var(--text);">Mercado</td>
+                <td class="p-4">R$ 900–1.300</td>
+                <td class="p-4">R$ 1.600–2.300</td>
+                <td class="p-4">R$ 2.300–3.600</td>
+              </tr>
+              <tr class="border-b" style="border-color: var(--border);">
+                <td class="p-4 font-semibold" style="color: var(--text);">Contas (luz/gás/água)</td>
+                <td class="p-4">R$ 250–450</td>
+                <td class="p-4">R$ 350–650</td>
+                <td class="p-4">R$ 450–850</td>
+              </tr>
+              <tr class="border-b" style="border-color: var(--border);">
+                <td class="p-4 font-semibold" style="color: var(--text);">Internet</td>
+                <td class="p-4">R$ 100–170</td>
+                <td class="p-4">R$ 120–200</td>
+                <td class="p-4">R$ 120–220</td>
+              </tr>
+              <tr class="border-b" style="border-color: var(--border);">
+                <td class="p-4 font-semibold" style="color: var(--text);">Transporte</td>
+                <td class="p-4">R$ 400–900</td>
+                <td class="p-4">R$ 900–1.600</td>
+                <td class="p-4">R$ 1.200–2.300</td>
+              </tr>
+              <tr class="border-b" style="border-color: var(--border);">
+                <td class="p-4 font-semibold" style="color: var(--text);">Saúde</td>
+                <td class="p-4">R$ 200–600</td>
+                <td class="p-4">R$ 500–1.400</td>
+                <td class="p-4">R$ 900–2.300</td>
+              </tr>
+              <tr>
+                <td class="p-4 font-semibold" style="color: var(--text);">Total (faixa)</td>
+                <td class="p-4"><strong style="color: var(--text);">R$ 3.450–5.820</strong></td>
+                <td class="p-4"><strong style="color: var(--text);">R$ 5.970–10.150</strong></td>
+                <td class="p-4"><strong style="color: var(--text);">R$ 8.000–16.020</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mt-6 rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+          <h3 class="text-xl font-semibold">Temporada muda o orçamento?</h3>
+          <p class="mt-2 text-sm" style="color: var(--muted);">
+            Para morador fixo, o impacto é indireto: mais movimento no centro, lazer mais caro em feriados e alguns serviços com agenda cheia.
+            O principal risco financeiro é assinar aluguel “com cara de temporada” e depois sofrer reajuste ou instabilidade.
+          </p>
+        </div>
+      </section>
+
+      <section id="trabalho" class="mt-12">
+        <h2 class="text-3xl" style="font-family:'Playfair Display', serif;">Trabalho e renda: onde está o dinheiro</h2>
+        <p class="mt-3 text-lg" style="color: var(--muted);">
+          O mercado local é puxado por turismo e serviços. Para renda alta e escalável, normalmente entra o trabalho remoto,
+          negócios digitais e serviços especializados.
+        </p>
+
+        <div class="mt-6 grid gap-4 md:grid-cols-2">
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <h3 class="text-xl font-semibold">Trabalho local (presencial)</h3>
+            <ul class="mt-3 space-y-2 text-sm" style="color: var(--muted);">
+              <li>• Hotelaria, gastronomia, comércio, eventos.</li>
+              <li>• Saúde e educação (rede local e privada).</li>
+              <li>• Serviços: beleza, manutenção, reformas, gastronomia premium.</li>
+            </ul>
+            <p class="mt-4 text-sm" style="color: var(--muted);"><strong style="color: var(--text);">Regra:</strong> renda local é mais “faixa” e sazonal em turismo.</p>
+          </div>
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+            <h3 class="text-xl font-semibold">Trabalho remoto (estratégia)</h3>
+            <ul class="mt-3 space-y-2 text-sm" style="color: var(--muted);">
+              <li>• Melhor opção para manter renda de capital/centros maiores.</li>
+              <li>• Exige internet confiável + plano B (4G/5G/roteador backup).</li>
+              <li>• Rotina de inverno: casa bem preparada aumenta produtividade.</li>
+            </ul>
+            <p class="mt-4 text-sm" style="color: var(--muted);">Dica: trate Poços como “cidade de base” e seu trabalho como “mercado de fora”.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="infra" class="mt-12">
+        <h2 class="text-3xl" style="font-family:'Playfair Display', serif;">Infraestrutura: saúde, educação e compras</h2>
+        <div class="mt-6 grid gap-4 md:grid-cols-3">
+          <div class="rounded-3xl border p-5" style="border-color: var(--border); background: var(--surface);">
+            <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">Saúde</div>
+            <p class="mt-2 text-sm" style="color: var(--muted);">Boa rede básica e privada. Para alta complexidade, algumas famílias preferem referência regional maior (dependendo do caso).</p>
+          </div>
+          <div class="rounded-3xl border p-5" style="border-color: var(--border); background: var(--surface);">
+            <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">Educação</div>
+            <p class="mt-2 text-sm" style="color: var(--muted);">Há opções locais públicas/privadas. Para ensino superior e especializações, é comum mirar polos regionais próximos.</p>
+          </div>
+          <div class="rounded-3xl border p-5" style="border-color: var(--border); background: var(--surface);">
+            <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">Compras</div>
+            <p class="mt-2 text-sm" style="color: var(--muted);">Rotina resolve bem mercado e serviços. Itens específicos e preços muito competitivos podem exigir compras online/viagens pontuais.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="internet" class="mt-12">
+        <h2 class="text-3xl" style="font-family:'Playfair Display', serif;">Internet e energia: o que testar antes</h2>
+        <p class="mt-3 text-lg" style="color: var(--muted);">
+          Home office funciona muito bem quando você escolhe a quadra certa. Em cidades de relevo, a experiência pode variar por rua.
+        </p>
+        <div class="mt-6 rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+          <h3 class="text-xl font-semibold">Checklist prático de internet</h3>
+          <ul class="mt-3 space-y-2 text-sm" style="color: var(--muted);">
+            <li>• Peça o CEP exato e confirme disponibilidade de fibra no número.</li>
+            <li>• Faça teste de velocidade em horários de pico (no local).</li>
+            <li>• Tenha plano B: chip 4G/5G + roteador.</li>
+            <li>• Se você mora em área de morro, confirme estabilidade do sinal móvel dentro de casa.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="clima" class="mt-12">
+        <h2 class="text-3xl" style="font-family:'Playfair Display', serif;">Clima de altitude: frio, umidade e saúde</h2>
+        <p class="mt-3 text-lg" style="color: var(--muted);">
+          Poços é conhecida pelo clima mais ameno. Isso é ótimo — mas exige preparo: umidade pode aumentar mofo e piorar alergias.
+          O frio influencia conta de energia/gás e conforto do home office.
+        </p>
+        <div class="mt-6 grid gap-4 md:grid-cols-2">
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+            <h3 class="text-xl font-semibold">Como se preparar</h3>
+            <ul class="mt-3 space-y-2 text-sm" style="color: var(--muted);">
+              <li>• Desumidificador e ventilação são investimento, não luxo.</li>
+              <li>• Sol da manhã faz diferença — especialmente em quartos.</li>
+              <li>• Revisão de telhado/calhas evita infiltração no período chuvoso.</li>
+            </ul>
+          </div>
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <h3 class="text-xl font-semibold">Impacto no orçamento</h3>
+            <ul class="mt-3 space-y-2 text-sm" style="color: var(--muted);">
+              <li>• Energia tende a subir no inverno (aquecimento/chuveiro).</li>
+              <li>• Manutenção preventiva evita “susto” (mofo, pintura, infiltração).</li>
+              <li>• Para quem trabalha remoto, conforto térmico vira produtividade.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="seguranca" class="mt-12">
+        <h2 class="text-3xl" style="font-family:'Playfair Display', serif;">Segurança: leitura por territórios</h2>
+        <p class="mt-3 text-lg" style="color: var(--muted);">
+          Segurança varia por microterritório. Em geral, áreas residenciais têm sensação mais tranquila.
+          Centro é mais movimentado e, como toda cidade turística, exige atenção com itens e estacionamentos.
+        </p>
+        <div class="mt-6 rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+          <h3 class="text-xl font-semibold">Como decidir com segurança</h3>
+          <ol class="mt-3 list-decimal pl-5 space-y-2 text-sm" style="color: var(--muted);">
+            <li>Fale com comércios do bairro (eles sentem “o clima”).</li>
+            <li>Observe iluminação, fluxo noturno e vizinhança.</li>
+            <li>Evite decidir só por anúncio bonito — visite em horários diferentes.</li>
+            <li>Se você quer tranquilidade máxima, priorize rua residencial e não eixo de passagem.</li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="mobilidade" class="mt-12">
+        <h2 class="text-3xl" style="font-family:'Playfair Display', serif;">Mobilidade: carro, a pé, bike e intermunicipal</h2>
+        <p class="mt-3 text-lg" style="color: var(--muted);">
+          O centro permite rotina caminhável. Fora dele, o carro vira padrão.
+          A cidade tem relevo — então “perto” no mapa pode virar “subida que cansa” no dia a dia.
+        </p>
+        <div class="mt-6 grid gap-4 md:grid-cols-3">
+          <div class="rounded-3xl border p-5" style="border-color: var(--border); background: var(--card);">
+            <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">A pé</div>
+            <p class="mt-2 text-sm" style="color: var(--muted);">Excelente no centro e arredores. Ideal para quem quer vida prática.</p>
+          </div>
+          <div class="rounded-3xl border p-5" style="border-color: var(--border); background: var(--card);">
+            <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">Carro</div>
+            <p class="mt-2 text-sm" style="color: var(--muted);">Quase obrigatório em bairros residenciais e para rotas de mercado/escola.</p>
+          </div>
+          <div class="rounded-3xl border p-5" style="border-color: var(--border); background: var(--card);">
+            <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">Bike</div>
+            <p class="mt-2 text-sm" style="color: var(--muted);">Boa para lazer e trechos planos; relevo limita deslocamentos longos diários.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="2030" class="mt-12">
+        <h2 class="text-3xl" style="font-family:'Playfair Display', serif;">Projeções até 2030</h2>
+        <div class="mt-6 grid gap-4 md:grid-cols-2">
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+            <h3 class="text-xl font-semibold">Tendências prováveis</h3>
+            <ul class="mt-3 space-y-2 text-sm" style="color: var(--muted);">
+              <li>• Continuidade do turismo como motor de serviços.</li>
+              <li>• Mais moradores remotos buscando clima e qualidade de vida.</li>
+              <li>• Valorização mais forte em bairros com boa logística e internet.</li>
+              <li>• Exigência maior por imóveis preparados para inverno (isolamento, ventilação).</li>
+            </ul>
+          </div>
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <h3 class="text-xl font-semibold">Riscos e pontos de atenção</h3>
+            <ul class="mt-3 space-y-2 text-sm" style="color: var(--muted);">
+              <li>• Sazonalidade afetando renda de quem depende do turismo.</li>
+              <li>• Pressão de preços em áreas turísticas.</li>
+              <li>• Manutenção e infraestrutura em áreas de relevo/chuva.</li>
+              <li>• Trânsito e barulho em feriados no eixo central.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="para-quem" class="mt-12">
+        <h2 class="text-3xl" style="font-family:'Playfair Display', serif;">Para quem faz sentido (e para quem não)</h2>
+        <div class="mt-6 grid gap-4 md:grid-cols-2">
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+            <h3 class="text-xl font-semibold">Faz sentido se…</h3>
+            <ul class="mt-3 space-y-2 text-sm" style="color: var(--muted);">
+              <li>• Você quer clima mais ameno e rotina tranquila.</li>
+              <li>• Gosta de cidade caminhável (pelo menos em parte).</li>
+              <li>• Tem renda estável (ou trabalho remoto) e quer qualidade de vida.</li>
+              <li>• Quer uma cidade com lazer/natureza sem virar “mato isolado”.</li>
+            </ul>
+          </div>
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <h3 class="text-xl font-semibold">Talvez não seja ideal se…</h3>
+            <ul class="mt-3 space-y-2 text-sm" style="color: var(--muted);">
+              <li>• Você precisa de mercado corporativo grande local.</li>
+              <li>• Odeia frio/umidade e não quer investir em casa preparada.</li>
+              <li>• Quer mobilidade total sem carro (fora do centro).</li>
+              <li>• Procura vida noturna intensa e “cidade grande”.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="checklist" class="mt-12 rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+        <h2 class="text-3xl" style="font-family:'Playfair Display', serif;">Checklist final: decisão em 7 passos</h2>
+        <ol class="mt-4 list-decimal pl-5 space-y-2 text-sm" style="color: var(--muted);">
+          <li>Defina seu perfil: caminhável x carro, centro x residencial, frio x conforto.</li>
+          <li>Escolha 2 bairros candidatos e faça visita-teste (dia útil + fim de semana).</li>
+          <li>Valide internet no número (fibra) + plano B móvel.</li>
+          <li>Simule o mês real com 3 cenários (econômico, conforto, família).</li>
+          <li>Faça inspeção de umidade/infiltração (principalmente no inverno).</li>
+          <li>Teste mobilidade: mercado, escola, hospital e lazer.</li>
+          <li>Se possível, feche contrato na baixa temporada (melhor negociação).</li>
+        </ol>
+
+        <div class="mt-6 text-sm" style="color: var(--muted);">
+          Se você quiser, eu posso transformar este guia em uma versão ainda mais longa com <strong style="color: var(--text);">cluster de artigos</strong>:
+          “melhores bairros”, “custo de vida por bairro”, “internet por região”, “saúde na prática”, “segurança por território”.
+        </div>
+      </section>
+
+      <section class="mt-10 rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+        <h2 class="text-xl" style="font-family:'Playfair Display', serif;">Sumário</h2>
+        <ul class="mt-4 grid gap-2 md:grid-cols-2 text-sm" style="color: var(--muted);">
+          {toc.map((item) => (
+            <li><a class="underline" href={item.href}>{item.label}</a></li>
+          ))}
+        </ul>
+      </section>
+
+      <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
+      <script type="application/ld+json" set:html={JSON.stringify(articleJsonLd)} />
+    </div>
+  </article>
+</BaseLayout>
