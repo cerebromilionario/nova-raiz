@@ -3,8 +3,8 @@ const links = [
   { href: "/comece-aqui", label: "Comece aqui" },
   { href: "/cidade-ideal", label: "Cidade ideal" },
   { href: "/ferramentas", label: "Ferramentas" },
-  \1  { href: "/ranking-melhores-cidades-2026", label: "Ranking 2026" },
-{ href: "/comparador", label: "Comparador" },
+  { href: "/ranking-melhores-cidades-2026", label: "Ranking 2026" },
+  { href: "/comparativas", label: "Comparativas" },
   { href: "/planejamento", label: "Planejamento" },
   { href: "/trabalho-remoto", label: "Trabalho remoto" },
   { href: "/vida-real", label: "Vida real" },
@@ -25,19 +25,19 @@ const links = [
     </a>
 
     <nav class="hidden lg:flex items-center gap-5 text-sm" style="color: var(--muted);">
-      {links.map(l => <a class="hover:opacity-80" href={l.href}>{l.label}</a>)}
+      {links.map((l) => <a class="hover:opacity-80" href={l.href}>{l.label}</a>)}
       <a
         class="ml-2 inline-flex items-center rounded-xl px-4 py-2 text-sm font-semibold"
         style="background: var(--accent); color: var(--text);"
-        href="/comece-aqui"
+        href="/checklist"
       >
         Checklist
       </a>
     </nav>
 
     <a class="lg:hidden inline-flex items-center rounded-xl px-4 py-2 text-sm font-semibold border"
-      style="border-color: var(--border);" href="/comece-aqui">
-      Comece
+      style="border-color: var(--border);" href="/checklist">
+      Menu
     </a>
   </div>
 </header>
