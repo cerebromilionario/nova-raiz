@@ -1,0 +1,616 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const site = "https://novaraiz.netlify.app";
+const canonical = `${site}/cidades/gramado`;
+
+const title = "O Guia Definitivo de Gramado (RS) 2026";
+const description = "Guia pilar completo de Gramado: bairros e logística com Canela/Porto Alegre, custo de vida real por temporada, trabalho e renda, internet, saúde, educação, segurança, clima e estratégia para morar (não só visitar).";
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Início", "item": `${site}/` },
+    { "@type": "ListItem", "position": 2, "name": "Cidades", "item": `${site}/cidades` },
+    { "@type": "ListItem", "position": 3, "name": title, "item": canonical }
+  ]
+};
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": title,
+  "description": description,
+  "mainEntityOfPage": canonical,
+  "url": canonical,
+  "author": { "@type": "Organization", "name": "Nova Raiz", "url": site },
+  "publisher": { "@type": "Organization", "name": "Nova Raiz", "url": site }
+};
+
+const toc = [
+  { href: "#resumo", label: "Resumo executivo" },
+  { href: "#mapa", label: "Mapa real: Serra Gaúcha, Canela e acessos" },
+  { href: "#perfil", label: "Como Gramado funciona (morar x visitar)" },
+  { href: "#bairros", label: "Bairros: onde faz sentido morar" },
+  { href: "#custo", label: "Custo de vida: 3 cenários + temporada" },
+  { href: "#trabalho", label: "Trabalho e renda: turismo, serviços e remoto" },
+  { href: "#infra", label: "Infraestrutura: saúde, escolas, compras" },
+  { href: "#internet", label: "Internet, energia e resiliência" },
+  { href: "#clima", label: "Clima extremo, umidade e rotina" },
+  { href: "#seguranca", label: "Segurança e riscos (o que muda na alta)" },
+  { href: "#logistica", label: "Logística: aeroporto, estrada, carro" },
+  { href: "#2030", label: "Projeções até 2030" },
+  { href: "#para-quem", label: "Para quem faz sentido (e para quem não)" },
+  { href: "#checklist", label: "Checklist final" }
+];
+---
+
+<BaseLayout title={`${title} — Nova Raiz`} description={description} canonical={canonical}>
+  <article class="py-10 md:py-14">
+    <div class="mx-auto" style="max-width: var(--contentw);">
+      <nav aria-label="Breadcrumb" class="text-sm" style="color: var(--muted);">
+        <ol class="flex flex-wrap items-center gap-2">
+          <li><a class="underline" href="/">Início</a></li>
+          <li aria-hidden="true">›</li>
+          <li><a class="underline" href="/cidades">Cidades</a></li>
+          <li aria-hidden="true">›</li>
+          <li><span class="font-semibold" style="color: var(--text);">Gramado</span></li>
+        </ol>
+      </nav>
+
+      <header class="mt-6">
+        <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">Guia definitivo • 2026</div>
+        <h1 class="mt-2 text-4xl md:text-5xl leading-tight" style="font-family:'Playfair Display', serif;">{title}</h1>
+        <p class="mt-4 text-lg leading-relaxed" style="color: var(--muted);">
+          Gramado é uma das cidades mais visitadas do Brasil — e isso cria uma distorção: muita gente conhece a versão “cartão postal”,
+          mas pouca gente entende a versão “morar de verdade”. Este guia separa as duas coisas e te dá um mapa prático para decidir.
+        </p>
+
+        <div class="mt-7 grid gap-4 md:grid-cols-3">
+          <div class="rounded-3xl border p-5" style="border-color: var(--border); background: var(--surface);">
+            <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">Leitura rápida</div>
+            <div class="mt-2 text-sm" style="color: var(--muted);">
+              <strong style="color: var(--text);">Se você quer morar</strong>, foque em <a class="underline" href="#bairros">Bairros</a>,
+              <a class="underline" href="#custo">Custo de vida</a> e <a class="underline" href="#internet">Internet</a>.
+              Se você ainda está no “talvez”, comece pelo <a class="underline" href="#resumo">Resumo executivo</a>.
+            </div>
+          </div>
+
+          <div class="rounded-3xl border p-5" style="border-color: var(--border); background: var(--card);">
+            <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">Links essenciais</div>
+            <ul class="mt-3 space-y-2 text-sm" style="color: var(--muted);">
+              <li><a class="underline" href="/mudar-para-o-interior-guia-definitivo">Guia definitivo da mudança</a></li>
+              <li><a class="underline" href="/checklist">Checklist financeiro</a></li>
+              <li><a class="underline" href="/blog/checklist-escolher-cidade-interior">Checklist de escolha de cidade</a></li>
+            </ul>
+          </div>
+
+          <div class="rounded-3xl border p-5" style="border-color: var(--border); background: var(--surface);">
+            <div class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted);">Nota sobre números</div>
+            <div class="mt-2 text-sm" style="color: var(--muted);">
+              Gramado é altamente sazonal. Por isso, usamos <strong style="color: var(--text);">faixas</strong> e
+              separamos “mês normal” vs “alta temporada”. A ideia é te dar uma estimativa honesta, sem prometer o impossível.
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="mt-10 rounded-3xl border p-6 md:p-8" style="border-color: var(--border); background: var(--surface);" id="resumo">
+        <div class="flex items-center justify-between gap-3">
+          <h2 class="text-2xl md:text-3xl" style="font-family:'Playfair Display', serif;">Resumo executivo</h2>
+          <a class="text-sm underline" href="#checklist">Ir para o checklist</a>
+        </div>
+
+        <div class="mt-5 grid gap-5 md:grid-cols-2">
+          <div class="rounded-2xl border p-5" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">Gramado costuma funcionar para</div>
+            <ul class="mt-3 list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
+              <li>Quem quer <strong style="color: var(--text);">segurança, estética urbana e organização</strong> (com custo mais alto).</li>
+              <li>Profissionais remotos com renda estável (idealmente em moeda forte ou com margem folgada).</li>
+              <li>Famílias que valorizam rotina tranquila, clima frio e cidade caminhável (em partes).</li>
+              <li>Pessoas do turismo/serviços que entendem a lógica de temporada e querem viver disso.</li>
+            </ul>
+          </div>
+
+          <div class="rounded-2xl border p-5" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">Pegadinhas (onde dá ruim)</div>
+            <ul class="mt-3 list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
+              <li>Custo de moradia e serviços costuma ser <strong style="color: var(--text);">acima</strong> do interior comum.</li>
+              <li>Alta temporada muda tudo: trânsito, lotação, barulho e preço.</li>
+              <li>Para emprego local, muitos salários não “conversam” com o custo de vida.</li>
+              <li>Clima úmido/frio exige casa preparada (isolamento, aquecimento, mofo).</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mt-5 rounded-2xl border p-5" style="border-color: var(--border); background: var(--card);">
+          <div class="text-sm font-semibold">Decisão em 1 frase</div>
+          <p class="mt-2 text-sm leading-relaxed" style="color: var(--muted);">
+            Gramado faz sentido quando você paga por <strong style="color: var(--text);">qualidade urbana e segurança</strong>
+            e aceita o “imposto invisível” da temporada (preço + fluxo). Se sua prioridade é economia, existem opções melhores na Serra.
+          </p>
+        </div>
+      </section>
+
+      <section class="mt-10" id="mapa">
+        <h2 class="text-2xl md:text-3xl" style="font-family:'Playfair Display', serif;">Mapa real: Serra Gaúcha, Canela e acessos</h2>
+        <p class="mt-3" style="color: var(--muted);">
+          Gramado forma praticamente um “duo urbano” com <strong style="color: var(--text);">Canela</strong>. Na prática, você vai usar as duas cidades
+          para trabalho, mercado, escola, saúde e lazer. Morar em Gramado sem considerar Canela (e vice-versa) é tomar decisão pela metade.
+        </p>
+
+        <div class="mt-6 grid gap-4 md:grid-cols-3">
+          <div class="rounded-3xl border p-5" style="border-color: var(--border); background: var(--surface);">
+            <div class="text-sm font-semibold">Aeroportos (uso real)</div>
+            <ul class="mt-3 list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
+              <li><strong style="color: var(--text);">POA</strong> (Porto Alegre): opção robusta, mas mais longe.</li>
+              <li><strong style="color: var(--text);">Caxias do Sul</strong>: útil para algumas rotas, dependendo de disponibilidade.</li>
+            </ul>
+          </div>
+
+          <div class="rounded-3xl border p-5" style="border-color: var(--border); background: var(--surface);">
+            <div class="text-sm font-semibold">Estradas e sazonalidade</div>
+            <p class="mt-3 text-sm" style="color: var(--muted);">
+              Em feriados e eventos, a Serra “engarrafa”. O tempo de deslocamento pode dobrar. Planejamento de horários vale mais do que GPS.
+            </p>
+          </div>
+
+          <div class="rounded-3xl border p-5" style="border-color: var(--border); background: var(--surface);">
+            <div class="text-sm font-semibold">Carro: quase obrigatório</div>
+            <p class="mt-3 text-sm" style="color: var(--muted);">
+              Gramado tem áreas caminháveis, mas o dia a dia (compras, trabalho, escola, médico) normalmente pede carro.
+              Pense nisso como parte do orçamento.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-10" id="perfil">
+        <h2 class="text-2xl md:text-3xl" style="font-family:'Playfair Display', serif;">Como Gramado funciona: morar x visitar</h2>
+        <div class="mt-5 grid gap-5 md:grid-cols-2">
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">Versão turista</div>
+            <ul class="mt-3 list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
+              <li>Centro cheio, preço alto, filas.</li>
+              <li>Restaurantes e atrações com “taxa Gramado”.</li>
+              <li>Clima frio como experiência.</li>
+            </ul>
+          </div>
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">Versão morador</div>
+            <ul class="mt-3 list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
+              <li>Rotina precisa fugir da alta temporada (horários e rotas).</li>
+              <li>Compras e serviços: muitas decisões são “Gramado ou Canela?”.</li>
+              <li>Casa precisa ser preparada para umidade, frio e mofo.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mt-5 rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+          <div class="text-sm font-semibold">A regra de ouro</div>
+          <p class="mt-2 text-sm leading-relaxed" style="color: var(--muted);">
+            Se você quer morar bem em Gramado, você não “compra a cidade”. Você compra <strong style="color: var(--text);">um sistema</strong>:
+            bairro certo + rotina anti-temporada + orçamento com folga + logística com Canela e Porto Alegre.
+          </p>
+        </div>
+      </section>
+
+      <section class="mt-10" id="bairros">
+        <h2 class="text-2xl md:text-3xl" style="font-family:'Playfair Display', serif;">Bairros: onde faz sentido morar</h2>
+        <p class="mt-3" style="color: var(--muted);">
+          A escolha de bairro em Gramado é, na prática, uma escolha de <strong style="color: var(--text);">ruído + fluxo turístico + acesso</strong>.
+          Quanto mais perto do miolo turístico, mais você paga em comodidade — e mais você sofre na alta.
+        </p>
+
+        <div class="mt-6 grid gap-4 md:grid-cols-2">
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">Centro / Avenida Borges de Medeiros</div>
+            <p class="mt-2 text-sm" style="color: var(--muted);">
+              <strong style="color: var(--text);">Prós:</strong> caminhar para tudo, beleza urbana, serviços.
+              <br/><strong style="color: var(--text);">Contras:</strong> barulho, fluxo, estacionamento, preço alto. Para morar: só se você ama o “movimento”.
+            </p>
+          </div>
+
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">Planalto</div>
+            <p class="mt-2 text-sm" style="color: var(--muted);">
+              Um dos queridinhos residenciais: mais arborizado, clima de bairro, ainda perto do centro.
+              <br/><strong style="color: var(--text);">Dica:</strong> ótimo para quem quer caminhar, mas precisa tolerar aumento de fluxo em datas grandes.
+            </p>
+          </div>
+
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">Bavária</div>
+            <p class="mt-2 text-sm" style="color: var(--muted);">
+              Residencial e valorizado, com cara “Gramado clássico”.
+              <br/><strong style="color: var(--text);">Perfil:</strong> renda mais alta, casas e apês bons, custo maior.
+            </p>
+          </div>
+
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">Floresta / Carniel</div>
+            <p class="mt-2 text-sm" style="color: var(--muted);">
+              Áreas com mais mistura residencial, bom custo-benefício em alguns pontos.
+              <br/><strong style="color: var(--text);">Atenção:</strong> checar ruído/fluxo de rotas turísticas e qualidade de internet por rua.
+            </p>
+          </div>
+
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">Várzea Grande</div>
+            <p class="mt-2 text-sm" style="color: var(--muted);">
+              Parte mais “vida real”: mais longe do glamour, mais acessível, rotina mais local.
+              <br/><strong style="color: var(--text);">Bom para:</strong> quem quer morar e não viver a cidade turística 24/7.
+            </p>
+          </div>
+
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">Bairro Moura / Entorno de Canela</div>
+            <p class="mt-2 text-sm" style="color: var(--muted);">
+              Nem sempre você precisa estar “em Gramado”. Algumas rotinas ficam melhores morando mais perto de Canela.
+              <br/><strong style="color: var(--text);">Estratégia:</strong> comparar aluguel + acesso + serviços.
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-6 rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+          <div class="text-sm font-semibold">Checklist de bairro (o que você testa em 48 horas)</div>
+          <div class="mt-3 grid gap-3 md:grid-cols-2">
+            <ul class="list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
+              <li>Ruído (dia e noite) e fluxo de carros em feriado.</li>
+              <li>Sinal de celular e estabilidade de internet (teste em horários diferentes).</li>
+              <li>Mofo/umidade: observe cheiro, manchas, ventilação.</li>
+              <li>Mercado/farmácia: quanto tempo real, não no Google.</li>
+            </ul>
+            <ul class="list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
+              <li>Estacionamento e acesso na alta temporada.</li>
+              <li>Iluminação pública e sensação de segurança.</li>
+              <li>Rotas para Canela/estradas em dias de evento.</li>
+              <li>Se o imóvel tem preparo térmico (vedação, aquecimento, desumidificação).</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-10" id="custo">
+        <h2 class="text-2xl md:text-3xl" style="font-family:'Playfair Display', serif;">Custo de vida: 3 cenários + efeito temporada</h2>
+        <p class="mt-3" style="color: var(--muted);">
+          Em Gramado, custo de vida é uma equação: <strong style="color: var(--text);">moradia</strong> + <strong style="color: var(--text);">carro</strong> +
+          <strong style="color: var(--text);">serviços</strong> + “taxa temporada” (preços e lotação). Abaixo, faixas típicas para 2026.
+        </p>
+
+        <div class="mt-6 overflow-x-auto rounded-3xl border" style="border-color: var(--border); background: var(--card);">
+          <table class="w-full text-sm">
+            <thead>
+              <tr style="background: var(--surface);">
+                <th class="text-left p-4">Item</th>
+                <th class="text-left p-4">Cenário 1 — Solo (apê compacto)</th>
+                <th class="text-left p-4">Cenário 2 — Casal (apê 2q)</th>
+                <th class="text-left p-4">Cenário 3 — Família (casa / 3q)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-t" style="border-color: var(--border);">
+                <td class="p-4 font-semibold">Moradia</td>
+                <td class="p-4">R$ 2.200–3.500</td>
+                <td class="p-4">R$ 3.200–5.000</td>
+                <td class="p-4">R$ 5.500–9.000+</td>
+              </tr>
+              <tr class="border-t" style="border-color: var(--border);">
+                <td class="p-4 font-semibold">Condomínio / IPTU (médio)</td>
+                <td class="p-4">R$ 350–700</td>
+                <td class="p-4">R$ 450–900</td>
+                <td class="p-4">R$ 600–1.500</td>
+              </tr>
+              <tr class="border-t" style="border-color: var(--border);">
+                <td class="p-4 font-semibold">Mercado + casa</td>
+                <td class="p-4">R$ 1.200–1.800</td>
+                <td class="p-4">R$ 1.800–2.800</td>
+                <td class="p-4">R$ 2.800–4.500</td>
+              </tr>
+              <tr class="border-t" style="border-color: var(--border);">
+                <td class="p-4 font-semibold">Transporte (carro)</td>
+                <td class="p-4">R$ 900–1.600</td>
+                <td class="p-4">R$ 1.200–2.000</td>
+                <td class="p-4">R$ 1.600–2.800</td>
+              </tr>
+              <tr class="border-t" style="border-color: var(--border);">
+                <td class="p-4 font-semibold">Saúde (plano)</td>
+                <td class="p-4">R$ 350–900</td>
+                <td class="p-4">R$ 700–1.800</td>
+                <td class="p-4">R$ 1.400–3.600</td>
+              </tr>
+              <tr class="border-t" style="border-color: var(--border);">
+                <td class="p-4 font-semibold">Energia + aquecimento</td>
+                <td class="p-4">R$ 180–450</td>
+                <td class="p-4">R$ 250–650</td>
+                <td class="p-4">R$ 450–1.100</td>
+              </tr>
+              <tr class="border-t" style="border-color: var(--border);">
+                <td class="p-4 font-semibold">Total estimado</td>
+                <td class="p-4"><strong>R$ 4.800–8.000</strong></td>
+                <td class="p-4"><strong>R$ 7.300–12.500</strong></td>
+                <td class="p-4"><strong>R$ 12.000–21.000+</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mt-6 grid gap-4 md:grid-cols-2">
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+            <div class="text-sm font-semibold">Efeito temporada (na prática)</div>
+            <ul class="mt-3 list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
+              <li>Restaurantes e lazer: a conta pode subir 20–50% em datas grandes.</li>
+              <li>Trânsito e estacionamento: mais tempo e mais gasto.</li>
+              <li>Aluguel de curto prazo pressiona o mercado e “puxa” preços.</li>
+              <li>Serviços (manutenção/diarista): agenda lota e preço sobe.</li>
+            </ul>
+          </div>
+
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">Como ganhar o jogo do custo</div>
+            <ul class="mt-3 list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
+              <li>Morar em bairro menos turístico (ou considerar Canela) para reduzir aluguel.</li>
+              <li>Ter rotina “anti-feriado” (compras em dias/horários estratégicos).</li>
+              <li>Casa preparada: mofo e aquecimento mal resolvidos viram custo recorrente.</li>
+              <li>Se renda é local, negociar salário pensando no custo real — não no “interior”.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-10" id="trabalho">
+        <h2 class="text-2xl md:text-3xl" style="font-family:'Playfair Display', serif;">Trabalho e renda: turismo, serviços e remoto</h2>
+        <p class="mt-3" style="color: var(--muted);">
+          A economia local gira em torno de turismo e serviços. Isso cria oportunidade — e também sazonalidade.
+          Para morar com tranquilidade, o ideal é combinar <strong style="color: var(--text);">renda estável</strong> com uso inteligente do ecossistema.
+        </p>
+
+        <div class="mt-6 grid gap-4 md:grid-cols-3">
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">Turismo (direto)</div>
+            <p class="mt-2 text-sm" style="color: var(--muted);">
+              Hotelaria, gastronomia, atrações, eventos. Bom para quem domina atendimento e gestão.
+              <strong style="color: var(--text);">Risco:</strong> rendimento pode variar com calendário.
+            </p>
+          </div>
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">Serviços (indireto)</div>
+            <p class="mt-2 text-sm" style="color: var(--muted);">
+              Saúde, educação, manutenção, estética, pet, logística local.
+              <strong style="color: var(--text);">Estratégia:</strong> nichar para público de maior renda.
+            </p>
+          </div>
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">Remoto (melhor relação)</div>
+            <p class="mt-2 text-sm" style="color: var(--muted);">
+              Quando a renda não depende da cidade, Gramado vira “qualidade de vida”.
+              <strong style="color: var(--text);">Atenção:</strong> internet e conforto térmico são a base.
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-6 rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+          <div class="text-sm font-semibold">Se você quer abrir negócio</div>
+          <p class="mt-2 text-sm leading-relaxed" style="color: var(--muted);">
+            Em Gramado, “mais do mesmo” é caro e concorrido. A vantagem está em:
+            <strong style="color: var(--text);">experiência</strong>, <strong style="color: var(--text);">qualidade</strong> e
+            <strong style="color: var(--text);">consistência fora da alta</strong>. Se seu modelo só funciona em feriado, ele é frágil.
+          </p>
+        </div>
+      </section>
+
+      <section class="mt-10" id="infra">
+        <h2 class="text-2xl md:text-3xl" style="font-family:'Playfair Display', serif;">Infraestrutura: saúde, escolas e compras</h2>
+        <div class="mt-6 grid gap-4 md:grid-cols-2">
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">Saúde</div>
+            <p class="mt-2 text-sm" style="color: var(--muted);">
+              Para rotina, Gramado e Canela atendem bem com clínicas, exames e demandas comuns.
+              Para alta complexidade, a referência costuma ir para centros maiores da região (ex.: Caxias do Sul/Porto Alegre).
+            </p>
+          </div>
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">Educação</div>
+            <p class="mt-2 text-sm" style="color: var(--muted);">
+              Há boas opções locais, mas o “salto” para ensino superior/variedade grande tende a envolver deslocamento.
+              Se educação é prioridade máxima, compare Gramado x Canela e avalie logística semanal.
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-4 rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+          <div class="text-sm font-semibold">Compras e vida prática</div>
+          <ul class="mt-3 list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
+            <li>Mercado local resolve o básico, mas itens específicos podem exigir rota (Canela/Caxias/POA).</li>
+            <li>Na alta, o centro “travado” empurra moradores para horários fora de pico.</li>
+            <li>Se você cozinha em casa, o custo fica mais controlável e a cidade fica mais “morarável”.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="mt-10" id="internet">
+        <h2 class="text-2xl md:text-3xl" style="font-family:'Playfair Display', serif;">Internet, energia e resiliência</h2>
+        <p class="mt-3" style="color: var(--muted);">
+          Para trabalho remoto, seu “bairro ideal” é o que tem <strong style="color: var(--text);">internet estável</strong> e uma casa com boa instalação.
+          Em regiões serranas, chuva e vento podem afetar trechos. Por isso, teste e tenha plano B.
+        </p>
+
+        <div class="mt-6 grid gap-4 md:grid-cols-3">
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">Teste obrigatório</div>
+            <ul class="mt-3 list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
+              <li>Speedtest em 3 horários.</li>
+              <li>Latência (reuniões).</li>
+              <li>Queda de energia na rua (pergunta para vizinhos).</li>
+            </ul>
+          </div>
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">Plano B</div>
+            <p class="mt-2 text-sm" style="color: var(--muted);">
+              Um bom plano móvel + roteador 4G/5G resolve emergências.
+              Para quem trabalha com missão crítica, considerar nobreak é um upgrade simples.
+            </p>
+          </div>
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">Casa preparada</div>
+            <p class="mt-2 text-sm" style="color: var(--muted);">
+              Vedação e desumidificação impactam produtividade.
+              Mofo e frio não são “charme”: viram gasto e queda de qualidade de vida.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-10" id="clima">
+        <h2 class="text-2xl md:text-3xl" style="font-family:'Playfair Display', serif;">Clima: frio, umidade e rotina</h2>
+        <div class="mt-5 rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+          <p class="text-sm leading-relaxed" style="color: var(--muted);">
+            O clima é parte do custo de vida. Não é só “temperatura”: é <strong style="color: var(--text);">umidade</strong>,
+            <strong style="color: var(--text);">mofo</strong>, roupas, aquecimento, secagem e manutenção da casa.
+            Quem ama o frio geralmente se adapta; quem sofre com umidade precisa planejar.
+          </p>
+        </div>
+
+        <div class="mt-6 grid gap-4 md:grid-cols-2">
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">O que muda na casa</div>
+            <ul class="mt-3 list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
+              <li>Desumidificador pode ser “item de saúde”.</li>
+              <li>Aquecimento elétrico impacta conta de luz.</li>
+              <li>Ambientes sem sol precisam de atenção.</li>
+            </ul>
+          </div>
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">O que muda na rotina</div>
+            <ul class="mt-3 list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
+              <li>Atividade física em dias frios pede estratégia (horários e roupas).</li>
+              <li>Mais tempo em ambientes internos: casa precisa ser confortável.</li>
+              <li>Se você tem criança, pense em logística de escola em dias chuvosos.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-10" id="seguranca">
+        <h2 class="text-2xl md:text-3xl" style="font-family:'Playfair Display', serif;">Segurança: o que é verdade e o que é efeito turismo</h2>
+        <p class="mt-3" style="color: var(--muted);">
+          Gramado tende a ter boa percepção de segurança, mas a alta temporada muda o “perfil da rua”.
+          O ponto aqui é simples: mais gente = mais oportunidade para pequenos delitos. O básico de prevenção vale.
+        </p>
+        <div class="mt-6 rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+          <div class="text-sm font-semibold">Princípios práticos</div>
+          <ul class="mt-3 list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
+            <li>Preferir rua bem iluminada e com movimento local (não só turístico).</li>
+            <li>Se morar perto do centro, pensar em garagem e entrada discreta.</li>
+            <li>Na alta, atenção com carros e itens visíveis.</li>
+            <li>Condomínio pode reduzir risco, mas adiciona custo fixo.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="mt-10" id="logistica">
+        <h2 class="text-2xl md:text-3xl" style="font-family:'Playfair Display', serif;">Logística: aeroporto, estrada, carro e custos</h2>
+        <div class="mt-6 grid gap-4 md:grid-cols-2">
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+            <div class="text-sm font-semibold">Custo mensal do carro (estimativa)</div>
+            <p class="mt-2 text-sm" style="color: var(--muted);">
+              Para a maioria dos moradores, carro entra como “conta fixa invisível”: combustível + seguro + manutenção + pedágio/estacionamento.
+              Em 2026, uma faixa comum pode ficar entre <strong style="color: var(--text);">R$ 900 a R$ 2.800/mês</strong> dependendo do uso.
+            </p>
+          </div>
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">Como reduzir atrito</div>
+            <ul class="mt-3 list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
+              <li>Morar em bairro com acesso simples a Canela e às rotas principais.</li>
+              <li>Evitar “miolo” turístico se sua rotina é 7/7.</li>
+              <li>Planejar viagens em janelas fora do pico.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-10" id="2030">
+        <h2 class="text-2xl md:text-3xl" style="font-family:'Playfair Display', serif;">Projeções até 2030</h2>
+        <div class="mt-6 rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+          <ul class="list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
+            <li>Turismo deve seguir forte, com ciclos (eventos e macroeconomia).</li>
+            <li>Pressão imobiliária tende a continuar, especialmente por aluguel de temporada.</li>
+            <li>Moradia “boa para morar” (não só para alugar) deve ser cada vez mais valorizada.</li>
+            <li>Remoto/híbrido mantém a Serra atrativa para quem busca clima e segurança.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="mt-10" id="para-quem">
+        <h2 class="text-2xl md:text-3xl" style="font-family:'Playfair Display', serif;">Para quem faz sentido (e para quem não)</h2>
+        <div class="mt-6 grid gap-4 md:grid-cols-2">
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">Faz sentido se você...</div>
+            <ul class="mt-3 list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
+              <li>Tem renda estável e aceita pagar por qualidade urbana.</li>
+              <li>Gosta de clima frio e quer vida mais tranquila.</li>
+              <li>Consegue adaptar sua rotina para fugir do pico turístico.</li>
+              <li>Quer uma cidade bonita e segura para criar filhos (com planejamento).</li>
+            </ul>
+          </div>
+          <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">Talvez não seja se você...</div>
+            <ul class="mt-3 list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
+              <li>Busca custo baixo como prioridade.</li>
+              <li>Depende do mercado de trabalho local com salário “padrão interior”.</li>
+              <li>Odeia frio/umidade ou tem alergias sem estrutura em casa.</li>
+              <li>Quer cidade grande, vida noturna intensa e variedade urbana.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-10 rounded-3xl border p-6 md:p-8" style="border-color: var(--border); background: var(--surface);" id="checklist">
+        <h2 class="text-2xl md:text-3xl" style="font-family:'Playfair Display', serif;">Checklist final (decisão em 7 dias)</h2>
+        <div class="mt-5 grid gap-4 md:grid-cols-2">
+          <div class="rounded-2xl border p-5" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">Antes de fechar contrato</div>
+            <ul class="mt-3 list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
+              <li>Teste internet e energia (3 horários, 2 dias).</li>
+              <li>Visite em dia normal e em fim de semana com movimento.</li>
+              <li>Cheque umidade/mofo no imóvel e incidência de sol.</li>
+              <li>Simule seu custo mensal completo (moradia + carro + aquecimento).</li>
+            </ul>
+          </div>
+
+          <div class="rounded-2xl border p-5" style="border-color: var(--border); background: var(--card);">
+            <div class="text-sm font-semibold">Se você depende de renda local</div>
+            <ul class="mt-3 list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
+              <li>Mapeie o calendário de temporada (quando ganha, quando seca).</li>
+              <li>Tenha reserva de 3–6 meses (idealmente 6–9).</li>
+              <li>Planeje produto/serviço que funcione fora do feriado.</li>
+              <li>Considere Canela como alternativa de custo e acesso.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mt-6 rounded-2xl border p-5" style="border-color: var(--border); background: var(--card);">
+          <div class="text-sm font-semibold">Próximos passos</div>
+          <div class="mt-2 text-sm" style="color: var(--muted);">
+            👉 <a class="underline" href="/mudar-para-o-interior-guia-definitivo">Guia definitivo da mudança</a><br/>
+            👉 <a class="underline" href="/checklist">Checklist financeiro</a><br/>
+            👉 <a class="underline" href="/blog/checklist-escolher-cidade-interior">Checklist de escolha de cidade</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-10 rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+        <h2 class="text-xl" style="font-family:'Playfair Display', serif;">Sumário</h2>
+        <ul class="mt-4 grid gap-2 md:grid-cols-2 text-sm" style="color: var(--muted);">
+          {toc.map((item) => (
+            <li><a class="underline" href={item.href}>{item.label}</a></li>
+          ))}
+        </ul>
+      </section>
+
+      <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
+      <script type="application/ld+json" set:html={JSON.stringify(articleJsonLd)} />
+    </div>
+  </article>
+</BaseLayout>
