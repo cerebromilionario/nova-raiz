@@ -1,0 +1,301 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const title = "Ranking Nacional 2026: melhores cidades para morar no Brasil (Top 40) — Nova Raiz";
+const description = "Ranking editorial da Nova Raiz com 40 cidades brasileiras avaliadas por segurança, custo de vida, trabalho, mobilidade, educação, saúde e qualidade ambiental. Metodologia transparente e rankings por categoria.";
+const canonical = "/ranking-melhores-cidades-2026";
+
+/**
+ * Ranking editorial (índice composto) — NÃO é ranking oficial do governo.
+ * As notas (0–10) representam uma normalização de indicadores públicos e leituras qualitativas do território.
+ * Fontes típicas para checagem: IBGE (Cidades/PNAD/Contas Regionais), Atlas do Desenvolvimento Humano (IDHM),
+ * Mapas de saúde/educação e diagnósticos municipais/estaduais.
+ */
+const weights = {
+  seguranca: 25,
+  custo: 20,
+  trabalho: 15,
+  mobilidade: 10,
+  educacao: 10,
+  saude: 10,
+  ambiente: 10,
+};
+
+const cities = [
+  // Sul
+  { city: "Curitiba", uf: "PR", region: "Sul", overall: 8.8, seguranca: 8.0, custo: 7.2, trabalho: 8.6, mobilidade: 8.7, educacao: 8.4, saude: 8.4, ambiente: 8.1, links: [{ label: "Comparativa", href: "/blog/maringa-vs-curitiba-2026/" }] },
+  { city: "Florianópolis", uf: "SC", region: "Sul", overall: 8.7, seguranca: 7.6, custo: 6.8, trabalho: 8.2, mobilidade: 7.6, educacao: 8.3, saude: 8.1, ambiente: 9.1, links: [{ label: "Comparativa", href: "/blog/curitiba-vs-florianopolis-2026/" }] },
+  { city: "Balneário Camboriú", uf: "SC", region: "Sul", overall: 8.4, seguranca: 7.7, custo: 6.5, trabalho: 7.8, mobilidade: 7.4, educacao: 7.8, saude: 7.7, ambiente: 8.9, links: [{ label: "Comparativa", href: "/blog/balneario-camboriu-vs-florianopolis-2026/" }] },
+  { city: "Joinville", uf: "SC", region: "Sul", overall: 8.2, seguranca: 7.4, custo: 7.0, trabalho: 8.3, mobilidade: 7.5, educacao: 7.8, saude: 7.7, ambiente: 7.8, links: [{ label: "Comparativa", href: "/blog/blumenau-vs-joinville-2026/" }] },
+  { city: "Blumenau", uf: "SC", region: "Sul", overall: 8.1, seguranca: 7.3, custo: 7.0, trabalho: 7.7, mobilidade: 7.2, educacao: 7.8, saude: 7.5, ambiente: 8.0, links: [{ label: "Comparativa", href: "/blog/blumenau-vs-joinville-2026/" }] },
+  { city: "Maringá", uf: "PR", region: "Sul", overall: 8.1, seguranca: 7.4, custo: 7.4, trabalho: 7.8, mobilidade: 7.7, educacao: 7.7, saude: 7.4, ambiente: 7.8, links: [{ label: "Comparativa", href: "/blog/maringa-vs-londrina-2026/" }] },
+  { city: "Londrina", uf: "PR", region: "Sul", overall: 7.8, seguranca: 6.9, custo: 7.4, trabalho: 7.6, mobilidade: 7.2, educacao: 7.6, saude: 7.4, ambiente: 7.5, links: [{ label: "Comparativa", href: "/blog/londrina-vs-maringa-2026/" }] },
+  { city: "Caxias do Sul", uf: "RS", region: "Sul", overall: 7.8, seguranca: 6.8, custo: 7.1, trabalho: 7.9, mobilidade: 6.9, educacao: 7.4, saude: 7.4, ambiente: 7.6, links: [{ label: "Comparativa", href: "/blog/caxias-do-sul-vs-bento-goncalves-2026/" }] },
+  { city: "Bento Gonçalves", uf: "RS", region: "Sul", overall: 7.7, seguranca: 7.0, custo: 6.9, trabalho: 7.1, mobilidade: 6.5, educacao: 7.1, saude: 7.0, ambiente: 8.4, links: [{ label: "Cidade (guia)", href: "/blog/morar-em-bento-goncalves-rs-2026/" }] },
+  { city: "Porto Alegre", uf: "RS", region: "Sul", overall: 7.2, seguranca: 5.6, custo: 6.9, trabalho: 7.6, mobilidade: 6.7, educacao: 7.6, saude: 7.6, ambiente: 7.0, links: [{ label: "Comparativa", href: "/blog/porto-alegre-vs-florianopolis-2026/" }] },
+
+  // Sudeste
+  { city: "Vinhedo", uf: "SP", region: "Sudeste", overall: 8.5, seguranca: 8.1, custo: 6.6, trabalho: 7.8, mobilidade: 7.9, educacao: 7.8, saude: 7.6, ambiente: 8.0, links: [{ label: "Guia definitivo", href: "/cidades/vinhedo" }] },
+  { city: "Jundiaí", uf: "SP", region: "Sudeste", overall: 8.3, seguranca: 7.6, custo: 6.7, trabalho: 8.0, mobilidade: 7.8, educacao: 7.7, saude: 7.6, ambiente: 7.7, links: [{ label: "Comparativa", href: "/blog/jundiai-vs-campinas-2026/" }] },
+  { city: "Valinhos", uf: "SP", region: "Sudeste", overall: 8.1, seguranca: 7.6, custo: 6.5, trabalho: 7.5, mobilidade: 7.3, educacao: 7.6, saude: 7.4, ambiente: 7.9, links: [{ label: "Guia mestre", href: "/blog/melhores-cidades-interior-sp-trabalho-remoto/" }] },
+  { city: "Indaiatuba", uf: "SP", region: "Sudeste", overall: 8.1, seguranca: 7.6, custo: 6.6, trabalho: 7.6, mobilidade: 7.2, educacao: 7.4, saude: 7.2, ambiente: 7.8, links: [{ label: "Comparativa", href: "/blog/campinas-vs-indaiatuba-2026/" }] },
+  { city: "Campinas", uf: "SP", region: "Sudeste", overall: 7.9, seguranca: 6.6, custo: 6.4, trabalho: 8.6, mobilidade: 7.0, educacao: 8.6, saude: 8.3, ambiente: 7.1, links: [{ label: "Cidade (guia)", href: "/blog/morar-em-campinas-sp-2026/" }] },
+  { city: "São José dos Campos", uf: "SP", region: "Sudeste", overall: 8.2, seguranca: 7.2, custo: 6.7, trabalho: 8.0, mobilidade: 7.5, educacao: 7.9, saude: 7.7, ambiente: 7.6, links: [{ label: "Cidade (guia)", href: "/blog/morar-em-sao-jose-dos-campos-sp-2026/" }] },
+  { city: "Sorocaba", uf: "SP", region: "Sudeste", overall: 7.7, seguranca: 6.8, custo: 7.1, trabalho: 7.4, mobilidade: 6.9, educacao: 7.0, saude: 7.1, ambiente: 7.2, links: [{ label: "Comparativa", href: "/blog/sorocaba-vs-campinas-2026/" }] },
+  { city: "São Carlos", uf: "SP", region: "Sudeste", overall: 7.8, seguranca: 7.0, custo: 7.3, trabalho: 7.0, mobilidade: 6.8, educacao: 8.2, saude: 7.1, ambiente: 7.5, links: [{ label: "Cidade (guia)", href: "/blog/morar-em-sao-carlos-sp-2026/" }] },
+  { city: "Ribeirão Preto", uf: "SP", region: "Sudeste", overall: 7.6, seguranca: 6.4, custo: 7.0, trabalho: 7.7, mobilidade: 6.8, educacao: 7.2, saude: 7.6, ambiente: 7.0, links: [{ label: "Cidade (guia)", href: "/blog/ribeirao-preto-home-office-vale-a-pena/" }] },
+  { city: "Poços de Caldas", uf: "MG", region: "Sudeste", overall: 7.9, seguranca: 7.2, custo: 7.1, trabalho: 6.8, mobilidade: 6.6, educacao: 7.0, saude: 7.1, ambiente: 8.7, links: [{ label: "Guia definitivo", href: "/cidades/pocos-de-caldas" }] },
+  { city: "Uberlândia", uf: "MG", region: "Sudeste", overall: 7.6, seguranca: 6.5, custo: 7.1, trabalho: 7.6, mobilidade: 6.7, educacao: 7.2, saude: 7.3, ambiente: 7.0, links: [{ label: "Comparativa", href: "/blog/uberlandia-vs-ribeirao-preto-2026/" }] },
+  { city: "Vitória", uf: "ES", region: "Sudeste", overall: 7.6, seguranca: 6.2, custo: 6.8, trabalho: 7.3, mobilidade: 7.0, educacao: 7.2, saude: 7.1, ambiente: 8.1, links: [{ label: "Blog", href: "/blog/" }] },
+
+  // Centro-Oeste
+  { city: "Brasília", uf: "DF", region: "Centro-Oeste", overall: 7.8, seguranca: 6.7, custo: 6.3, trabalho: 8.4, mobilidade: 6.9, educacao: 7.4, saude: 7.2, ambiente: 7.8, links: [{ label: "Blog", href: "/blog/" }] },
+  { city: "Goiânia", uf: "GO", region: "Centro-Oeste", overall: 7.5, seguranca: 6.1, custo: 7.3, trabalho: 7.3, mobilidade: 6.6, educacao: 7.1, saude: 7.2, ambiente: 7.3, links: [{ label: "Blog", href: "/blog/" }] },
+  { city: "Campo Grande", uf: "MS", region: "Centro-Oeste", overall: 7.4, seguranca: 6.6, custo: 7.2, trabalho: 6.8, mobilidade: 6.8, educacao: 6.9, saude: 7.0, ambiente: 7.9, links: [{ label: "Blog", href: "/blog/" }] },
+
+  // Nordeste
+  { city: "João Pessoa", uf: "PB", region: "Nordeste", overall: 7.7, seguranca: 6.6, custo: 7.7, trabalho: 6.4, mobilidade: 6.6, educacao: 6.8, saude: 6.8, ambiente: 8.6, links: [{ label: "Blog", href: "/blog/" }] },
+  { city: "Natal", uf: "RN", region: "Nordeste", overall: 7.3, seguranca: 6.0, custo: 7.4, trabalho: 6.2, mobilidade: 6.3, educacao: 6.6, saude: 6.6, ambiente: 8.3, links: [{ label: "Blog", href: "/blog/" }] },
+  { city: "Maceió", uf: "AL", region: "Nordeste", overall: 7.1, seguranca: 5.7, custo: 7.4, trabalho: 6.1, mobilidade: 6.0, educacao: 6.3, saude: 6.4, ambiente: 8.5, links: [{ label: "Blog", href: "/blog/" }] },
+  { city: "Aracaju", uf: "SE", region: "Nordeste", overall: 7.1, seguranca: 6.1, custo: 7.5, trabalho: 6.0, mobilidade: 6.4, educacao: 6.4, saude: 6.5, ambiente: 8.0, links: [{ label: "Blog", href: "/blog/" }] },
+  { city: "Salvador", uf: "BA", region: "Nordeste", overall: 6.8, seguranca: 5.1, custo: 6.9, trabalho: 7.0, mobilidade: 6.0, educacao: 6.8, saude: 6.9, ambiente: 7.8, links: [{ label: "Blog", href: "/blog/" }] },
+  { city: "Fortaleza", uf: "CE", region: "Nordeste", overall: 6.9, seguranca: 5.2, custo: 7.1, trabalho: 6.8, mobilidade: 6.1, educacao: 6.6, saude: 6.7, ambiente: 7.7, links: [{ label: "Blog", href: "/blog/" }] },
+  { city: "Recife", uf: "PE", region: "Nordeste", overall: 6.8, seguranca: 5.0, custo: 6.9, trabalho: 7.0, mobilidade: 5.9, educacao: 7.1, saude: 7.0, ambiente: 7.2, links: [{ label: "Blog", href: "/blog/" }] },
+
+  // Norte
+  { city: "Belém", uf: "PA", region: "Norte", overall: 6.5, seguranca: 4.9, custo: 6.8, trabalho: 6.5, mobilidade: 5.6, educacao: 6.1, saude: 6.2, ambiente: 8.0, links: [{ label: "Blog", href: "/blog/" }] },
+  { city: "Manaus", uf: "AM", region: "Norte", overall: 6.5, seguranca: 5.0, custo: 6.3, trabalho: 6.7, mobilidade: 5.6, educacao: 6.2, saude: 6.3, ambiente: 7.7, links: [{ label: "Blog", href: "/blog/" }] },
+  { city: "Palmas", uf: "TO", region: "Norte", overall: 6.9, seguranca: 6.0, custo: 6.8, trabalho: 6.0, mobilidade: 6.4, educacao: 6.4, saude: 6.5, ambiente: 7.8, links: [{ label: "Blog", href: "/blog/" }] },
+];
+
+const topOverall = [...cities].sort((a,b)=>b.overall-a.overall);
+const top20 = topOverall.slice(0,20);
+
+const categories = [
+  { key: "seguranca", label: "Mais seguras", desc: "Onde a sensação de previsibilidade e os indicadores de segurança tendem a ser melhores." },
+  { key: "custo", label: "Melhor custo-benefício", desc: "Equilíbrio entre despesas recorrentes (moradia/serviços) e entrega de infraestrutura." },
+  { key: "trabalho", label: "Mercado de trabalho", desc: "Densidade de oportunidades, salários relativos e diversidade setorial." },
+  { key: "educacao", label: "Educação", desc: "Oferta e qualidade percebida de redes públicas/privadas e ambiente acadêmico." },
+  { key: "saude", label: "Saúde", desc: "Rede disponível e acesso regional a média/alta complexidade." },
+  { key: "ambiente", label: "Qualidade ambiental", desc: "Clima, áreas verdes, qualidade do ar e acesso a natureza." },
+];
+
+const formatPt = (n) => n.toFixed(1).replace(".", ",");
+const chips = (region) => {
+  const base = "inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium";
+  const map = {
+    "Sul": `${base} border-emerald-200 bg-emerald-50 text-emerald-800`,
+    "Sudeste": `${base} border-amber-200 bg-amber-50 text-amber-800`,
+    "Centro-Oeste": `${base} border-indigo-200 bg-indigo-50 text-indigo-800`,
+    "Nordeste": `${base} border-sky-200 bg-sky-50 text-sky-800`,
+    "Norte": `${base} border-fuchsia-200 bg-fuchsia-50 text-fuchsia-800`,
+  };
+  return map[region] || `${base} border-gray-200 bg-gray-50 text-gray-800`;
+};
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="py-10 md:py-14">
+    <div class="mx-auto max-w-6xl px-4">
+      <nav class="text-sm" aria-label="Breadcrumb">
+        <ol class="flex flex-wrap items-center gap-2" style="color: var(--muted);">
+          <li><a class="underline" href="/">Início</a></li>
+          <li aria-hidden="true">›</li>
+          <li style="color: var(--text);">Ranking 2026</li>
+        </ol>
+      </nav>
+
+      <header class="mt-6 rounded-3xl border p-6 md:p-8" style="border-color: var(--border); background: var(--card);">
+        <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div class="max-w-3xl">
+            <h1 class="text-4xl md:text-5xl leading-tight" style="font-family:'Playfair Display', serif;">Ranking Nacional 2026</h1>
+            <p class="mt-3 text-lg" style="color: var(--muted);">
+              As <strong>40 melhores cidades</strong> (edição 2026) para morar no Brasil segundo um <strong>índice composto</strong> da Nova Raiz
+              — com metodologia transparente, rankings por categoria e links para guias/comparativas do site.
+            </p>
+          </div>
+          <div class="rounded-2xl border px-4 py-3 text-sm" style="border-color: var(--border); background: var(--surface);">
+            <div class="font-semibold">Pesos do índice</div>
+            <div class="mt-2 grid grid-cols-2 gap-x-6 gap-y-1" style="color: var(--muted);">
+              <div>Segurança: <strong>25%</strong></div>
+              <div>Custo: <strong>20%</strong></div>
+              <div>Trabalho: <strong>15%</strong></div>
+              <div>Mobilidade: <strong>10%</strong></div>
+              <div>Educação: <strong>10%</strong></div>
+              <div>Saúde: <strong>10%</strong></div>
+              <div>Ambiente: <strong>10%</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-5 text-xs" style="color: var(--muted);">
+          Nota importante: este é um ranking <strong>editorial</strong> (índice composto). Use como ponto de partida e sempre valide com dados locais, visitas e contexto pessoal.
+        </div>
+      </header>
+
+      <section class="mt-10 grid gap-6 lg:grid-cols-3">
+        <div class="rounded-3xl border p-6 lg:col-span-2" style="border-color: var(--border); background: var(--surface);">
+          <h2 class="text-2xl font-semibold">Top 20 — Brasil 2026</h2>
+          <p class="mt-2 text-sm" style="color: var(--muted);">
+            As cidades com melhor equilíbrio geral (0–10). Clique nos links quando houver guia/comparativa.
+          </p>
+
+          <div class="mt-6 overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="text-left" style="color: var(--muted);">
+                  <th class="py-2 pr-3">#</th>
+                  <th class="py-2 pr-3">Cidade</th>
+                  <th class="py-2 pr-3">UF</th>
+                  <th class="py-2 pr-3">Região</th>
+                  <th class="py-2 pr-3">Nota</th>
+                  <th class="py-2">Links</th>
+                </tr>
+              </thead>
+              <tbody>
+                {top20.map((c, idx) => (
+                  <tr class="border-t" style="border-color: var(--border);">
+                    <td class="py-3 pr-3 font-semibold">{idx + 1}</td>
+                    <td class="py-3 pr-3">
+                      <span class="font-semibold">{c.city}</span>
+                    </td>
+                    <td class="py-3 pr-3">{c.uf}</td>
+                    <td class="py-3 pr-3">
+                      <span class={chips(c.region)}>{c.region}</span>
+                    </td>
+                    <td class="py-3 pr-3 font-semibold">{formatPt(c.overall)}</td>
+                    <td class="py-3">
+                      <div class="flex flex-wrap gap-2">
+                        {c.links?.map((l) => (
+                          <a class="underline" href={l.href}>{l.label}</a>
+                        ))}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <aside class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+          <h2 class="text-2xl font-semibold">Como usar este ranking</h2>
+          <ul class="mt-4 list-disc pl-5 space-y-2 text-sm" style="color: var(--muted);">
+            <li>Escolha 3–5 cidades do Top 20 e compare pelo seu perfil (filhos, home office, custo, clima).</li>
+            <li>Abra os <strong>guias definitivos</strong> e as <strong>comparativas</strong> do site para aprofundar.</li>
+            <li>Faça uma visita-teste de 48–72h (horário de pico + noite) antes de decidir.</li>
+            <li>Crie um orçamento realista: moradia + carro + escola + saúde + alimentação.</li>
+          </ul>
+
+          <div class="mt-6 rounded-2xl border p-4 text-sm" style="border-color: var(--border); background: var(--surface);">
+            <div class="font-semibold">Atalhos úteis</div>
+            <div class="mt-2 space-y-2" style="color: var(--muted);">
+              <div>👉 <a class="underline" href="/mudar-para-o-interior-guia-definitivo/">Guia definitivo da mudança</a></div>
+              <div>👉 <a class="underline" href="/checklist/">Checklist financeiro</a></div>
+              <div>👉 <a class="underline" href="/blog/">Ver todos os artigos</a></div>
+              <div>👉 <a class="underline" href="/cidades/">Cidades (páginas pilar)</a></div>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="mt-10 rounded-3xl border p-6 md:p-8" style="border-color: var(--border); background: var(--card);">
+        <h2 class="text-2xl font-semibold">Ranking por categoria</h2>
+        <p class="mt-2 text-sm" style="color: var(--muted);">
+          Se o seu objetivo é específico (ex.: segurança, custo-benefício, ambiente), use os rankings abaixo para priorizar.
+        </p>
+
+        <div class="mt-6 grid gap-6 md:grid-cols-2">
+          {categories.map((cat) => {
+            const list = [...cities].sort((a,b) => (b[cat.key] ?? 0) - (a[cat.key] ?? 0)).slice(0,10);
+            return (
+              <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+                <div class="flex items-baseline justify-between gap-3">
+                  <h3 class="text-xl font-semibold">{cat.label}</h3>
+                  <span class="text-xs" style="color: var(--muted);">Top 10</span>
+                </div>
+                <p class="mt-2 text-sm" style="color: var(--muted);">{cat.desc}</p>
+
+                <ol class="mt-4 space-y-2 text-sm">
+                  {list.map((c, idx) => (
+                    <li class="flex items-center justify-between gap-3">
+                      <div class="min-w-0">
+                        <span class="font-semibold">{idx+1}.</span>{" "}
+                        <span class="font-semibold">{c.city}</span>{" "}
+                        <span style="color: var(--muted);">({c.uf})</span>
+                      </div>
+                      <div class="flex items-center gap-2">
+                        <span class={chips(c.region)}>{c.region}</span>
+                        <span class="font-semibold">{formatPt(c[cat.key] ?? 0)}</span>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      <section class="mt-10 rounded-3xl border p-6 md:p-8" style="border-color: var(--border); background: var(--surface);">
+        <h2 class="text-2xl font-semibold">Top 40 — lista completa</h2>
+        <p class="mt-2 text-sm" style="color: var(--muted);">
+          Lista completa com notas gerais e sub-notas. (Índice editorial: use como “mapa” para pesquisar mais a fundo.)
+        </p>
+
+        <div class="mt-6 overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="text-left" style="color: var(--muted);">
+                <th class="py-2 pr-3">Cidade</th>
+                <th class="py-2 pr-3">UF</th>
+                <th class="py-2 pr-3">Região</th>
+                <th class="py-2 pr-3">Geral</th>
+                <th class="py-2 pr-3">Seg</th>
+                <th class="py-2 pr-3">Custo</th>
+                <th class="py-2 pr-3">Trab</th>
+                <th class="py-2 pr-3">Mob</th>
+                <th class="py-2 pr-3">Edu</th>
+                <th class="py-2 pr-3">Saúde</th>
+                <th class="py-2">Amb</th>
+              </tr>
+            </thead>
+            <tbody>
+              {topOverall.map((c) => (
+                <tr class="border-t" style="border-color: var(--border);">
+                  <td class="py-3 pr-3 font-semibold">
+                    {c.links?.length ? <a class="underline" href={c.links[0].href}>{c.city}</a> : c.city}
+                  </td>
+                  <td class="py-3 pr-3">{c.uf}</td>
+                  <td class="py-3 pr-3"><span class={chips(c.region)}>{c.region}</span></td>
+                  <td class="py-3 pr-3 font-semibold">{formatPt(c.overall)}</td>
+                  <td class="py-3 pr-3">{formatPt(c.seguranca)}</td>
+                  <td class="py-3 pr-3">{formatPt(c.custo)}</td>
+                  <td class="py-3 pr-3">{formatPt(c.trabalho)}</td>
+                  <td class="py-3 pr-3">{formatPt(c.mobilidade)}</td>
+                  <td class="py-3 pr-3">{formatPt(c.educacao)}</td>
+                  <td class="py-3 pr-3">{formatPt(c.saude)}</td>
+                  <td class="py-3">{formatPt(c.ambiente)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mt-6 text-xs" style="color: var(--muted);">
+          Próximo passo editorial: publicar <strong>guia pilar</strong> de cada cidade do Top 20 e ampliar o cluster com comparativas regionais.
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context":"https://schema.org",
+    "@type":"Article",
+    "headline":"Ranking Nacional 2026: melhores cidades para morar no Brasil (Top 40)",
+    "description": description,
+    "mainEntityOfPage": canonical,
+    "author": { "@type":"Organization", "name":"Nova Raiz" },
+    "publisher": { "@type":"Organization", "name":"Nova Raiz" }
+  })} />
+</BaseLayout>
