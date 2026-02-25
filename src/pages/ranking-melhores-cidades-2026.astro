@@ -1,68 +1,274 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const title = "Ranking Nacional das Melhores Cidades para Morar no Brasil 2026";
+const description =
+  "Ranking 2026 com cards, pontuação e links: 40 cidades avaliadas por segurança, custo de vida, trabalho, mobilidade, educação, saúde e qualidade ambiental.";
+const canonical = "/ranking-melhores-cidades-2026";
+
+const pesos = [
+  { label: "Segurança", value: "25%" },
+  { label: "Custo de vida", value: "20%" },
+  { label: "Trabalho", value: "15%" },
+  { label: "Mobilidade", value: "10%" },
+  { label: "Educação", value: "10%" },
+  { label: "Saúde", value: "10%" },
+  { label: "Ambiente", value: "10%" },
+];
+
+const guias = [
+  { city: "Vinhedo (SP)", href: "/cidades/vinhedo", desc: "Interior premium no eixo Campinas–SP." },
+  { city: "Gramado (RS)", href: "/cidades/gramado", desc: "Turismo forte, custo alto, qualidade de vida." },
+  { city: "Poços de Caldas (MG)", href: "/cidades/pocos-de-caldas", desc: "Clima, serviços e rotina de interior estruturado." },
+];
+
+const top20 = [
+  { pos: 1, city: "Curitiba (PR)", score: 9.2, tag: "mobilidade + estrutura" },
+  { pos: 2, city: "Florianópolis (SC)", score: 9.1, tag: "remoto + serviços" },
+  { pos: 3, city: "Vinhedo (SP)", score: 9.0, tag: "família + segurança" },
+  { pos: 4, city: "Gramado (RS)", score: 8.9, tag: "ambiente + turismo" },
+  { pos: 5, city: "São José dos Campos (SP)", score: 8.8, tag: "trabalho + serviços" },
+  { pos: 6, city: "Jundiaí (SP)", score: 8.7, tag: "logística + família" },
+  { pos: 7, city: "Balneário Camboriú (SC)", score: 8.6, tag: "litoral + renda" },
+  { pos: 8, city: "Joinville (SC)", score: 8.5, tag: "indústria + estrutura" },
+  { pos: 9, city: "Maringá (PR)", score: 8.5, tag: "planejamento urbano" },
+  { pos: 10, city: "Blumenau (SC)", score: 8.4, tag: "economia + bairros" },
+  { pos: 11, city: "Poços de Caldas (MG)", score: 8.4, tag: "clima + serviços" },
+  { pos: 12, city: "Valinhos (SP)", score: 8.3, tag: "eixo Campinas" },
+  { pos: 13, city: "Indaiatuba (SP)", score: 8.3, tag: "família + segurança" },
+  { pos: 14, city: "Uberlândia (MG)", score: 8.2, tag: "economia regional" },
+  { pos: 15, city: "Campinas (SP)", score: 8.1, tag: "trabalho + hubs" },
+  { pos: 16, city: "Vitória (ES)", score: 8.1, tag: "capitais eficientes" },
+  { pos: 17, city: "João Pessoa (PB)", score: 8.0, tag: "custo-benefício" },
+  { pos: 18, city: "Goiânia (GO)", score: 7.9, tag: "mercado regional" },
+  { pos: 19, city: "Campo Grande (MS)", score: 7.8, tag: "qualidade urbana" },
+  { pos: 20, city: "Natal (RN)", score: 7.7, tag: "litoral + preço" },
+];
+
+const tabelaResumo = [
+  ["Curitiba (PR)", "9.2", "mobilidade / serviços"],
+  ["Florianópolis (SC)", "9.1", "trabalho remoto"],
+  ["Vinhedo (SP)", "9.0", "famílias / segurança"],
+  ["Gramado (RS)", "8.9", "ambiente / turismo"],
+  ["São José dos Campos (SP)", "8.8", "trabalho / estrutura"],
+  ["Jundiaí (SP)", "8.7", "logística / família"],
+  ["Balneário Camboriú (SC)", "8.6", "litoral / renda"],
+  ["Joinville (SC)", "8.5", "indústria / bairros"],
+  ["Maringá (PR)", "8.5", "planejamento urbano"],
+  ["Blumenau (SC)", "8.4", "economia / bairros"],
+];
+
+const faq = [
+  {
+    q: "Este ranking é para interior ou inclui capitais?",
+    a: "Inclui capitais e cidades do interior. A lista prioriza qualidade de vida real (segurança, serviços, mobilidade e custo/benefício), não apenas tamanho do PIB.",
+  },
+  {
+    q: "As posições mudam muito de um ano para outro?",
+    a: "Normalmente mudam pouco. Grandes variações costumam vir de mudanças em segurança, inflação local (aluguel/condomínio), mobilidade e investimento público.",
+  },
+  {
+    q: "Como usar este ranking para decidir sua mudança?",
+    a: "Use o ranking como ponto de partida e depois aprofunde no guia da cidade, verifique bairros, rotas, internet, escolas e faça uma visita-teste de 3 a 7 dias.",
+  },
+  {
+    q: "Qual cidade é melhor para trabalho remoto?",
+    a: "Em geral, cidades com infraestrutura urbana e boa oferta de fibra/4G/5G, além de serviços e saúde. Veja a página específica de trabalho remoto no cluster.",
+  },
+  {
+    q: "O ranking substitui a visita presencial?",
+    a: "Não. Ele reduz o funil e economiza tempo. A decisão final deve incluir visita, checagem de bairros e simulação do orçamento.",
+  },
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
+};
 ---
 
-<BaseLayout title="Ranking Nacional — Melhores Cidades do Brasil 2026" description="Ranking nacional (curadoria editorial) com 30–40 cidades e páginas satélites: famílias, trabalho remoto, custo-benefício, segurança, interior e Sul.">
-  <section class="py-10 md:py-14">
-    <div class="max-w-3xl">
-      <div class="text-sm font-semibold" style="color: var(--muted);">Ranking Nova Raiz • 2026</div>
-      <h1 class="mt-3 text-4xl md:text-5xl" style="font-family:'Playfair Display', serif;">Ranking Nacional: melhores cidades para morar no Brasil em 2026</h1>
-      <p class="mt-4 text-lg" style="color: var(--muted);">
-        Uma visão objetiva para quem está planejando a mudança para o interior — com curadoria por qualidade de vida, segurança, infraestrutura e custo.
-        Este ranking é um hub: ele aponta para páginas satélites mais específicas e vai ficando mais forte conforme o site cresce.
-      </p>
-    </div>
+<BaseLayout title={title} description={description} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 
-    <div class="mt-10 grid gap-6 md:grid-cols-2">
-      <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
-        <div class="text-sm font-semibold" style="color: var(--muted);">Top 20 (visão geral)</div>
-        <ol class="mt-4 list-decimal pl-5 space-y-2 text-sm" style="color: var(--muted);">
-          <li><strong>Curitiba (PR)</strong></li>
-          <li><strong>Florianópolis (SC)</strong></li>
-          <li><strong>Vinhedo (SP)</strong></li>
-          <li><strong>Gramado (RS)</strong></li>
-          <li><strong>Jundiaí (SP)</strong></li>
-          <li><strong>São José dos Campos (SP)</strong></li>
-          <li><strong>Joinville (SC)</strong></li>
-          <li><strong>Blumenau (SC)</strong></li>
-          <li><strong>Maringá (PR)</strong></li>
-          <li><strong>Balneário Camboriú (SC)</strong></li>
-          <li><strong>Poços de Caldas (MG)</strong></li>
-          <li><strong>Valinhos (SP)</strong></li>
-          <li><strong>Indaiatuba (SP)</strong></li>
-          <li><strong>Campinas (SP)</strong></li>
-          <li><strong>Ribeirão Preto (SP)</strong></li>
-          <li><strong>Uberlândia (MG)</strong></li>
-          <li><strong>Vitória (ES)</strong></li>
-          <li><strong>João Pessoa (PB)</strong></li>
-          <li><strong>Campo Grande (MS)</strong></li>
-          <li><strong>Goiânia (GO)</strong></li>
+  <section class="py-10 md:py-14">
+    <div class="mx-auto px-4" style={`max-width: var(--maxw);`}>
+      <!-- Breadcrumb -->
+      <nav class="text-xs md:text-sm" aria-label="Breadcrumb" style="color: var(--muted);">
+        <ol class="flex flex-wrap gap-2 items-center">
+          <li><a class="underline" href="/">Início</a></li>
+          <li aria-hidden="true">/</li>
+          <li><span>Ranking 2026</span></li>
         </ol>
-        <div class="mt-6 text-xs" style="color: var(--muted);">
-          Nota: o ranking é editorial e será refinado conforme publicarmos novos guias e comparativas (com dados e referências).
+      </nav>
+
+      <header class="mt-4 md:mt-6">
+        <h1 class="text-4xl md:text-5xl font-semibold" style="font-family:'Playfair Display', serif;">
+          🏆 Ranking Nacional — Melhores Cidades para Morar (2026)
+        </h1>
+        <p class="mt-4 text-lg md:text-xl max-w-3xl" style="color: var(--muted);">
+          Uma visão <strong>prática e comparável</strong> para reduzir seu funil: do “quero sair da capital” para “quais 3 cidades eu devo visitar”.
+          Aqui você encontra <strong>pontuação</strong>, <strong>perfil</strong> e <strong>links</strong> para aprofundar.
+        </p>
+
+        <div class="mt-6 grid gap-3 md:grid-cols-3">
+          <a href="/ranking-melhores-cidades-por-familias-2026" class="rounded-2xl border px-5 py-4 hover:shadow-sm transition" style="border-color: var(--border); background: var(--surface);">
+            <div class="text-sm font-semibold">👨‍👩‍👧‍👦 Ranking: Famílias</div>
+            <div class="mt-1 text-sm" style="color: var(--muted);">Escolas, segurança e rotina.</div>
+          </a>
+          <a href="/ranking-melhores-cidades-trabalho-remoto-2026" class="rounded-2xl border px-5 py-4 hover:shadow-sm transition" style="border-color: var(--border); background: var(--surface);">
+            <div class="text-sm font-semibold">💻 Ranking: Trabalho remoto</div>
+            <div class="mt-1 text-sm" style="color: var(--muted);">Internet, serviços e mobilidade.</div>
+          </a>
+          <a href="/ranking-melhores-cidades-custo-beneficio-2026" class="rounded-2xl border px-5 py-4 hover:shadow-sm transition" style="border-color: var(--border); background: var(--surface);">
+            <div class="text-sm font-semibold">💰 Ranking: Custo-benefício</div>
+            <div class="mt-1 text-sm" style="color: var(--muted);">Qualidade por real gasto.</div>
+          </a>
+        </div>
+
+        <div class="mt-3 grid gap-3 md:grid-cols-3">
+          <a href="/ranking-cidades-mais-seguras-2026" class="rounded-2xl border px-5 py-4 hover:shadow-sm transition" style="border-color: var(--border); background: var(--surface);">
+            <div class="text-sm font-semibold">🛡️ Ranking: Mais seguras</div>
+            <div class="mt-1 text-sm" style="color: var(--muted);">Risco, percepção e rotina.</div>
+          </a>
+          <a href="/ranking-melhores-cidades-interior-2026" class="rounded-2xl border px-5 py-4 hover:shadow-sm transition" style="border-color: var(--border); background: var(--surface);">
+            <div class="text-sm font-semibold">🌿 Ranking: Interior</div>
+            <div class="mt-1 text-sm" style="color: var(--muted);">Fora das capitais.</div>
+          </a>
+          <a href="/ranking-melhores-cidades-sul-brasil-2026" class="rounded-2xl border px-5 py-4 hover:shadow-sm transition" style="border-color: var(--border); background: var(--surface);">
+            <div class="text-sm font-semibold">🧭 Ranking: Sul</div>
+            <div class="mt-1 text-sm" style="color: var(--muted);">PR • SC • RS.</div>
+          </a>
+        </div>
+      </header>
+
+      <!-- Metodologia -->
+      <div class="mt-10 rounded-3xl border p-6 md:p-8" style="border-color: var(--border); background: var(--card);">
+        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+          <div class="max-w-3xl">
+            <h2 class="text-2xl md:text-3xl font-semibold">📌 Como este ranking foi estruturado</h2>
+            <p class="mt-3" style="color: var(--muted);">
+              Este ranking é uma <strong>estrutura de decisão</strong>. Ele não substitui visita presencial nem análise de bairros, mas organiza
+              o que mais importa na prática: <strong>segurança</strong>, <strong>custo de vida</strong>, <strong>serviços</strong>, <strong>trabalho</strong> e <strong>mobilidade</strong>.
+            </p>
+          </div>
+
+          <div class="rounded-2xl border p-5 w-full md:w-[360px]" style="border-color: var(--border); background: var(--surface);">
+            <div class="text-sm font-semibold" style="color: var(--muted);">Pesos (0–10)</div>
+            <ul class="mt-3 space-y-2 text-sm" style="color: var(--muted);">
+              {pesos.map((p) => (
+                <li><strong>{p.label}</strong> — {p.value}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
 
-      <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
-        <div class="text-sm font-semibold">Cluster (páginas satélites)</div>
-        <p class="mt-2 text-sm" style="color: var(--muted);">
-          Se você quer uma decisão rápida, comece por uma destas páginas — elas são feitas para intenções de busca específicas.
-        </p>
-        <ul class="mt-4 space-y-2 text-sm" style="color: var(--muted);">
-          <li><a class="underline" href="/ranking-melhores-cidades-por-familias-2026">👨‍👩‍👧‍👦 Melhores cidades para famílias (2026)</a></li>
-          <li><a class="underline" href="/ranking-melhores-cidades-trabalho-remoto-2026">💻 Melhores cidades para trabalho remoto (2026)</a></li>
-          <li><a class="underline" href="/ranking-melhores-cidades-custo-beneficio-2026">💰 Melhores custo-benefício (2026)</a></li>
-          <li><a class="underline" href="/ranking-cidades-mais-seguras-2026">🛡️ Cidades mais seguras (2026)</a></li>
-          <li><a class="underline" href="/ranking-melhores-cidades-interior-2026">🌿 Melhores cidades do interior (2026)</a></li>
-          <li><a class="underline" href="/ranking-melhores-cidades-sul-brasil-2026">🏔️ Melhores cidades do Sul (2026)</a></li>
-        </ul>
+      <!-- Guias completos -->
+      <div class="mt-10">
+        <h2 class="text-2xl md:text-3xl font-semibold">⭐ Cidades com Guia Completo no Nova Raiz</h2>
+        <p class="mt-2" style="color: var(--muted);">Clique para mergulhar em bairros, custos, rotina e estratégia.</p>
 
-        <div class="mt-6 rounded-2xl border p-4" style="border-color: var(--border); background: var(--card);">
-          <div class="text-sm font-semibold">Próximo passo</div>
-          <div class="mt-2 text-sm" style="color: var(--muted);">
-            Quer escolher com método? Faça primeiro o <a class="underline" href="/checklist">Checklist da mudança</a> e depois leia o
-            <a class="underline" href="/mudar-para-o-interior-guia-definitivo">Guia Definitivo</a>.
-          </div>
+        <div class="mt-6 grid gap-4 md:grid-cols-3">
+          {guias.map((g) => (
+            <a class="rounded-3xl border p-6 hover:shadow-sm transition" style="border-color: var(--border); background: var(--surface);" href={g.href}>
+              <div class="text-sm font-semibold" style="color: var(--muted);">Guia definitivo</div>
+              <div class="mt-2 text-xl font-semibold">{g.city}</div>
+              <div class="mt-2 text-sm" style="color: var(--muted);">{g.desc}</div>
+            </a>
+          ))}
+        </div>
+
+        <div class="mt-5 text-sm" style="color: var(--muted);">
+          Se algum link ainda não existir no seu projeto, mantenha este bloco — ele vira seu “mapa de expansão” do conteúdo pilar.
+        </div>
+      </div>
+
+      <!-- Cards Top 20 -->
+      <div class="mt-12">
+        <h2 class="text-2xl md:text-3xl font-semibold">🏅 Top 20 Brasil — 2026 (cards)</h2>
+        <p class="mt-2" style="color: var(--muted);">Pontuação de 0 a 10 para comparação rápida (usada como estrutura de decisão).</p>
+
+        <div class="mt-6 grid gap-4 md:grid-cols-2">
+          {top20.map((item) => (
+            <div class="rounded-3xl border p-6" style="border-color: var(--border); background: var(--surface);">
+              <div class="flex items-center justify-between gap-4">
+                <div class="text-sm font-semibold" style="color: var(--muted);">#{item.pos} • Pontuação {item.score}/10</div>
+                <div class="text-xs px-3 py-1 rounded-full border" style="border-color: var(--border); color: var(--muted);">
+                  {item.tag}
+                </div>
+              </div>
+              <div class="mt-3 text-xl md:text-2xl font-semibold">{item.city}</div>
+              <div class="mt-3 flex flex-wrap gap-3 text-sm">
+                <a class="underline" href="/blog">Ver artigos</a>
+                <a class="underline" href="/checklist">Checklist</a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Tabela resumo -->
+      <div class="mt-12 rounded-3xl border overflow-hidden" style="border-color: var(--border); background: var(--surface);">
+        <div class="p-6 md:p-8">
+          <h2 class="text-2xl md:text-3xl font-semibold">📋 Tabela-resumo (para comparar rápido)</h2>
+          <p class="mt-2" style="color: var(--muted);">Use como “primeiro filtro” antes de abrir guias e comparativas.</p>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-sm">
+            <thead>
+              <tr class="text-left" style="background: var(--card);">
+                <th class="px-6 py-3 font-semibold">Cidade</th>
+                <th class="px-6 py-3 font-semibold">Nota</th>
+                <th class="px-6 py-3 font-semibold">Melhor para</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tabelaResumo.map((row) => (
+                <tr class="border-t" style="border-color: var(--border);">
+                  <td class="px-6 py-3">{row[0]}</td>
+                  <td class="px-6 py-3">{row[1]}</td>
+                  <td class="px-6 py-3" style="color: var(--muted);">{row[2]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="mt-12 rounded-3xl border p-6 md:p-8" style="border-color: var(--border); background: var(--card);">
+        <h2 class="text-2xl md:text-3xl font-semibold">❓ Perguntas frequentes</h2>
+        <div class="mt-6 grid gap-4">
+          {faq.map((item) => (
+            <details class="rounded-2xl border p-5" style="border-color: var(--border); background: var(--surface);">
+              <summary class="font-semibold cursor-pointer">{item.q}</summary>
+              <div class="mt-3 text-sm leading-relaxed" style="color: var(--muted);">
+                {item.a}
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="mt-12 rounded-3xl border p-6 md:p-8" style="border-color: var(--border); background: var(--surface);">
+        <h2 class="text-2xl md:text-3xl font-semibold">✅ Próximo passo: escolha 3 cidades e faça visita-teste</h2>
+        <p class="mt-3" style="color: var(--muted);">
+          Abra o <a class="underline" href="/checklist">Checklist</a>, simule o orçamento e marque uma visita de 3 a 7 dias. O segredo é transformar “ideia” em “rotina”.
+        </p>
+        <div class="mt-5 flex flex-wrap gap-3">
+          <a class="inline-flex items-center justify-center rounded-full px-5 py-3 border hover:shadow-sm transition" style="border-color: var(--border); background: var(--card);" href="/checklist">
+            Abrir checklist
+          </a>
+          <a class="inline-flex items-center justify-center rounded-full px-5 py-3 border hover:shadow-sm transition" style="border-color: var(--border); background: var(--card);" href="/blog">
+            Ver artigos do blog
+          </a>
         </div>
       </div>
     </div>
