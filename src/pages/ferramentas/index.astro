@@ -2,61 +2,49 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title="Ferramentas — Nova Raiz" description="Ferramentas práticas para decidir sua mudança para o interior: cidade ideal, checklist, ranking e comparativos.">
+<BaseLayout title="Ferramentas — Nova Raiz" description="Ferramentas essenciais para decidir sua mudança para o interior: cidade ideal e checklist.">
   <section class="py-10 md:py-14">
     <h1 class="text-4xl md:text-5xl" style="font-family:'Playfair Display', serif;">Ferramentas</h1>
     <p class="mt-4 text-lg" style="color: var(--muted);">
-      Use as ferramentas abaixo para tomar decisões com clareza (e economizar meses de tentativa e erro).
+      Aqui ficam apenas as 2 ferramentas principais do site — foco total no que mais ajuda a decisão.
     </p>
 
-    <div class="mt-10 grid gap-6 md:grid-cols-2">
-      <a href="/cidade-ideal/" class="rounded-3xl border p-6 block hover:opacity-95 transition" style="border-color: var(--border); background: var(--card);">
-        <div class="text-sm font-semibold" style="color: var(--muted);">Ferramenta</div>
-        <div class="mt-2 text-xl font-semibold">Cidade ideal</div>
-        <div class="mt-2 text-sm" style="color: var(--muted);">
-          Filtre por região e preferências (infra, internet, clima, trabalho remoto) e receba sugestões.
+    <div class="mt-8 grid gap-6 md:grid-cols-2">
+      <!-- Cidade ideal -->
+      <a href="/cidade-ideal/" class="block rounded-3xl border p-6 transition hover:shadow-lg" style="border-color: var(--border); background: var(--card);">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <div class="text-sm font-semibold" style="color: var(--muted);">Ferramenta</div>
+            <h2 class="mt-2 text-xl font-semibold">Cidade ideal</h2>
+            <p class="mt-3 text-sm" style="color: var(--muted);">
+              Responda perguntas rápidas e receba recomendações de cidades + próximos passos práticos.
+            </p>
+          </div>
+          <span class="shrink-0 rounded-full border px-3 py-1 text-xs" style="border-color: var(--border); color: var(--muted);">
+            Interativa
+          </span>
         </div>
-        <div class="mt-5 text-sm font-semibold" style="color: var(--accent);">Abrir →</div>
       </a>
 
-      <a href="/checklist/" class="rounded-3xl border p-6 block hover:opacity-95 transition" style="border-color: var(--border); background: var(--surface);">
-        <div class="text-sm font-semibold" style="color: var(--muted);">Checklist</div>
-        <div class="mt-2 text-xl font-semibold">Checklist da mudança</div>
-        <div class="mt-2 text-sm" style="color: var(--muted);">
-          A rota completa da transição: finanças, trabalho, casa, escola, saúde e adaptação (sem esquecer nada).
+      <!-- Checklist -->
+      <a href="/checklist/" class="block rounded-3xl border p-6 transition hover:shadow-lg" style="border-color: var(--border); background: var(--surface);">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <div class="text-sm font-semibold" style="color: var(--muted);">Checklist</div>
+            <h2 class="mt-2 text-xl font-semibold">Checklist de mudança</h2>
+            <p class="mt-3 text-sm" style="color: var(--muted);">
+              Checklist completo para organizar finanças, logística, internet, saúde e visita-teste — sem esquecer nada.
+            </p>
+          </div>
+          <span class="shrink-0 rounded-full border px-3 py-1 text-xs" style="border-color: var(--border); color: var(--muted);">
+            Pilar
+          </span>
         </div>
-        <div class="mt-5 text-sm font-semibold" style="color: var(--accent);">Abrir →</div>
-      </a>
-
-      <a href="/blog/categoria/cidades/" class="rounded-3xl border p-6 block hover:opacity-95 transition" style="border-color: var(--border); background: var(--card);">
-        <div class="text-sm font-semibold" style="color: var(--muted);">Conteúdo</div>
-        <div class="mt-2 text-xl font-semibold">Comparativas (blog)</div>
-        <div class="mt-2 text-sm" style="color: var(--muted);">
-          Comparativos profundos entre cidades com custo de vida, bairros, internet, saúde, educação e segurança.
-        </div>
-        <div class="mt-5 text-sm font-semibold" style="color: var(--accent);">Ver comparativas →</div>
-      </a>
-
-      <a href="/ranking/estados/" class="rounded-3xl border p-6 block hover:opacity-95 transition" style="border-color: var(--border); background: var(--surface);">
-        <div class="text-sm font-semibold" style="color: var(--muted);">Ranking</div>
-        <div class="mt-2 text-xl font-semibold">Melhores cidades por estado</div>
-        <div class="mt-2 text-sm" style="color: var(--muted);">
-          Cluster estadual: descubra rapidamente as melhores opções em cada UF e vá direto para os guias.
-        </div>
-        <div class="mt-5 text-sm font-semibold" style="color: var(--accent);">Ver por estado →</div>
       </a>
     </div>
 
-    <div class="mt-8 rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
-      <div class="text-sm font-semibold" style="color: var(--muted);">Opcional</div>
-      <div class="mt-2 text-xl font-semibold">Sistema de pontuação (beta)</div>
-      <p class="mt-2 text-sm" style="color: var(--muted);">
-        Ajuste os pesos do que importa para você (custo, segurança, clima, internet etc.) e gere um ranking personalizado.
-      </p>
-      <a href="/ferramentas/pontuacao-cidades/" class="mt-4 inline-flex items-center rounded-xl border px-4 py-2 text-sm font-semibold hover:opacity-95 transition"
-         style="border-color: var(--border); background: var(--surface); color: var(--text);">
-        Abrir sistema de pontuação →
-      </a>
+    <div class="mt-8 text-sm" style="color: var(--muted);">
+      Observação: removi desta página as seções de comparativas/ranking/pontuação para manter a área de ferramentas minimalista.
     </div>
   </section>
 </BaseLayout>
