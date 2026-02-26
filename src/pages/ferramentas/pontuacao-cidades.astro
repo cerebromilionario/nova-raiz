@@ -1,272 +1,283 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { CITY_METRICS_2026, CITY_METRICS_2027, DEFAULT_WEIGHTS, scoreCity, type Weights } from "../../data/rankingData";
+import { CITY_METRICS_2026 } from "../../data/rankingData";
 
-const title = "Sistema de Pontuação de Cidades (2026–2027) — Nova Raiz";
-const description =
-  "Ferramenta interativa: ajuste pesos (segurança, custo, internet, trabalho, saúde, educação) e gere um ranking. Base expandível para 2027.";
-
-const year = 2026 as const;
-
-function compute(year: 2026 | 2027, weights: Weights) {
-  const base = year === 2026 ? CITY_METRICS_2026 : CITY_METRICS_2027;
-  return base
-    .map((m) => {
-      const r = scoreCity(m, weights);
-      return { ...m, score: r.score };
-    })
-    .sort((a, b) => b.score - a.score);
-}
-
-const initial = compute(year, DEFAULT_WEIGHTS);
-const payload = {
-  years: [2026, 2027],
-  defaultWeights: DEFAULT_WEIGHTS,
-  data2026: CITY_METRICS_2026,
-  data2027: CITY_METRICS_2027,
-};
+// slugs disponíveis em /cidades/ (para links clicáveis)
+const cityPageModules = import.meta.glob("../cidades/*.astro", { eager: true });
+const cityPageSlugs = Object.keys(cityPageModules).map((p) => p.split("/").pop()?.replace(/\.astro$/, "")).filter(Boolean);
 ---
 
-<BaseLayout title={title} description={description}>
-  <section class="container mx-auto px-4 py-10">
-    <div class="max-w-3xl">
-      <h1 class="text-3xl md:text-4xl font-bold tracking-tight">Sistema de pontuação de cidades (2026–2027)</h1>
-      <p class="mt-3 text-lg text-neutral-700">
-        Ajuste os pesos e gere um ranking <strong>na sua lógica</strong>.
-        A base é <strong>expandível</strong>: você pode substituir/atualizar os dados em 2027 sem mexer na ferramenta.
-      </p>
-      <p class="mt-2 text-sm text-neutral-600">
-        Observação: índices 0–100 são normalizados (comparação relativa). População e PIB per capita são campos numéricos informativos.
-      </p>
+<BaseLayout title="Sistema de pontuação — Nova Raiz" description="Ajuste os pesos do que importa e gere um ranking personalizado de cidades (beta).">
+  <section class="py-10 md:py-14">
+    <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+      <div>
+        <h1 class="text-4xl md:text-5xl" style="font-family:'Playfair Display', serif;">Sistema de pontuação de cidades</h1>
+        <p class="mt-4 text-lg" style="color: var(--muted);">
+          Ajuste os pesos e gere um ranking de acordo com o seu perfil. (Beta — funciona melhor para comparar <strong>tendências</strong>, não “verdades absolutas”.)
+        </p>
+      </div>
+
+      <div class="flex gap-2">
+        <a href="/ranking/estados/" class="inline-flex items-center rounded-xl border px-4 py-2 text-sm font-semibold hover:opacity-95 transition"
+           style="border-color: var(--border); background: var(--surface); color: var(--text);">
+          Ver por estado
+        </a>
+        <button id="btnReset" type="button" class="inline-flex items-center rounded-xl border px-4 py-2 text-sm font-semibold hover:opacity-95 transition"
+                style="border-color: var(--border); background: var(--card); color: var(--text);">
+          Reset padrão
+        </button>
+      </div>
     </div>
 
-    <div class="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-6">
-      <div class="lg:col-span-4">
-        <div class="rounded-2xl border bg-white p-5 shadow-sm">
-          <div class="flex items-center justify-between gap-3">
-            <h2 class="text-lg font-semibold">Configurar pesos</h2>
-            <div class="flex items-center gap-2">
-              <label class="text-sm text-neutral-600" for="yearSel">Ano</label>
-              <select id="yearSel" class="rounded-lg border px-2 py-1 text-sm">
-                <option value="2026" selected>2026</option>
-                <option value="2027">2027</option>
-              </select>
-            </div>
-          </div>
+    <div class="mt-8 grid gap-6 lg:grid-cols-3">
+      <div class="rounded-3xl border p-6 lg:col-span-1" style="border-color: var(--border); background: var(--card);">
+        <div class="text-sm font-semibold" style="color: var(--muted);">Configurar pesos</div>
+        <p class="mt-2 text-sm" style="color: var(--muted);">
+          Dica: mexa em 2–3 pesos por vez. O ranking muda em tempo real.
+        </p>
 
-          <div class="mt-4 space-y-4" id="weightsBox">
-            <div class="grid gap-2">
-              <div class="flex items-center justify-between text-sm"><span>Segurança</span><span id="w_safety">18</span></div>
-              <input id="i_safety" type="range" min="0" max="30" value="18" class="w-full" />
-            </div>
-            <div class="grid gap-2">
-              <div class="flex items-center justify-between text-sm"><span>Custo (menor é melhor)</span><span id="w_cost">14</span></div>
-              <input id="i_cost" type="range" min="0" max="30" value="14" class="w-full" />
-            </div>
-            <div class="grid gap-2">
-              <div class="flex items-center justify-between text-sm"><span>Internet</span><span id="w_internet">12</span></div>
-              <input id="i_internet" type="range" min="0" max="30" value="12" class="w-full" />
-            </div>
-            <div class="grid gap-2">
-              <div class="flex items-center justify-between text-sm"><span>Educação</span><span id="w_education">12</span></div>
-              <input id="i_education" type="range" min="0" max="30" value="12" class="w-full" />
-            </div>
-            <div class="grid gap-2">
-              <div class="flex items-center justify-between text-sm"><span>Saúde</span><span id="w_health">12</span></div>
-              <input id="i_health" type="range" min="0" max="30" value="12" class="w-full" />
-            </div>
-            <div class="grid gap-2">
-              <div class="flex items-center justify-between text-sm"><span>Emprego/Trabalho</span><span id="w_jobs">14</span></div>
-              <input id="i_jobs" type="range" min="0" max="30" value="14" class="w-full" />
-            </div>
-            <div class="grid gap-2">
-              <div class="flex items-center justify-between text-sm"><span>Mobilidade</span><span id="w_mobility">10</span></div>
-              <input id="i_mobility" type="range" min="0" max="30" value="10" class="w-full" />
-            </div>
-            <div class="grid gap-2">
-              <div class="flex items-center justify-between text-sm"><span>Clima</span><span id="w_climate">8</span></div>
-              <input id="i_climate" type="range" min="0" max="30" value="8" class="w-full" />
-            </div>
+        <div id="weightsBox" class="mt-6 space-y-4"></div>
 
-            <div class="pt-3 flex flex-wrap gap-2">
-              <button type="button" id="btnReset" class="rounded-xl border px-4 py-2 text-sm font-medium hover:bg-neutral-50">Reset padrão</button>
-              <a href="/ranking/estados/" class="rounded-xl border px-4 py-2 text-sm font-medium hover:bg-neutral-50">Ver por estado</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-6 rounded-2xl border bg-white p-5 shadow-sm">
-          <h3 class="text-base font-semibold">Como expandir para 2027</h3>
-          <ol class="mt-2 list-decimal pl-5 text-sm text-neutral-700 space-y-1">
-            <li>Abra <code class="px-1 rounded bg-neutral-100">src/data/rankingData.ts</code></li>
-            <li>Atualize <code class="px-1 rounded bg-neutral-100">CITY_METRICS_2027</code> (ou substitua a base inteira)</li>
-            <li>Commit no GitHub → Netlify publica automaticamente</li>
-          </ol>
+        <div class="mt-6 rounded-2xl border p-4" style="border-color: var(--border); background: var(--surface);">
+          <div class="text-xs font-semibold" style="color: var(--muted);">Como ler o resultado</div>
+          <ul class="mt-2 list-disc pl-5 text-xs space-y-1" style="color: var(--muted);">
+            <li><strong>Score</strong> é relativo ao conjunto de cidades do sistema.</li>
+            <li>Empates são comuns quando pesos são parecidos.</li>
+            <li>Use o ranking para <em>triagem</em> e depois leia guias e comparativas.</li>
+          </ul>
         </div>
       </div>
 
-      <div class="lg:col-span-8">
-        <div class="rounded-2xl border bg-white p-5 shadow-sm">
-          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-            <div>
-              <h2 class="text-lg font-semibold">Ranking gerado</h2>
-              <p class="text-sm text-neutral-600">Ordenado por score (0–100). Clique numa linha para abrir a página pilar se existir.</p>
-            </div>
-            <div class="flex items-center gap-2">
-              <input id="q" class="w-full md:w-64 rounded-xl border px-3 py-2 text-sm" placeholder="Buscar cidade/UF..." />
+      <div class="rounded-3xl border p-6 lg:col-span-2" style="border-color: var(--border); background: var(--surface);">
+        <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div>
+            <div class="text-sm font-semibold" style="color: var(--muted);">Ranking personalizado</div>
+            <div class="mt-1 text-xs" style="color: var(--muted);">
+              Clique em uma cidade para abrir o guia (quando existir) ou buscar artigos no blog.
             </div>
           </div>
 
-          <div class="mt-4 overflow-x-auto">
-            <table class="min-w-full text-sm">
-              <thead>
-                <tr class="text-left text-neutral-600 border-b">
-                  <th class="py-2 pr-4">#</th>
-                  <th class="py-2 pr-4">Cidade</th>
-                  <th class="py-2 pr-4">UF</th>
-                  <th class="py-2 pr-4">Região</th>
-                  <th class="py-2 pr-4">Score</th>
-                  <th class="py-2 pr-4">População</th>
-                  <th class="py-2 pr-4">PIB per capita</th>
-                </tr>
-              </thead>
-              <tbody id="tbody">
-                {initial.map((c, idx) => (
-                  <tr class="border-b hover:bg-neutral-50 cursor-pointer" data-city={`${c.city} ${c.state} ${c.region}`.toLowerCase()} data-href={`/blog/morar-em-${c.slug.replace(/-(sp|mg|rj|rs|sc|df|go|pb|ce|am|pa)$/,"")}-${c.state.toLowerCase()}-2026/`}>
-                    <td class="py-2 pr-4">{idx + 1}</td>
-                    <td class="py-2 pr-4 font-medium">{c.city}</td>
-                    <td class="py-2 pr-4">{c.state}</td>
-                    <td class="py-2 pr-4">{c.region}</td>
-                    <td class="py-2 pr-4">{c.score.toFixed(1)}</td>
-                    <td class="py-2 pr-4">{c.population?.toLocaleString("pt-BR") ?? "—"}</td>
-                    <td class="py-2 pr-4">{c.gdpPerCapitaBRL ? `R$ ${c.gdpPerCapitaBRL.toLocaleString("pt-BR")}` : "—"}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div class="flex items-center gap-2">
+            <label class="text-xs font-semibold" style="color: var(--muted);" for="limitSelect">Mostrar</label>
+            <select id="limitSelect" class="rounded-xl border px-3 py-2 text-sm"
+                    style="border-color: var(--border); background: var(--card); color: var(--text);">
+              <option value="10">Top 10</option>
+              <option value="20" selected>Top 20</option>
+              <option value="40">Top 40</option>
+              <option value="999">Todas</option>
+            </select>
           </div>
-          <p class="mt-3 text-xs text-neutral-500">Dica: se a página pilar ainda não existir, crie um post com slug correspondente e o link vai passar a funcionar.</p>
+        </div>
+
+        <div class="mt-6 overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="text-left">
+                <th class="pb-3 pr-4" style="color: var(--muted);">#</th>
+                <th class="pb-3 pr-4" style="color: var(--muted);">Cidade</th>
+                <th class="pb-3 pr-4" style="color: var(--muted);">UF</th>
+                <th class="pb-3 pr-4" style="color: var(--muted);">Score</th>
+                <th class="pb-3 pr-4" style="color: var(--muted);">Notas rápidas</th>
+              </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
         </div>
       </div>
     </div>
   </section>
 
-  <script is:inline>
-    const payload = {JSON.stringify(payload)};
-    const $ = (id) => document.getElementById(id);
+  <script define:vars={{ data: CITY_METRICS_2026, cityPageSlugs }}>
+    const DEFAULT_WEIGHTS = {
+      custoDeVida: 18,
+      seguranca: 20,
+      internet: 10,
+      saude: 10,
+      educacao: 10,
+      trabalho: 12,
+      mobilidade: 8,
+      clima: 6,
+      lazer: 6
+    };
 
-    const yearSel = $("yearSel");
-    const q = $("q");
-    const tbody = $("tbody");
+    const LABELS = {
+      custoDeVida: "Custo de vida",
+      seguranca: "Segurança",
+      internet: "Internet",
+      saude: "Saúde",
+      educacao: "Educação",
+      trabalho: "Trabalho",
+      mobilidade: "Mobilidade",
+      clima: "Clima",
+      lazer: "Lazer"
+    };
 
-    const inputs = [
-      "safety","cost","internet","education","health","jobs","mobility","climate"
-    ].reduce((acc,k)=>{ acc[k] = $("i_"+k); return acc; }, {});
+    const EXPLAIN = {
+      custoDeVida: "Custo mensal, aluguel e serviços (tendência).",
+      seguranca: "Indicadores e percepção de risco (tendência).",
+      internet: "Oferta de fibra/ISPs e estabilidade (tendência).",
+      saude: "Acesso a rede privada e regional (tendência).",
+      educacao: "Qualidade e oferta básica/privada (tendência).",
+      trabalho: "Oportunidades locais + proximidade regional (tendência).",
+      mobilidade: "Acesso rodoviário e deslocamentos (tendência).",
+      clima: "Conforto térmico e extremos (tendência).",
+      lazer: "Cultura, gastronomia e opções (tendência)."
+    };
 
-    const labels = [
-      "safety","cost","internet","education","health","jobs","mobility","climate"
-    ].reduce((acc,k)=>{ acc[k] = $("w_"+k); return acc; }, {});
-
-    const fmtPop = (n) => (typeof n === "number" ? n.toLocaleString("pt-BR") : "—");
-    const fmtBRL = (n) => (typeof n === "number" ? ("R$ " + n.toLocaleString("pt-BR")) : "—");
-
-    function getWeights(){
-      return {
-        safety: Number(inputs.safety.value),
-        cost: Number(inputs.cost.value),
-        internet: Number(inputs.internet.value),
-        education: Number(inputs.education.value),
-        health: Number(inputs.health.value),
-        jobs: Number(inputs.jobs.value),
-        mobility: Number(inputs.mobility.value),
-        climate: Number(inputs.climate.value),
-      };
+    // Normaliza índices (0..100). Se um índice vier ausente, assume 50 (neutro).
+    function idx(v) {
+      const n = Number(v);
+      return Number.isFinite(n) ? n : 50;
     }
 
-    function renderWeights(){
-      for (const k in inputs) labels[k].textContent = inputs[k].value;
+    function getWeightsFromUI() {
+      const w = {};
+      Object.keys(DEFAULT_WEIGHTS).forEach((k) => {
+        const el = document.querySelector(`[data-weight="${k}"]`);
+        w[k] = el ? Number(el.value) : DEFAULT_WEIGHTS[k];
+      });
+      return w;
     }
 
-    function safe(n, fallback=50){
-      return (typeof n === "number" && Number.isFinite(n)) ? n : fallback;
+    function scoreCity(city, w) {
+      const total =
+        idx(city.indices?.custoDeVida) * w.custoDeVida +
+        idx(city.indices?.seguranca) * w.seguranca +
+        idx(city.indices?.internet) * w.internet +
+        idx(city.indices?.saude) * w.saude +
+        idx(city.indices?.educacao) * w.educacao +
+        idx(city.indices?.trabalho) * w.trabalho +
+        idx(city.indices?.mobilidade) * w.mobilidade +
+        idx(city.indices?.clima) * w.clima +
+        idx(city.indices?.lazer) * w.lazer;
+
+      const sumW = Object.values(w).reduce((a, b) => a + b, 0) || 1;
+      // score 0..100
+      return total / sumW;
     }
 
-    function score(metric, w){
-      const costScore = 100 - safe(metric.costOfLivingIndex, 60);
-      const parts = [
-        ["safety", w.safety, safe(metric.safetyIndex)],
-        ["cost", w.cost, costScore],
-        ["internet", w.internet, safe(metric.internetIndex)],
-        ["education", w.education, safe(metric.educationIndex)],
-        ["health", w.health, safe(metric.healthIndex)],
-        ["jobs", w.jobs, safe(metric.jobsIndex)],
-        ["mobility", w.mobility, safe(metric.mobilityIndex)],
-        ["climate", w.climate, safe(metric.climateComfortIndex)],
-      ];
-      const totalW = parts.reduce((a,p)=>a+p[1],0) || 1;
-      const weighted = parts.reduce((a,p)=>a + p[1]*p[2],0);
-      return weighted / totalW;
+    function cityHref(city) {
+      // prioridade: páginas pilar em /cidades/<slug>/
+      if (Array.isArray(cityPageSlugs) && cityPageSlugs.includes(city.slug)) {
+        return `/cidades/${city.slug}/`;
+      }
+      // fallback: levar ao blog (busca simples por querystring — mesmo se não filtrar, ainda é útil)
+      const q = encodeURIComponent(city.city);
+      return `/blog/?q=${q}`;
     }
 
-    function buildRows(){
-      const year = Number(yearSel.value);
-      const data = year === 2026 ? payload.data2026 : payload.data2027;
-      const w = getWeights();
+    function quickNotes(city) {
+      const s = idx(city.indices?.seguranca);
+      const c = idx(city.indices?.custoDeVida);
+      const i = idx(city.indices?.internet);
+      const t = idx(city.indices?.trabalho);
 
-      const ranked = data.map((m)=>({ ...m, score: score(m,w)})).sort((a,b)=>b.score-a.score);
-
-      tbody.innerHTML = ranked.map((c, idx) => {
-        const dataCity = (c.city + " " + c.state + " " + c.region).toLowerCase();
-        const href = "/blog/morar-em-" + c.slug.replace(/-(sp|mg|rj|rs|sc|df|go|pb|ce|am|pa)$/,"") + "-" + c.state.toLowerCase() + "-2026/";
-        return `
-          <tr class="border-b hover:bg-neutral-50 cursor-pointer" data-city="${dataCity}" data-href="${href}">
-            <td class="py-2 pr-4">${idx+1}</td>
-            <td class="py-2 pr-4 font-medium">${c.city}</td>
-            <td class="py-2 pr-4">${c.state}</td>
-            <td class="py-2 pr-4">${c.region}</td>
-            <td class="py-2 pr-4">${c.score.toFixed(1)}</td>
-            <td class="py-2 pr-4">${fmtPop(c.population)}</td>
-            <td class="py-2 pr-4">${fmtBRL(c.gdpPerCapitaBRL)}</td>
-          </tr>`;
-      }).join("");
-      applyFilter();
-      bindRowClicks();
+      const notes = [];
+      if (s >= 70) notes.push("segurança forte");
+      if (s <= 40) notes.push("atenção segurança");
+      if (c >= 70) notes.push("custo favorável");
+      if (c <= 40) notes.push("custo alto");
+      if (i >= 70) notes.push("internet boa");
+      if (t >= 70) notes.push("trabalho/região forte");
+      return notes.slice(0, 3).join(" • ") || "perfil equilibrado";
     }
 
-    function applyFilter(){
-      const term = (q.value || "").trim().toLowerCase();
-      const rows = tbody.querySelectorAll("tr");
-      rows.forEach((tr)=>{
-        const hay = tr.getAttribute("data-city") || "";
-        tr.style.display = hay.includes(term) ? "" : "none";
+    function renderWeights() {
+      const box = document.getElementById("weightsBox");
+      box.innerHTML = "";
+
+      Object.keys(DEFAULT_WEIGHTS).forEach((k) => {
+        const wrap = document.createElement("div");
+        wrap.className = "rounded-2xl border p-4";
+        wrap.style.borderColor = "var(--border)";
+        wrap.style.background = "var(--surface)";
+
+        wrap.innerHTML = `
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <div class="text-sm font-semibold">${LABELS[k]}</div>
+              <div class="mt-1 text-xs" style="color: var(--muted);">${EXPLAIN[k]}</div>
+            </div>
+            <div class="text-sm font-semibold" data-weight-value="${k}" style="color: var(--accent);">${DEFAULT_WEIGHTS[k]}</div>
+          </div>
+
+          <input class="mt-3 w-full"
+                 type="range"
+                 min="0" max="30" step="1"
+                 value="${DEFAULT_WEIGHTS[k]}"
+                 data-weight="${k}" />
+        `;
+
+        box.appendChild(wrap);
       });
     }
 
-    function bindRowClicks(){
-      tbody.querySelectorAll("tr").forEach((tr)=>{
-        tr.addEventListener("click", ()=>{
-          const href = tr.getAttribute("data-href");
-          if (href) window.location.href = href;
+    function attachWeightListeners() {
+      Object.keys(DEFAULT_WEIGHTS).forEach((k) => {
+        const input = document.querySelector(`[data-weight="${k}"]`);
+        input.addEventListener("input", () => {
+          const val = Number(input.value);
+          const label = document.querySelector(`[data-weight-value="${k}"]`);
+          if (label) label.textContent = String(val);
+          buildRows();
         });
       });
     }
 
-    function reset(){
-      const w = payload.defaultWeights;
-      for (const k in w){
-        inputs[k].value = String(w[k]);
-      }
-      renderWeights();
+    function buildRows() {
+      const w = getWeightsFromUI();
+      const limit = Number(document.getElementById("limitSelect").value) || 20;
+
+      const ranked = [...data]
+        .map((c) => ({ ...c, _score: scoreCity(c, w) }))
+        .sort((a, b) => b._score - a._score);
+
+      const rows = document.getElementById("rows");
+      rows.innerHTML = "";
+
+      ranked.slice(0, limit).forEach((c, i) => {
+        const tr = document.createElement("tr");
+        tr.className = "border-t hover:opacity-95 transition cursor-pointer";
+        tr.style.borderColor = "var(--border)";
+        tr.setAttribute("data-href", cityHref(c));
+
+        tr.innerHTML = `
+          <td class="py-3 pr-4" style="color: var(--muted);">${i + 1}</td>
+          <td class="py-3 pr-4 font-semibold">${c.city}</td>
+          <td class="py-3 pr-4" style="color: var(--muted);">${c.uf}</td>
+          <td class="py-3 pr-4 font-semibold" style="color: var(--accent);">${c._score.toFixed(1)}</td>
+          <td class="py-3 pr-4 text-xs" style="color: var(--muted);">${quickNotes(c)}</td>
+        `;
+
+        tr.addEventListener("click", () => {
+          const href = tr.getAttribute("data-href");
+          if (href) window.location.href = href;
+        });
+
+        rows.appendChild(tr);
+      });
+    }
+
+    function resetDefaults() {
+      Object.keys(DEFAULT_WEIGHTS).forEach((k) => {
+        const input = document.querySelector(`[data-weight="${k}"]`);
+        if (input) input.value = String(DEFAULT_WEIGHTS[k]);
+        const label = document.querySelector(`[data-weight-value="${k}"]`);
+        if (label) label.textContent = String(DEFAULT_WEIGHTS[k]);
+      });
       buildRows();
     }
 
-    // listeners
-    yearSel.addEventListener("change", buildRows);
-    q.addEventListener("input", applyFilter);
-    Object.values(inputs).forEach((el)=> el.addEventListener("input", ()=>{ renderWeights(); buildRows(); }));
-    $("btnReset").addEventListener("click", (e)=>{ e.preventDefault(); reset(); });
-
+    // init
     renderWeights();
-    bindRowClicks();
+    attachWeightListeners();
+    buildRows();
+
+    document.getElementById("btnReset")?.addEventListener("click", (e) => {
+      e.preventDefault();
+      resetDefaults();
+    });
+
+    document.getElementById("limitSelect")?.addEventListener("change", () => buildRows());
   </script>
 </BaseLayout>

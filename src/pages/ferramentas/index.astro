@@ -1,67 +1,62 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-
-const title = "Ferramentas — Nova Raiz";
-const description = "Ferramentas interativas para planejar sua mudança para o interior: cidade ideal e checklists.";
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title="Ferramentas — Nova Raiz" description="Ferramentas práticas para decidir sua mudança para o interior: cidade ideal, checklist, ranking e comparativos.">
   <section class="py-10 md:py-14">
-    <div class="mx-auto max-w-5xl">
-      <nav class="text-xs" style="color: var(--muted);">
-        <a class="underline" href="/">Home</a>
-        <span class="mx-2">/</span>
-        <span>Ferramentas</span>
-      </nav>
+    <h1 class="text-4xl md:text-5xl" style="font-family:'Playfair Display', serif;">Ferramentas</h1>
+    <p class="mt-4 text-lg" style="color: var(--muted);">
+      Use as ferramentas abaixo para tomar decisões com clareza (e economizar meses de tentativa e erro).
+    </p>
 
-      <h1 class="mt-4 text-4xl md:text-5xl" style="font-family:'Playfair Display', serif;">Ferramentas</h1>
-      <p class="mt-4 text-lg" style="color: var(--muted);">
-        Ferramentas interativas para decidir com clareza — sem achismo.
+    <div class="mt-10 grid gap-6 md:grid-cols-2">
+      <a href="/cidade-ideal/" class="rounded-3xl border p-6 block hover:opacity-95 transition" style="border-color: var(--border); background: var(--card);">
+        <div class="text-sm font-semibold" style="color: var(--muted);">Ferramenta</div>
+        <div class="mt-2 text-xl font-semibold">Cidade ideal</div>
+        <div class="mt-2 text-sm" style="color: var(--muted);">
+          Filtre por região e preferências (infra, internet, clima, trabalho remoto) e receba sugestões.
+        </div>
+        <div class="mt-5 text-sm font-semibold" style="color: var(--accent);">Abrir →</div>
+      </a>
+
+      <a href="/checklist/" class="rounded-3xl border p-6 block hover:opacity-95 transition" style="border-color: var(--border); background: var(--surface);">
+        <div class="text-sm font-semibold" style="color: var(--muted);">Checklist</div>
+        <div class="mt-2 text-xl font-semibold">Checklist da mudança</div>
+        <div class="mt-2 text-sm" style="color: var(--muted);">
+          A rota completa da transição: finanças, trabalho, casa, escola, saúde e adaptação (sem esquecer nada).
+        </div>
+        <div class="mt-5 text-sm font-semibold" style="color: var(--accent);">Abrir →</div>
+      </a>
+
+      <a href="/blog/categoria/cidades/" class="rounded-3xl border p-6 block hover:opacity-95 transition" style="border-color: var(--border); background: var(--card);">
+        <div class="text-sm font-semibold" style="color: var(--muted);">Conteúdo</div>
+        <div class="mt-2 text-xl font-semibold">Comparativas (blog)</div>
+        <div class="mt-2 text-sm" style="color: var(--muted);">
+          Comparativos profundos entre cidades com custo de vida, bairros, internet, saúde, educação e segurança.
+        </div>
+        <div class="mt-5 text-sm font-semibold" style="color: var(--accent);">Ver comparativas →</div>
+      </a>
+
+      <a href="/ranking/estados/" class="rounded-3xl border p-6 block hover:opacity-95 transition" style="border-color: var(--border); background: var(--surface);">
+        <div class="text-sm font-semibold" style="color: var(--muted);">Ranking</div>
+        <div class="mt-2 text-xl font-semibold">Melhores cidades por estado</div>
+        <div class="mt-2 text-sm" style="color: var(--muted);">
+          Cluster estadual: descubra rapidamente as melhores opções em cada UF e vá direto para os guias.
+        </div>
+        <div class="mt-5 text-sm font-semibold" style="color: var(--accent);">Ver por estado →</div>
+      </a>
+    </div>
+
+    <div class="mt-8 rounded-3xl border p-6" style="border-color: var(--border); background: var(--card);">
+      <div class="text-sm font-semibold" style="color: var(--muted);">Opcional</div>
+      <div class="mt-2 text-xl font-semibold">Sistema de pontuação (beta)</div>
+      <p class="mt-2 text-sm" style="color: var(--muted);">
+        Ajuste os pesos do que importa para você (custo, segurança, clima, internet etc.) e gere um ranking personalizado.
       </p>
-
-      <div class="mt-8 grid gap-6 md:grid-cols-2">
-      <a href="/cidade-ideal/" class="group rounded-2xl border bg-white p-6 shadow-sm hover:shadow-md transition">
-        <h2 class="text-xl font-semibold group-hover:underline underline-offset-4">Cidade ideal (perfil)</h2>
-        <p class="mt-2 text-sm text-neutral-600">
-          Encontre opções por região e perfil (remoto, família, custo-benefício) — sem achismo.
-        </p>
+      <a href="/ferramentas/pontuacao-cidades/" class="mt-4 inline-flex items-center rounded-xl border px-4 py-2 text-sm font-semibold hover:opacity-95 transition"
+         style="border-color: var(--border); background: var(--surface); color: var(--text);">
+        Abrir sistema de pontuação →
       </a>
-
-      <a href="/comparativas/" class="group rounded-2xl border bg-white p-6 shadow-sm hover:shadow-md transition">
-        <h2 class="text-xl font-semibold group-hover:underline underline-offset-4">Comparativas (A vs B)</h2>
-        <p class="mt-2 text-sm text-neutral-600">
-          Escolha 2 cidades e abra a comparativa definitiva (artigo completo no blog).
-        </p>
-      </a>
-
-      <a href="/ferramentas/pontuacao-cidades/" class="group rounded-2xl border bg-white p-6 shadow-sm hover:shadow-md transition">
-        <h2 class="text-xl font-semibold group-hover:underline underline-offset-4">Sistema de pontuação (2026–2027)</h2>
-        <p class="mt-2 text-sm text-neutral-600">
-          Ajuste pesos (segurança, custo, internet, trabalho, saúde, educação) e gere um ranking.
-        </p>
-      </a>
-
-      <a href="/ranking/estados/" class="group rounded-2xl border bg-white p-6 shadow-sm hover:shadow-md transition">
-        <h2 class="text-xl font-semibold group-hover:underline underline-offset-4">Melhores cidades por estado</h2>
-        <p class="mt-2 text-sm text-neutral-600">
-          Cluster estadual (UF): veja top 5 e acesse o ranking completo por estado.
-        </p>
-      </a>
-    </div>Sistema de pontuação (2026–2027)</h2>
-        <p class="mt-2 text-neutral-700">
-          Ajuste pesos (segurança, custo, internet, trabalho, saúde, educação) e gere um ranking. Estrutura pronta para 2027.
-        </p>
-        <p class="mt-4 text-sm font-medium text-neutral-900">Abrir ferramenta →</p>
-      </a>
-
-      <a href="/ranking/estados/" class="group rounded-2xl border bg-white p-6 shadow-sm hover:shadow-md transition">
-        <h2 class="text-xl font-semibold group-hover:underline underline-offset-4">Melhores cidades por estado</h2>
-        <p class="mt-2 text-neutral-700">
-          Cluster estadual (UF): navegue por estados, veja top 5 e acesse o ranking completo por estado.
-        </p>
-        <p class="mt-4 text-sm font-medium text-neutral-900">Ver estados →</p>
-      </a>
-
     </div>
   </section>
 </BaseLayout>
