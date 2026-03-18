@@ -43,6 +43,21 @@ const shouldLoadAdsense = Boolean(adsenseClientId);
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
   </head>
   <body class="min-h-screen">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Nova Raiz",
+        "url": "https://novaraiz.netlify.app",
+        "description": "Transição consciente da cidade para o interior: planejamento, trabalho remoto e vida real.",
+        "publisher": {
+          "@type": "Organization",
+          "name": "Nova Raiz",
+          "url": "https://novaraiz.netlify.app",
+          "logo": "https://novaraiz.netlify.app/logo.png"
+        }
+      }
+    </script>
     <Header />
     <main class="mx-auto max-w-6xl px-4 md:px-6">
       <slot />
