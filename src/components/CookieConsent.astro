@@ -1,0 +1,40 @@
+---
+---
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css"
+/>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"
+></script>
+<script is:inline>
+  window.addEventListener("load", function () {
+    if (!window.cookieconsent) return;
+
+    window.cookieconsent.initialise({
+      palette: {
+        popup: {
+          background: "#1f3a2e",
+          text: "#ffffff"
+        },
+        button: {
+          background: "#e8b15a",
+          text: "#1f3a2e"
+        }
+      },
+      theme: "classic",
+      position: "bottom",
+      content: {
+        message:
+          "Usamos cookies para melhorar sua experiência, personalizar conteúdo e analisar tráfego.",
+        dismiss: "Entendi",
+        allow: "Aceitar",
+        deny: "Recusar",
+        link: "Política de privacidade",
+        href: "/politica-de-privacidade"
+      }
+    });
+  });
+</script>
