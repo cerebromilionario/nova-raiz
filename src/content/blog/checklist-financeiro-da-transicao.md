@@ -5,8 +5,6 @@ pubDate: 2026-02-24
 category: "Planejamento"
 ---
 
-# Checklist financeiro da transição (2026): como mudar para o interior sem estourar o orçamento
-
 Mudar para o interior quase sempre dá certo quando a decisão é emocional **e** o plano é frio.
 
 O que quebra a maioria das mudanças não é “a cidade foi ruim”.
