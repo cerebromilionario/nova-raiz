@@ -12,11 +12,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
       <form class="mt-10 rounded-3xl border p-6"
         style="border-color: var(--border); background: var(--surface);"
-        name="contato"
+        action="https://formsubmit.co/willianzacarias77@gmail.com"
         method="POST"
-        data-netlify="true"
       >
-        <input type="hidden" name="form-name" value="contato" />
+        <input type="hidden" name="_subject" value="Nova mensagem — Fale com a gente (Nova Raiz)" />
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="_template" value="table" />
 
         <label class="block text-sm font-semibold">Nome</label>
         <input class="mt-2 w-full rounded-xl border px-4 py-3"
@@ -40,7 +41,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </button>
 
         <p class="mt-4 text-xs" style="color: var(--muted);">
-          Este formulário é processado pelo Netlify Forms.
+          Este formulário é processado pelo FormSubmit.
         </p>
       </form>
     </div>
