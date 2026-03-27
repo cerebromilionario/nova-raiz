@@ -6,6 +6,8 @@ const { title, description, pubDate, category, slug } = Astro.props;
 
 const site = "https://novaraiz.netlify.app";
 const canonical = `${site}/blog/${slug}`;
+const authorByline = "Por Time Editorial Nova Raiz";
+const authorBio = "Equipe multidisciplinar focada em planejamento de mudança para o interior, com análise prática, dados públicos e contexto local.";
 
 const allPosts = (await getCollection("blog")).filter((p) => !p.data.draft);
 const related = allPosts
@@ -65,11 +67,27 @@ const breadcrumbJsonLd = {
       <div class="mt-6 text-xs" style="color: var(--muted);">
         {pubDate.toLocaleDateString("pt-BR")}
       </div>
+      <div class="mt-3 rounded-2xl border p-4 text-sm leading-relaxed" style="border-color: var(--border); background: var(--surface); color: var(--muted);">
+        <p class="font-semibold" style="color: var(--text);">{authorByline}</p>
+        <p class="mt-1">{authorBio}</p>
+      </div>
 
       <div class="prose prose-lg mt-10 max-w-none"
         style="--tw-prose-body: var(--text); --tw-prose-headings: var(--text); --tw-prose-links: var(--primary);">
         <slot />
       </div>
+
+      <section class="mt-10 rounded-3xl border p-6 md:p-8" style="border-color: var(--border); background: var(--surface);">
+        <h2 class="text-lg font-semibold">Fontes externas confiáveis</h2>
+        <p class="mt-2 text-sm leading-relaxed" style="color: var(--muted);">
+          Para validar decisões com dados oficiais, consulte estas instituições autoritativas.
+        </p>
+        <ul class="mt-4 space-y-2 text-sm">
+          <li><a class="underline" href="https://www.ibge.gov.br/" target="_blank" rel="noopener noreferrer">IBGE — dados demográficos e econômicos</a></li>
+          <li><a class="underline" href="https://www.ipea.gov.br/" target="_blank" rel="noopener noreferrer">IPEA — estudos e indicadores socioeconômicos</a></li>
+          <li><a class="underline" href="https://www.gov.br/cidades/pt-br" target="_blank" rel="noopener noreferrer">Ministério das Cidades — políticas urbanas e habitação</a></li>
+        </ul>
+      </section>
 
       {related.length > 0 && (
         <section class="mt-14 rounded-3xl border p-6 md:p-8"
